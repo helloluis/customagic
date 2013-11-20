@@ -1,0 +1,205 @@
+div id="fb-root"
+
+javascript:    
+  //
+  // retrieve customer information if they're logged in to FB
+  // enable customer review forms
+  //
+
+  var find_or_create_customer = function(resp, callback){
+      //console.log(resp);
+      $.jsonp({
+        url : "#{{current_site.url}}/customers/" + resp.id + "/show_with_facebook.json?callback=?",
+        type : "GET",
+        dataType : 'jsonp',
+        data : {  fb_id       : resp.id, 
+                  email       : resp.email, 
+                  name        : resp.name, 
+                  first_name  : resp.first_name,
+                  last_name   : resp.last_name,
+                  city        : resp.location.name,
+                  fb_link     : resp.link, 
+                  fb_username : resp.username },
+        success : function(data) {
+          callback.call(this,data);
+        }
+      });
+    }, 
+    populate_address_fields = function(customer){
+      //console.log(customer);
+      $("#order_first_name").val( customer.first_name );
+      $("#order_last_name").val( customer.last_name );
+      $("#order_email").val( customer.email );
+      $("#order_phone").val( customer.mobile );
+      $("#order_address").val( customer.address );
+      $("#order_city").val( customer.city );
+      $("#order_state").val( customer.state );
+      $("#order_country").val( customer.country );
+      $("#order_postcode").val( customer.postcode );
+    },
+    replace_fb_profile = function(auth_response, callback) {
+      if (SITE_URL.indexOf(window.location.hostname.replace('.xxx',''))==-1) {
+        window.location.replace(SITE_URL + window.location.pathname);
+      } else {
+        FB.api('/me', function(response) {
+          
+          var cont    = $(".facebook_profile_container"),
+              profile = $("<span class='fb_user_name'></span>").append("Logged in as <a href='" + response.link + "' class='user_override'>" + response.name + "</a>. (<a class='fb_logout'>logout</a>)"),
+              avatar  = $("<span class='fb_user_avatar'></span>").css({backgroundImage:'url(https://graph.facebook.com/' + response.id + '/picture?type=small)'});
+          
+          cont.empty().append(profile).append(avatar);
+          
+          $(".fb_logout",cont).click(function(){
+            FB.logout(auth_response.authResponse);
+          });
+
+          if (callback) {
+            callback.call(this,response);
+          }
+
+        });
+      }
+    },
+    enable_review_fields = function(fb_object){
+      
+      if (!$(".review_form").length){ return false; }
+
+      $("textarea,input,.ratings",".review_form").removeAttr('disabled','disabled').removeClass('disabled');
+      $("#product_review_fb_id").val(fb_object.id);
+      $("#product_review_name").val(fb_object.name);
+      $("#product_review_username").val(fb_object.username);
+      $("#product_review_email").val(fb_object.email);
+      $("#product_review_url").val(fb_object.link);
+      $("#product_review_avatar").val("https://graph.facebook.com/" + fb_object.id + "/picture");
+      
+      $("#ratings .rating").
+        mouseover(function(){
+          var hover = $("#ratings").attr('data-hover');
+          $(this).addClass('hovering').prevAll(".rating").addClass('hovering');
+          $(this).html(hover).prevAll('.rating').html(hover);
+          
+        }).
+        mouseout(function(){
+          var out = $("#ratings").attr('data-out');
+          $("#ratings .rating").removeClass('hovering');
+          if (!$(this).hasClass('selected')) {
+            $("#ratings .rating").html(out);
+          }
+        }).
+        click(function(){
+          var score = $(this).attr('data-target'),
+              hover = $("#ratings").attr('data-hover'),
+              out   = $("#ratings").attr('data-out');
+          
+          $("#product_review_rating").val(score);
+          $("#ratings .rating").removeClass('selected').html(out);
+          
+          $(this).
+            addClass('selected').
+            html(hover).
+            prevAll(".rating").
+            addClass('selected').
+            html(hover);
+        });
+
+      $(".review_form input[type=submit]").click(function(){
+        
+        if (!$("#product_review_rating").val().length) {
+          Flasher.add(['error', "You forgot to rate the product!"], true);
+          return false;
+        }
+
+        var bttn  = $(this).attr('disabled','disabled').
+                      addClass('disabled').
+                      val('Submitting ...');
+        
+        if ($("input[name=post_to_facebook]").is(":checked")) {
+          var data = {
+              message : $("#product_review_body").val(),
+              name    : PRODUCT.name + " at " + SITE_OBJECT.title,
+              picture : PRODUCT.images.length ? PRODUCT.images[0][1] : '',
+              link    :  window.location.href,
+              description : $(".product_description").text(),
+              type    : 'link' 
+            };
+
+          FB.api('/me/feed','post', data, function(response){
+            if (!response || response.error) {
+              //
+            } else {
+              //
+            }
+            $(".review_form").submit();
+          });
+
+        } else {
+        
+          $(".review_form").submit();
+        
+        } 
+        return false;
+      });
+    },
+    disable_review_fields = function(fb_object) {
+      if (fb_object) {
+        var review_id = $(".review[data-fbid=" + fb_object.id + "]").attr('id');
+        $("#reviews").addClass('existing_review');
+        $(".existing_review","#reviews").find(".link_to_review").attr('href',"#" + review_id);
+      }
+      $("textarea,input,.ratings",".review_form").attr('disabled','disabled').addClass('disabled');
+    },
+    manage_review_fields = function(response) {
+      if (!$(".review_form").length){ return false; }
+      var ids = $(".review").map(function(){ return $(this).attr('data-fbid'); });
+      if (_.include(ids,response.id)) {
+        disable_review_fields(response);
+      } else {
+        enable_review_fields(response);
+      }
+    };
+
+  // FB initialization
+  window.fbAsyncInit = function() {
+
+    FB.init({
+      appId      : '#{app_facebook_id}',                        
+      channelUrl : '//#{app_url.gsub('http://','')}/channel.html',  
+      status     : true,                                            
+      xfbml      : true                                             
+    });
+
+    FB.Event.subscribe('auth.authResponseChange', function(auth_response) { 
+      if (auth_response.status === 'connected') {
+        
+        replace_fb_profile(auth_response, function(response){
+          //console.log(response);
+          if (!response.email.length || !response.last_name.length) {
+            FB.login(function(){},{scope:'email,user_location,publish_actions'});
+          } else {
+            find_or_create_customer(response, function(customer){
+              populate_address_fields(customer);
+            });
+            manage_review_fields(response);
+          }
+        });
+
+      } else if (auth_response.status === 'not_authorized') {
+        FB.login(function(){},{scope:'email,user_location,publish_actions'});
+        disable_review_fields(auth_response);
+
+      } else {
+        FB.login(function(){},{scope:'email,user_location,publish_actions'});
+        disable_review_fields(auth_response);
+
+      }
+    });
+
+  };
+
+  (function(d, s, id){
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) {return;}
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/all.js";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
