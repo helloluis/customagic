@@ -3,12 +3,13 @@ class Product
   include Mongoid::Document
   include Mongoid::Slug
   include Mongoid::Timestamps
-  # include Mongoid::Search
-  # include Mongoid::MultiParameterAttributes
-  
+
+  include Characteristics
+
   belongs_to :shop
   belongs_to :album
 
+  has_many :assets
   has_many :tags, :class_name => "ProductTag"
   has_many :reviews, :class_name => "ProductReview" do
     def featured
@@ -26,8 +27,7 @@ class Product
   has_many :orders
 
   field :name
-  field :item_type,     default: "shirt" 
-  slug  :name, :scope => :shop, :reserve => [ 'tag', 'tags', 'shop', 'product' ]
+  slug  :name,  :scope => :shop, :reserve => [ 'tag', 'tags', 'shop', 'product' ]
 
   field :description
   field :on_sale,       type: Boolean,  default: false
@@ -36,7 +36,7 @@ class Product
   field :category_slug, type: String,   default: ''
   field :num_orders,    type: Integer,  default: 0
   field :num_favorites, type: Integer,  default: 0
-  field :status,        type: Integer,  default: 2 # 1 = hidden, 2 = visible, 3 = out of stock, 4 = coming soon, 9 = demo
+  field :status,        type: Integer,  default: 0    # 0 = in progress, 1 = hidden, 2 = visible, 3 = out of stock, 4 = coming soon, 9 = demo
   field :lowest_price,  type: Float,    default: 0.0
   field :sales_goal,    type: Integer,  default: 20
   
@@ -82,6 +82,7 @@ class Product
   before_create  :check_marketplace_visibility
   before_save    :set_partner
   before_save    :check_remote_attachment_url
+  after_create   :create_first_asset
   after_create   :update_shop_timestamp
 
   after_save     :manage_tags
@@ -253,8 +254,8 @@ class Product
   end
 
   def check_number_of_products
-    if self.shop && self.shop.products.length > self.shop.site.max_products
-      errors.add(:base, "You may only have #{self.shop.site.max_products} listed products. Please remove some before creating more, or upgrade your subscription.")
+    if self.shop && self.shop.products.length > self.shop.max_products
+      errors.add(:base, "You may only have #{self.shop.max_products} listed products. Please remove some before creating more, or upgrade your subscription.")
     end
   end
 
@@ -364,10 +365,10 @@ class Product
   end
 
   def check_marketplace_visibility
-    if self.shop && self.shop.site && self.shop.site.is_paid? && self.shop.list_products_in_marketplace?
-      write_attribute(:visible_in_marketplace, true)
-      write_attribute(:trusted, true) if self.shop.site.plan.trusted?
-    end
+    # if self.shop && self.shop && self.shop.is_paid? && self.shop.list_products_in_marketplace?
+    #   write_attribute(:visible_in_marketplace, true)
+    #   write_attribute(:trusted, true) if self.shop.site.plan.trusted?
+    # end
   end
 
   def lowest_price=(new_lowest_price)
@@ -433,10 +434,10 @@ class Product
       self.featured_in_marketplace_changed? ||
       (self.visible_in_marketplace && (self.name_changed? || self.description_changed? || self.price_variants_changed?))
       
-      Rails.cache.delete "views/#{markets_cache_name(true)}"
-      Rails.cache.delete "views/#{markets_cache_name}"
-      Cashier.expire category_slug
-      Cashier.expire shop.site.subdomain
+      # Rails.cache.delete "views/#{markets_cache_name(true)}"
+      # Rails.cache.delete "views/#{markets_cache_name}"
+      # Cashier.expire category_slug
+      # Cashier.expire shop.site.subdomain
     end
   end
 
@@ -468,9 +469,7 @@ class Product
   end
 
   def set_partner
-    if self.shop && self.shop.site
-      write_attribute(:partner, self.shop.site.partner) 
-    end
+    write_attribute(:partner, self.shop.partner) if self.shop 
   end
 
   def delete_variant!(idx, and_save=false)
@@ -488,7 +487,7 @@ class Product
       if album.find{|a| a.products.find{|p| p.first==self._id } }
         album.check_integrity!
       end
-    end
+    end if shop.albums
   end
 
   def check_remote_attachment_url
@@ -534,6 +533,14 @@ class Product
 
   def availability_end
     attributes['availability_end'].in_time_zone(self.shop.site.time_zone) if has_availability_period? && self.shop && self.shop.site
+  end
+
+  def create_first_asset
+    if a = self.assets.create(content: "Awesome Shirt")
+      logger.info "!! #{a.inspect} !!"
+    else
+      logger.info "!! #{a.errors.inspect} !!"
+    end
   end
 
 end

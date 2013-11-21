@@ -20,6 +20,14 @@ module ApplicationHelper
     App.url
   end
 
+  def app_currency_label
+    App.currency.label
+  end
+
+  def app_currency_symbol
+    App.currency.symbol
+  end
+
   def document_title
     @page_title || "Welcome to #{app_name}"
   end

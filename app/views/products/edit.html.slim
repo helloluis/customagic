@@ -1,0 +1,107 @@
+
+= render :partial => "products/steps"
+
+div id='designer'
+
+  div class='viewer'
+
+    div class='asset_tools_container'
+      fieldset
+        ul class='asset_tools nolist disabled'
+          li class='font_family'
+            label Font
+            select name='font_family' class='font_family_control select_field' disabled='disabled'
+              - App.fonts.each do |slug,font|
+                option value=slug = font
+          li class='font_size'
+            label Size
+            select name='font_size' class='font_size_control select_field' disabled='disabled'
+              option 14px
+              option 18px
+              option 24px
+              option 30px
+              option 36px
+              option 48px
+              option 60px
+              option 72px
+              option 96px
+              option 120px
+          li class='alignment'
+            label Alignment
+            input type='hidden' name='alignment' class='alignment_control' disabled='disabled'
+            ul class='alignment_buttons nolist'
+              li class='alignment_button alignment_left'
+              li class='alignment_button alignment_center current'
+              li class='alignment_button alignment_right'
+          li class='color'
+            label Color
+            input type='text' name='color' class='color_control input_field' disabled='disabled'
+          li class='bg_color'
+            label Fill
+            input type='text' name='background-color' class='bg_color_control input_field' value='transparent' disabled='disabled'
+
+    div class='editable_area'
+      div class='editable_area_label' Editable Area
+    div class='product'
+
+  div class='styles'
+
+    div class='content_buttons'
+      button class='add_text' Add Text
+      button class='add_art' Add Art
+  
+    div class='colors'
+      ul class='swatches' data-target=''
+        
+    div class='product_styles_container'
+      - App.product_types.each do |product_type|
+        select class="product_style_selector"
+          - product_type.product_styles.each do |product_style|
+            option value=product_style.slug = product_style.name
+        
+        - product_type.product_styles.each do |product_style|
+          ul class='product_sub_styles'
+            - product_style.sub_styles.each_with_index do |sub_style,i|
+              li class='product_sub_style #{i==0 ? 'current' : ''}' data-target=sub_style.slug
+                div class='thumbnail' style="background-image:url(#{asset_path(sub_style.image)})" = sub_style.image
+                h4 = sub_style.name
+                p = sub_style.description
+
+    div class='price_container'
+      p class='price_description'
+        | Base cost @ 20 shirts
+      h2 class='price currency'
+        == "#{app_currency_symbol}100.00"
+
+    div class='next_step'
+      button class='next_step' data-target='step_2' 
+        | Next Step &raquo;  
+
+- content_for :page_scripts do
+
+  script id='color_swatch_tmpl' type='text/template'
+    li class='swatch' style="background-color:{{color}}" data-hex="{{color}}" data-image="{{color_image}}"
+      | {{color}}
+
+  script id='asset_text_tmpl' type='text/template'
+    div id="{{__id}}" class='asset asset_{{asset_type}}' data-id="{{__id}}" contenteditable="true" title="Double-click to edit!"
+      h1
+        | {{{content}}}
+
+  script id='asset_text_tmpl' type='text/template'
+    div id="{{__id}}" class='asset asset_{{asset_type}}' data-id="{{__id}}"
+      img src="{{attachment.thumbnail.url}}"
+
+  / script id='asset_tools_tmpl' type='text/template'
+  /   div id='asset_tools_{{__id}}' class='asset_tools' data-target="{{__id}}"
+      
+
+  javascript:
+    var SHOP = #{@shop.to_json.html_safe},
+        PRODUCT_STYLES = #{App.product_types.to_json.html_safe},
+        PRODUCT = #{@product.to_json(methods: [:slug]).html_safe},
+        ASSETS  = #{@assets.to_json(methods: [:__id]).html_safe};
+
+    $(function(){
+      Editor.initialize(PRODUCT_STYLES, PRODUCT, ASSETS);
+    });

@@ -1,8 +1,9 @@
 class UsersController < ApplicationController
 
   include ApplicationHelper
-  
+
   def show
+
     @user = User.find_or_create_by(:fb_id => params[:id], :partner => app_partner_name)
     
     @user.write_attributes( name:        params[:name],
@@ -18,7 +19,7 @@ class UsersController < ApplicationController
     @user.reload
     
     respond_to do |format|
-      format.json { render :json => @user, :callback => params[:callback] }
+      format.json { render :json => @user.shop.as_json(:methods => [ :slug ]), :callback => params[:callback] }
     end
   end
 

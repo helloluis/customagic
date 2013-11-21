@@ -8,7 +8,7 @@ javascript:
 
   SHOP_SLUG = "";
 
-  var find_or_create_customer = function(resp, callback){
+  var find_or_create_user = function(resp, callback){
       //console.log(resp);
       $.jsonp({
         url : "/users/" + resp.id + ".json?callback=?",
@@ -41,14 +41,12 @@ javascript:
     },
     create_account = function(){
 
-      window.location.replace("/products/new");
+      window.location.replace("/" + SHOP_SLUG + "/products/new");
 
     },
     replace_fb_profile = function(auth_response, callback) {
       
       FB.api('/me', function(response) {
-        
-        console.log(response);
 
         var cont    = $(".facebook_profile_container"),
             profile = $("<span class='fb_user_name'></span>").append("Logged in as <a href='" + response.link + "' class='user_override'>" + response.name + "</a>. (<a class='fb_logout'>logout</a>)"),
@@ -183,8 +181,8 @@ javascript:
           if (!response.email || !response.last_name) {
             FB.login(function(){},{scope:'email,user_location,publish_actions'});
           } else {
-            find_or_create_customer(response, function(customer){
-              populate_address_fields(customer);
+            find_or_create_user(response, function(user_shop){
+              SHOP_SLUG = user_shop.slug;  
             });
             manage_review_fields(response);
           }

@@ -65,6 +65,8 @@ Customagic::Application.routes.draw do
   
   get "/:shop_id/products/new" => "products#new"
 
+  get "/:shop_id/products/:id/edit" => "products#edit"
+
   root :to => "landing#index"
 
 end

@@ -1,5 +1,8 @@
 class ProductsController < ApplicationController
 
+  before_filter :set_shop
+  before_filter :set_product, only: [ :edit, :update, :delete, :show ]
+
   def index
 
   end
@@ -9,7 +12,12 @@ class ProductsController < ApplicationController
   end
 
   def new
-    @product = @shop.products.new
+    if @product = @shop.products.create(name: "Awesome Shirt")
+      redirect_to "/#{@shop.slug}/products/#{@product.slug}/edit"
+    else
+      flash[:alert] = "We couldn't add a new product to your shop."
+      redirect_to "/#{@shop.slug}"
+    end
   end
 
   def create
@@ -17,7 +25,7 @@ class ProductsController < ApplicationController
   end
 
   def edit
-
+    @assets = @product.assets
   end
 
   def update
@@ -31,5 +39,12 @@ class ProductsController < ApplicationController
   protected
     def set_shop
       @shop = Shop.find(params[:shop_id])
+    end
+
+    def set_product
+      unless @product = @shop.products.find(params[:id])
+        flash[:alert] = "We couldn't find that item."
+        redirect_to "/#{@shop.slug}"
+      end
     end
 end

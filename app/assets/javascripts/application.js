@@ -11,5 +11,8 @@
 // about supported directives.
 //
 //= require turbolinks
+//= require jquery-ui-1.10.3.custom
 //= require jquery.jsonp
+//= require mustache
+//= require underscore
 //= require_tree .

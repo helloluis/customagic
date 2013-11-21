@@ -1,0 +1,236 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or vendor/assets/stylesheets of plugins, if any, can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the top of the
+ * compiled file, but it's generally better to create a new file per style scope.
+ *
+ *= require_self
+ *= require_tree .
+ *= require jquery-ui-1.10.3.custom
+ */
+
+@import url(https://fonts.googleapis.com/css?family=Rochester|Metrophobic|Alike|Bangers|Oswald|Dancing+Script|Raleway:100|Aldrich|Ultra|Abril+Fatface|Amatic+SC:700|Passion+One|Kreon:400,700,300|PT+Serif+Caption|Poiret+One|Josefin+Slab|Lobster|Vast+Shadow|Julee|Monoton|Philosopher|Mrs+Sheppards|Rock+Salt|Quattrocento+Sans|IM+Fell+English|Spinnaker|Open+Sans+Condensed:700|Roboto+Slab|Oxygen:400,700);
+
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent;}
+//html {overflow-y:scroll}
+ol,ul{list-style:none}
+blockquote,q{quotes:none}
+blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}
+:focus{outline:0}
+ins{text-decoration:none}
+del{text-decoration:line-through}
+table{border-collapse:collapse;border-spacing:0}
+.clear{clear:both;display:block;overflow:hidden;visibility:hidden;width:0;height:0}
+body{font-size:13px;@extend .lucida_grande_fontstack;z-index:0;}
+a:focus{outline:1px dotted invert}
+hr{clear:both;height:0}
+h1{font-size:25px}
+h2{font-size:23px}
+h3{font-size:21px}
+h4{font-size:19px}
+h5{font-size:17px}
+h6{font-size:15px}
+ol{list-style:decimal}
+ul{list-style:disc}
+li{margin-left:30px}
+p{margin-bottom:5px}
+//.cols{overflow:hidden;padding:0;border:0;}
+strong{font-weight:bold;}
+em{font-style:italic;}
+.hidden {display:none;}
+body {
+  font-family: Helvetica;
+  font-size:13px;
+}
+p { 
+  margin:0px; 
+}
+
+.steps {
+  overflow:hidden;
+}
+
+.steps .step {
+  float:left;
+  margin-right:50px;
+}
+
+#designer {
+  overflow:hidden;
+  position:relative;
+  font-size:13px;
+}
+
+.viewer {
+  float:left;
+  position:relative;
+  overflow:hidden;
+  width:650px;
+  height:850px;
+  border:1px solid #ccc;
+  margin-right:10px;
+}
+
+.styles {
+  float:left;
+  width:250px;
+  height:400px;
+  border:1px solid #ccc;
+  padding:20px;
+}
+
+.product_styles_container ul {
+  list-style-type:none;
+}
+
+.product_styles_container ul li {
+  margin:0px;
+  padding:10px;
+  overflow:hidden;
+}
+
+.product_styles_container ul li .thumbnail {
+  width:50px;
+  height:50px;
+  background-position:50% 50%;
+  background-repeat:no-repeat;
+  border:1px solid #ccc;
+  margin-right:10px;
+  float:left;
+  text-indent:-2000px;
+}
+
+.product_styles_container ul li.current,.product_styles_container ul li:hover {
+  background:#ffc;
+}
+
+.product_sub_styles {
+  list-style-type:none;
+  margin:0px;
+  padding:0px;
+}
+
+.viewer .product {
+  position:absolute;
+  width:100%;
+  height:100%;
+}
+
+.viewer .editable_area .asset {
+  position:absolute;
+  padding:1px;
+}
+.viewer .editable_area .asset:hover {
+  border:1px solid #0ff;
+  padding:0px;
+}
+
+.swatches {
+  overflow:hidden;
+  list-style-type:none;
+  margin:0px;
+  padding:0px;
+}
+
+.swatches .swatch {
+  float:left;
+  margin:0px 1px 0px 0px;
+  width:30px;
+  height:30px;
+  border:1px solid #ddd;
+  text-indent:-2000px;
+}
+
+.swatches .swatch.current, .swatches .swatch:hover {
+  border-color:#fc0;
+}
+
+.swatches .swatch.current {
+  border: 1px solid #fc0;
+}
+
+.viewer .product {
+  z-index:2;
+  background:transparent image-url("mens_crew_ffffff.jpg") top center no-repeat;
+}
+.product_color {
+  z-index:1;
+  background-color:#fff;
+}
+.asset_tools_container, .editable_area {
+  z-index:3;
+  position:absolute;
+  border:1px dashed #999;
+  top:170px;
+  left:180px;
+  width:270px;
+  height:450px;
+}
+.asset_tools_container {
+  z-index:4;
+  top:0px;
+  left:0px;
+  right:0px;
+  height:40px;
+  width:auto;
+  background:#888;
+}
+.asset_tools {
+  overflow:hidden;
+  list-style-type:none;
+}
+.asset_tools.disabled {
+  opacity:0.5;
+}
+.asset_tools li {
+  float:left;
+  margin:0px 10px 0px 0px;
+}
+.asset_tools li label {
+  display:block;
+  font-size:10px;
+  text-transform:uppercase;
+}
+.asset_tools .font_family {
+  width:150px;
+}
+.asset_tools .font_size {
+  width:70px;
+}
+.asset_tools .alignment {
+  width:100px;
+}
+.asset_tools .alignment ul {
+  list-style-type:none;
+  overflow:hidden;
+}
+.asset_tools .alignment ul li {
+  background:#666;
+  margin:0px 1px 0px 0px;
+  width:25px;
+  height:25px;
+}
+.asset_tools .color {
+  width:120px;
+}
+.asset_tools .fill {
+  width:120px;
+}
+
+.editable_area_label {
+  display:none;
+  position:absolute;
+  right:0px;
+  bottom:-20px;
+  background:#333;
+  font-size:10px;
+  padding:3px 6px;
+  color:#fff; 
+}
+.editable_area:hover .editable_area_label {
+  display:block;
+}
