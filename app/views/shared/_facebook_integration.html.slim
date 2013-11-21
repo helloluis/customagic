@@ -9,7 +9,7 @@ javascript:
   var find_or_create_customer = function(resp, callback){
       //console.log(resp);
       $.jsonp({
-        url : "#{{current_site.url}}/customers/" + resp.id + "/show_with_facebook.json?callback=?",
+        url : "/customers/" + resp.id + "/show_with_facebook.json?callback=?",
         type : "GET",
         dataType : 'jsonp',
         data : {  fb_id       : resp.id, 

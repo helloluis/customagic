@@ -2,11 +2,17 @@ source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.0.0'
-
+gem 'rake'
+gem 'activeresource'
 # Use sqlite3 as the database for Active Record
 # gem 'sqlite3'
-gem 'mongoid'
+# gem 'mongoid'
+gem 'mongoid', '~> 4', github: 'mongoid/mongoid'
 gem 'mongoid_search'
+# gem 'mongoid_rails_migrations'
+gem 'mongoid_taggable'
+# gem 'mongoid_rateable'
+
 # gem 'mongoid_slug'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.0'
@@ -18,7 +24,7 @@ gem 'uglifier', '>= 1.3.0'
 
 gem 'devise'
 gem 'devise_invitable'
-
+gem 'hashie'
 gem 'stripe', :git => 'https://github.com/stripe/stripe-ruby'
 gem 'slim'
 
