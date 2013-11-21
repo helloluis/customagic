@@ -25,11 +25,10 @@ head
   meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"
 
   - if Rails.env.development?
-    = javascript_include_tag "modernizr.min","jquery.min","jquery-migrate.min"
+    = javascript_include_tag "modernizr.min","jquery.min"
   - else
     = javascript_include_tag "//cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"
     = javascript_include_tag "//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"
-    = javascript_include_tag "//cdnjs.cloudflare.com/ajax/libs/jquery-migrate/1.1.1/jquery-migrate.min.js"
 
   = stylesheet_link_tag "application", media: "all", "data-turbolinks-track" => true
   
@@ -37,7 +36,12 @@ head
 
   = csrf_meta_tags
 
+  javascript:
+    SITE_URL = "#{app_url}";
+    
 body
+  
+  = render :partial => "shared/facebook_integration"
 
   = yield
 

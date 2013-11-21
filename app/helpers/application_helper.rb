@@ -4,12 +4,16 @@ module ApplicationHelper
     App.name
   end
 
+  def app_partner_name
+    App.partner_name
+  end
+
   def app_default_item_type
     App.default_item_type
   end
 
   def app_facebook_id
-    App.facebook_id
+    App.facebook.id
   end
 
   def app_url

@@ -9,9 +9,14 @@ require 'ostruct'
 App = Hashie::Mash.new
 
 App.name = "Customagic"
+App.partner_name = "customagic"
 App.url = Rails.env.development? ? "customagic.xxx" : "customagic.ph"
 App.default_item_type = "shirt"
-App.facebook_id = "123"
+
+App.facebook = {
+  id: "700564963290007",
+  secret: "9a3121de3121af4e42bcc22384030fe3" 
+}
 
 App.item_types = [
   {

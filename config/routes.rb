@@ -53,7 +53,18 @@ Customagic::Application.routes.draw do
   #     # (app/controllers/admin/products_controller.rb)
   #     resources :products
   #   end
+  resources :shops do
+    resources :products
+  end
+
+  resources :users
   
+  get "/:id" => "shops#show"
+
+  get "/:shop_id/:id" => "products#show"
+  
+  get "/:shop_id/products/new" => "products#new"
+
   root :to => "landing#index"
 
 end

@@ -1,24 +1,32 @@
 h1 #{app_name} is a simple, easy, and free way to design and sell #{app_default_item_type} online!
 
 div class='facebook_profile_container clearfix'
-  fb:login-button width="200" max-rows="1"
-    |  to get started ...
+  /fb:login-button width="200" max-rows="1"
+  button class='login_via_facebook big'
+    | Login to get started ...
 
 div class='features'
   div class='feature'
-    h3 Design Like a Boss
-    p Bosses don't like lots of technical mumbo-jumbo, so #{app_name} doesn't have any of that. Type your text or upload your artwork directly on to our awesome #{app_default_item_type} designer then move it around and resize it any way you want. It's super easy!
+    h3 
+      | Design Like a Boss
+    p 
+      | Bosses don't like lots of technical mumbo-jumbo, so #{app_name} doesn't have any of that. Type your text or upload your artwork directly on to our awesome #{app_default_item_type} designer then move it around and resize it any way you want. It's almost as easy as having your secretary do it!
   
   div class='feature'
-    h3 Sell Like a Celebrity
-    p Watch as people flock to your beautiful mobile-friendly store to gaze upon your wares. You may not be the best looking person on the planet, but your #{app_default_item_type}s make up for that!
+    h3 
+      | Sell Like a Celebrity
+    p 
+      | Watch as people flock to your beautiful mobile-friendly store to gaze upon your wares. You may not be the best looking person on the planet, but your #{app_default_item_type}s will 100% make up for that!
 
   div class='feature'
-    h3 Earn Like a Tycoon
-    p Increase your sales by adjusting your profit margins, managing your revenue channels, leveraging unicorn clouds, and other important things that rich people always talk about. Set your sales goals for each new design, and once you have enough sales, #{app_name} will start producing and delivering your #{app_default_item_type}s to your customers!
+    h3 
+      | Earn Like a Tycoon
+    p 
+      | Increase your sales by adjusting your profit margins, managing your revenue channels, leveraging unicorn rainbows, and other important things that rich people think about. Set your sales goals for each new design, and once you have enough preorders, #{app_name} will start producing and delivering your #{app_default_item_type}s to your customers!
 
 
 div class='how'
   h2 How Does It Work?
+  p
+    | I don't know yet, but I'm sure it'll be cool.
 
-= render :partial => "shared/facebook_integration"

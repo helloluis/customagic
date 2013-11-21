@@ -4,16 +4,15 @@ source 'https://rubygems.org'
 gem 'rails', '4.0.0'
 gem 'rake'
 gem 'activeresource'
-# Use sqlite3 as the database for Active Record
-# gem 'sqlite3'
-# gem 'mongoid'
+
 gem 'mongoid', '~> 4', github: 'mongoid/mongoid'
 gem 'mongoid_search'
-# gem 'mongoid_rails_migrations'
+gem 'mongoid_slug'
+gem 'mongoid-sadstory' # https://github.com/mongoid/mongoid/issues/2954
 gem 'mongoid_taggable'
-# gem 'mongoid_rateable'
+gem 'mongoid_rating'
+# gem 'mongoid_rails_migrations'
 
-# gem 'mongoid_slug'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.0'
 gem 'compass'

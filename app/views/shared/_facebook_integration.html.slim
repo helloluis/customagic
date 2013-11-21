@@ -6,10 +6,12 @@ javascript:
   // enable customer review forms
   //
 
+  SHOP_SLUG = "";
+
   var find_or_create_customer = function(resp, callback){
       //console.log(resp);
       $.jsonp({
-        url : "/customers/" + resp.id + "/show_with_facebook.json?callback=?",
+        url : "/users/" + resp.id + ".json?callback=?",
         type : "GET",
         dataType : 'jsonp',
         data : {  fb_id       : resp.id, 
@@ -37,28 +39,34 @@ javascript:
       $("#order_country").val( customer.country );
       $("#order_postcode").val( customer.postcode );
     },
+    create_account = function(){
+
+      window.location.replace("/products/new");
+
+    },
     replace_fb_profile = function(auth_response, callback) {
-      if (SITE_URL.indexOf(window.location.hostname.replace('.xxx',''))==-1) {
-        window.location.replace(SITE_URL + window.location.pathname);
-      } else {
-        FB.api('/me', function(response) {
-          
-          var cont    = $(".facebook_profile_container"),
-              profile = $("<span class='fb_user_name'></span>").append("Logged in as <a href='" + response.link + "' class='user_override'>" + response.name + "</a>. (<a class='fb_logout'>logout</a>)"),
-              avatar  = $("<span class='fb_user_avatar'></span>").css({backgroundImage:'url(https://graph.facebook.com/' + response.id + '/picture?type=small)'});
-          
-          cont.empty().append(profile).append(avatar);
-          
-          $(".fb_logout",cont).click(function(){
-            FB.logout(auth_response.authResponse);
-          });
+      
+      FB.api('/me', function(response) {
+        
+        console.log(response);
 
-          if (callback) {
-            callback.call(this,response);
-          }
-
+        var cont    = $(".facebook_profile_container"),
+            profile = $("<span class='fb_user_name'></span>").append("Logged in as <a href='" + response.link + "' class='user_override'>" + response.name + "</a>. (<a class='fb_logout'>logout</a>)"),
+            avatar  = $("<span class='fb_user_avatar'></span>").css({backgroundImage:'url(https://graph.facebook.com/' + response.id + '/picture?type=small)'}),
+            button = $("<button class='start_designing'>Get Started!</button>").click(create_account);
+        
+        cont.empty().append(profile).append(avatar).append(button);
+        
+        $(".fb_logout",cont).click(function(){
+          FB.logout(auth_response.authResponse);
         });
-      }
+
+        if (callback) {
+          callback.call(this,response);
+        }
+
+      });
+      
     },
     enable_review_fields = function(fb_object){
       
@@ -172,8 +180,7 @@ javascript:
       if (auth_response.status === 'connected') {
         
         replace_fb_profile(auth_response, function(response){
-          //console.log(response);
-          if (!response.email.length || !response.last_name.length) {
+          if (!response.email || !response.last_name) {
             FB.login(function(){},{scope:'email,user_location,publish_actions'});
           } else {
             find_or_create_customer(response, function(customer){
@@ -195,6 +202,14 @@ javascript:
     });
 
   };
+
+  $(function(){
+
+    $(".login_via_facebook").click(function(){
+      FB.login(function(){},{scope:'email,user_location,publish_actions'});
+    });
+
+  });
 
   (function(d, s, id){
     var js, fjs = d.getElementsByTagName(s)[0];

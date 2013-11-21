@@ -3,9 +3,8 @@ class Product
   include Mongoid::Document
   include Mongoid::Slug
   include Mongoid::Timestamps
-  include Mongoid::Search
-  include Mongoid::Rateable
-  include Mongoid::MultiParameterAttributes
+  # include Mongoid::Search
+  # include Mongoid::MultiParameterAttributes
   
   belongs_to :shop
   belongs_to :album
@@ -72,7 +71,7 @@ class Product
   field :availability_end,        type: DateTime
   field :remote_attachment_url
 
-  search_in :name, :tags_array, {:match => :any}
+  # search_in :name, :tags_array, {:match => :any}
 
   RATING_RANGE = (1..5)
 
@@ -94,9 +93,9 @@ class Product
   index({ slug: 1 })
 
   # index for mongoid::search
-  index({ partner: 1, status: 1, visible_in_marketplace: 1, _keywords: 1 }, { name: 'search_by_relevance' })
-  index({ partner: 1, status: 1, visible_in_marketplace: 1, _keywords: 1, num_orders: -1 }, { name: 'search_by_popularity' })
-  index({ shop_id: 1, status: 1, _keywords: 1 }, { name: 'shop_search'})
+  # index({ partner: 1, status: 1, visible_in_marketplace: 1, _keywords: 1 }, { name: 'search_by_relevance' })
+  # index({ partner: 1, status: 1, visible_in_marketplace: 1, _keywords: 1, num_orders: -1 }, { name: 'search_by_popularity' })
+  # index({ shop_id: 1, status: 1, _keywords: 1 }, { name: 'shop_search'})
 
   # index for marketplace
   index({ partner: 1, deactivated: 1, category_slug: 1}, { name: 'partner_marketplace_category' })
