@@ -101,7 +101,12 @@ var Editor = {
 
   reset_settings_panel : function(){
     
-    $('.asset_tools').addClass('disabled').find(".input_field,.select_field,.alignment_control").attr('disabled','disabled');
+    $('.asset_tools').
+      addClass('disabled').
+      find(".input_field,.select_field,.alignment_control").
+      attr('disabled','disabled');
+    
+    $('.asset_tools').find(".asset_id_field").val("");
 
   },
 

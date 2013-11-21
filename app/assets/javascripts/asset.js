@@ -86,6 +86,10 @@ function Asset(){
       removeAttr('disabled');
 
     tools.
+      find(".asset_id_field").
+      val( this.hash.__id );
+
+    tools.
       find(".font_family_control").
       val( this.hash.font_family );
 
