@@ -33,10 +33,9 @@ class Asset
     return true unless asset_type=='photo'
 
     begin
-      if image = MiniMagick::Image.open(attachment.current_path)
-        width  = "#{image[:width]}px"
-        height = "#{image[:height]}px"
-      end
+      image = MiniMagick::Image.open(attachment.current_path)
+      self.width  = "#{image[:width]}px"
+      self.height = "#{image[:height]}px"
       
     rescue Exception => e
       logger.info "!! ERROR: #{attachment.current_path} #{e.inspect} !!"
