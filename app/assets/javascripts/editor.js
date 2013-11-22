@@ -2,11 +2,12 @@ var Editor = {
 
   assets_path : "/assets",
 
-  initialize : function(types, product, assets) {
+  initialize : function(shop, types, product, assets) {
     
+    this.shop    = shop;
     this.product_types = types;
     this.product = product;
-    this.assets = assets;
+    this.assets  = assets;
 
     this.initialize_product();
     this.initialize_viewer();
@@ -70,7 +71,7 @@ var Editor = {
     $(".content_buttons").
       find(".add_text").
       click(function(){
-
+        that.create_text_asset();
       });
 
     $(".content_buttons").
@@ -185,6 +186,28 @@ var Editor = {
 
   },
 
+  create_text_asset : function(){
+    var that = this;
+
+    that.loading();
+
+    $.ajax({
+      url : "/shops/" + that.shop.slug + "/assets",
+      type : "POST",
+      data : { product_id : that.product.slug },
+      success : function(data){
+        var a = new Asset();
+        a.initialize(data);
+        that.asset_objects.push(a);
+      },
+      complete : function(x) {
+        that.loading_stop();
+      }
+    });
+
+
+  },
+
   reset_settings_panel : function(){
     
     $('.asset_tools').
@@ -211,16 +234,27 @@ var Editor = {
   update_product : function() {
     
     var that = this;
-
+    that.loading();
     $.ajax({
       url : "/products/" + that.product.slug,
       type : "PUT",
       dataType : "JSON",
       success : function(data) {
 
+      },
+      complete : function(x) {
+        that.loading_stop();
       }
     });
 
+  },
+
+  loading : function(){
+    $("body").addClass('loading');
+  },
+
+  loading_stop: function(){
+    $("body").removeClass('loading');
   }
 
 };

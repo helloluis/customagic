@@ -2,10 +2,22 @@ class AssetsController < ApplicationController
 
   # TODO: Needs authentication and permission checks
   before_filter :set_shop
-  # before_filter :set_product
+  before_filter :set_product, :only => [ :create, :create_photo ]
+
+  respond_to :html, :json
 
   def create
-
+    @asset = Asset.new({ shop: @shop, product: @product })
+    @asset.save
+    respond_to do |format|
+      if @asset.save
+        format.json { render :json => @asset.as_json(methods: [:__id]) }
+      else
+        format.json do 
+          render :json => { :error => @asset.errors.full_messages.join("") }, :status => :unprocessable_entity
+        end
+      end
+    end
   end
 
   def create_photo
@@ -40,15 +52,33 @@ class AssetsController < ApplicationController
 
   end
 
+  def update
+    if @asset = @shop.assets.find(params[:id])
+      @asset.update_attributes(params[:asset].permit!)
+      respond_to do |format|
+        format.json { render :json => @asset }
+      end
+    else
+      respond_to do |format|
+        format.json { render :json => { errors: "Couldn't find that asset (#{params[:id]})" } }
+      end
+    end
+  end
+
   protected
 
     def set_shop
       @shop = Shop.find(params[:shop_id])
-      # if logged_in?
-      #   @shop = current_user.shop 
-      # else
-      #   render :inline => "Sorry, that won't work.", :status => 422 and return
-      # end
+    end
+
+    def set_product
+      unless @product = Product.find(params[:product_id])
+        respond_to do |format|
+          format.json do 
+            render :inline => "We couldn't find a product to add that asset to.", :status => 422 and return 
+          end
+        end
+      end
     end
 
 end

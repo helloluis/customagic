@@ -35,8 +35,10 @@ App.product_types = [
     slug:           "shirt",
     default:        true,
     colors:         [ "#ffffff", "#000000", "#003366", "#666666", "#551100" ],
-    dimensions:     [ 46, 71 ],
-    editable_area:  [21, 29.7],
+    sides:          [ 
+      { name: "Front", slug: "front", dimensions: [ 46, 71 ], editable_area: [ 21, 29.7 ] },
+      { name: "Back",  slug: "back",  dimensions: [ 46, 71 ], editable_area: [ 21, 29.7 ] }
+      ],
     dpi_target:     118, # per cm
     product_styles: [
       { name: "Basic Tees", 

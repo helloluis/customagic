@@ -16,4 +16,5 @@
 //= require mustache
 //= require underscore
 //= require jquery.fileupload
+//= require jquery.timer
 //= require_tree .

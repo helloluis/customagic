@@ -8,7 +8,7 @@ class Shop
   has_many :albums
   has_many :products
   has_many :orders
-
+  has_many :assets
   field :name
   field :description
   field :items_count,     type: Integer, default: 0

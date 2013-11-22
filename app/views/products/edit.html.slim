@@ -48,7 +48,7 @@ div id='designer'
             button class='delete_asset' Delete
 
     div class='editable_area'
-      div class='editable_area_label' Editable Area
+      div class='editable_area_label' Editable Area | FRONT
     div class='product'
 
   div class='styles'
@@ -142,11 +142,11 @@ div id='designer'
       img src="{{attachment_medium_url}}" data-original="{{attachment_url}}"
 
   javascript:
-    var SHOP = #{@shop.to_json.html_safe},
+    var SHOP = #{@shop.to_json(methods: [:slug]).html_safe},
         PRODUCT_STYLES = #{App.product_types.to_json.html_safe},
         PRODUCT = #{@product.to_json(methods: [:slug]).html_safe},
         ASSETS  = #{@assets.to_json(methods: [:__id, :attachment_url, :attachment_medium_url, :attachment_thumb_url]).html_safe};
 
     $(function(){
-      Editor.initialize(PRODUCT_STYLES, PRODUCT, ASSETS);
+      Editor.initialize(SHOP, PRODUCT_STYLES, PRODUCT, ASSETS);
     });

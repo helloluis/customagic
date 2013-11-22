@@ -9,15 +9,15 @@ class Asset
   field :asset_type,    type: String,   default: "text"
   field :coordinates,   type: Array,    default: [0,0,1] # x, y, z
   field :filesize,      type: Integer   
-  field :width,         type: Integer,  default: 300 
+  field :width,         type: Integer,  default: 250 
   field :height,        type: Integer,  default: 100
   field :color,         type: String,   default: "#000000"
   field :bg_color,      type: String,   default: "transparent"
   field :font,          type: String,   default: "Helvetica"
   field :font_size,     type: String,   default: "36px"
   field :alignment,     type: String,   default: "center"
-  
-  field :content
+  field :product_side,  type: Integer,  default: 0  # what side of the product is this asset on? a shirt will have two sides (0 = front, 1 = back)
+  field :content,       type: String,   default: "Text"
 
   # CARRIERWAVE ATTACHMENT 
   mount_uploader :attachment, AssetAttachment

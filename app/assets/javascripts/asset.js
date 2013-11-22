@@ -1,14 +1,15 @@
 function Asset(){
   
-  this.id          = false;
-  this.coordinates = [];
-  this.dimensions  = [];
-  this.is_selected = false;
-  this.is_editing  = false;
+  this.id             = false;
+  this.coordinates    = [];
+  this.dimensions     = [];
+  this.is_selected    = false;
+  this.is_editing     = false;
+  this.saving_timer   = false;
 
   this.initialize = function(asset_hash) {
 
-    this.id           = asset_hash.id;
+    this.id           = asset_hash.__id;
     this.coordinates  = asset_hash.coordinates;
     this.dimensions   = asset_hash.dimensions;
     this.hash         = asset_hash;
@@ -16,6 +17,8 @@ function Asset(){
     this.dom          = this.render();
 
     this.initialize_controls();
+
+    this.dom.click();
 
   };
 
@@ -26,12 +29,13 @@ function Asset(){
     Editor.product_editable_area.append( Mustache.to_html( tmpl, this.hash ) );
     
     $("#" + this.hash.__id).
+      removeAttr('contenteditable').
       css({
-        top         :  this.hash.coordinates[0],
-        left        :  this.hash.coordinates[1],
-        zIndex      :  this.hash.coordinates[2],
-        width       :  this.hash.width,
-        height      :  this.hash.height,
+        left        :  parseInt(this.hash.coordinates[0]), // x
+        top         :  parseInt(this.hash.coordinates[1]), // y
+        zIndex      :  parseInt(this.hash.coordinates[2]), // z
+        width       :  parseInt(this.hash.width),
+        height      :  parseInt(this.hash.height),
         fontSize    :  this.hash.font_size,
         fontFamily  :  this.hash.font_family,
         color       :  this.hash.color,
@@ -47,14 +51,17 @@ function Asset(){
     var that = this;
 
     $("#" + that.hash.__id).
-      click(function(){
+      mousedown(function(){
         $(this).addClass('selected').
           siblings(".asset").removeClass('selected');
         that.initialize_settings();
       }).
       draggable({
         containment: Editor.product_editable_area,
-        grid : [ 2, 2 ]
+        grid : [ 2, 2 ],
+        stop : function(ev,ui) {
+          that.save();
+        }
       }).
       resizable({
         minWidth    : 50,
@@ -64,14 +71,18 @@ function Asset(){
         handles     : "all",
         grid        : [ 5, 5 ],
         maxWidth    : $(this).parent().width(),
-        maxHeight   : $(this).parent().height()
+        maxHeight   : $(this).parent().height(),
+        stop : function(ev,ui) {
+          that.save();
+        }
       }).
       dblclick(function(){
         that.edit_content();
       }).
       blur(function(){
         if (that.hash.asset_type=='text') {
-          that.update();
+          that.stop_editing();
+          that.save();
         }
       });
 
@@ -84,7 +95,7 @@ function Asset(){
     
     if (that.hash.asset_type=='text') {
       tools.removeClass('show_asset_photo_fields').addClass('show_asset_text_fields');
-    } else {
+    } else if (that.hash.asset_type=='photo') {
       tools.addClass('show_asset_photo_fields').removeClass('show_asset_text_fields');
     }
 
@@ -147,11 +158,18 @@ function Asset(){
 
   this.edit_content_text = function(){
     
+    this.dom.attr('contenteditable','true');
+
     this.select_text( this.dom.find("h1")[0] );
 
   };
 
-   this.select_text = function(el){
+  this.stop_editing = function(){
+
+    this.dom.removeAttr('contenteditable');
+  };
+
+  this.select_text = function(el){
     
     var range, selection;
     
@@ -175,13 +193,52 @@ function Asset(){
 
   };
 
-  this.update = function(){
+  this.save = function(){
 
-    console.log('fake saving!', this.hash);
+    var that = this,
+      save_settings = function(){
+        that.is_saving = true;
 
-    $.ajax({
+        $.ajax({
+          url      : "/shops/" + Editor.shop.slug + "/assets/" + that.id,
+          data     : { asset : _.that.hash },
+          dataType : "JSON",
+          method   : "PUT",
+          success  : function(data){
+            that.saving_timer.stop();
+          },
+          complete : function(x) {
+            that.is_saving = false;
+          }
+        });
+      };
 
-    });
+    that.update_hash();
+
+    if (that.saving_timer || that.is_saving) {
+      that.saving_timer.stop();
+    }
+
+    that.saving_timer = $.timer(save_settings);
+    that.saving_timer.set({ time : 5000, autostart: true });
+    
+  };
+
+  this.update_hash = function(){
+    
+    this.saveable_hash = {
+      coordinates:  [ this.dom.position().left, 
+                      this.dom.position().top, 
+                      parseInt(this.dom.css('zIndex')) ], // type: Array,    default: [0,0,1] # x, y, z
+      width:        this.dom.width(),                     // type: Integer,  default: 250 
+      height:       this.dom.height(),                    // type: Integer,  default: 100
+      color:        this.dom.css('color'),                // type: String,   default: "#000000"
+      bg_color:     this.dom.css('background-color'),     // type: String,   default: "transparent"
+      font:         this.dom.css('font-family'),          // type: String,   default: "Helvetica"
+      font_size:    this.dom.css('font-size'),            // type: String,   default: "36px"
+      alignment:    this.dom.css('text-align'),           // type: String,   default: "center"
+      content:      this.dom.text()                       // type: String,   default: "Text"
+    };
 
   };
 
