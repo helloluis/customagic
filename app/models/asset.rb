@@ -34,8 +34,8 @@ class Asset
 
     begin
       image = MiniMagick::Image.open(attachment.current_path)
-      self.width  = "#{image[:width]}px"
-      self.height = "#{image[:height]}px"
+      self.width  = [image[:width],50].max
+      self.height = [image[:height],50].max
       
     rescue Exception => e
       logger.info "!! ERROR: #{attachment.current_path} #{e.inspect} !!"
