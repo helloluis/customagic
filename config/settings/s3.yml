@@ -1,0 +1,27 @@
+test:
+  bucket_name: customagic-test
+  access_key_id: 0E4QRST79RTENQP9VE02
+  secret_access_key: ierV4srvOvDtQo/PUnTwgIIgJ2PywSes7MjNJkA7
+  port: 3002
+  persistent: false
+
+development:
+  bucket_name: customagic-development
+  access_key_id: 0E4QRST79RTENQP9VE02
+  secret_access_key: ierV4srvOvDtQo/PUnTwgIIgJ2PywSes7MjNJkA7
+  port: 3002
+  persistent: false
+  
+staging:
+  bucket_name: customagic-staging
+  access_key_id: 0E4QRST79RTENQP9VE02
+  secret_access_key: ierV4srvOvDtQo/PUnTwgIIgJ2PywSes7MjNJkA7
+  port: 3002
+  persistent: false  
+  
+production:
+  bucket_name: customagic-production
+  access_key_id: 0E4QRST79RTENQP9VE02
+  secret_access_key: ierV4srvOvDtQo/PUnTwgIIgJ2PywSes7MjNJkA7
+  port: 3002
+  persistent: false  

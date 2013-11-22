@@ -14,9 +14,11 @@ class UsersController < ApplicationController
                             fb_id:       params[:fb_id],
                             fb_url:      params[:fb_link], 
                             fb_username: params[:fb_username] )
-    #logger.info "!! VALID? #{@customer.valid?} #{@user.inspect} !!"
+
     @user.save
     @user.reload
+
+    set_current_user(@user.id)
     
     respond_to do |format|
       format.json { render :json => @user.shop.as_json(:methods => [ :slug ]), :callback => params[:callback] }

@@ -128,6 +128,12 @@ p {
   border:1px solid #0ff;
   padding:0px;
 }
+.viewer .editable_area .asset.asset_photo {
+  overflow:hidden;
+}
+.viewer .editable_area .asset.asset_photo img {
+  width:100%;
+}
 .viewer .editable_area .asset.selected {
   border:1px solid rgba(0,255,255,0.7);
   padding:0px;
@@ -223,6 +229,16 @@ p {
 }
 .asset_tools .fill {
   width:120px;
+}
+
+.asset_tools > li {
+  display:none;
+}
+.asset_tools.show_asset_text_fields > li.asset_text_field {
+  display:block;
+}
+.asset_tools.show_asset_photo_fields > li.asset_photo_field {
+  display:block;
 }
 
 .editable_area_label {

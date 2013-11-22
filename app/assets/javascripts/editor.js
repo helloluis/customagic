@@ -65,6 +65,8 @@ var Editor = {
 
   initialize_content_buttons : function(){
 
+    var that = this;
+    
     $(".content_buttons").
       find(".add_text").
       click(function(){
@@ -74,8 +76,92 @@ var Editor = {
     $(".content_buttons").
       find(".add_art").
       click(function(){
-
+        $(".artwork_container").
+          toggleClass('hidden');
       });
+
+    var asset_browser = $(".artwork_viewer");
+
+    var jqXHR = $("#attachments").fileupload({
+      acceptFileTypes : /(\.|\/)(gif|jpe?g|png)$/i,
+      maxFileSize: 5000000,
+      formData : { product_id: that.product.slug },
+      sequentialUploads : true,
+      done : function(e,data){
+        
+        var el = $("#attachments"),
+            parsed_data = $.parseJSON(data.result.replace(/\<textarea\>/i, '').replace(/\<\/textarea\>/i, ''));
+        
+        if (parsed_data.error) {
+          //console.log(parsed_data.error);
+          Flasher.add(['error',parsed_data.error],true);
+          
+          $("#progress .bar").css({ width : "0%" });
+          $("#progress label").text("");
+          el.data('errors', el.data('errors') ? el.data('errors')+1 : 1);
+          data.jqXHR.abort();
+
+        } else {
+          // console.log('success');
+          var new_asset = new Asset();
+          new_asset.initialize( parsed_data );
+          Editor.asset_objects.push(new_asset);
+          
+          if (typeof callback!=='undefined') {
+            callback.call(this, new_asset);
+          }
+          
+          $(".instructions", asset_browser).text( $(".instructions", asset_browser).attr('data-orig-text') );
+          var progress = parseInt(data.loaded/data.total*100, 10);
+          $("#progress label").text("Still uploading ...");
+          $("#progress .bar").css({ width : progress + "%" });  
+        }
+
+      },
+      stop : function(e){
+        
+        if (typeof completed_callback!=='undefined') {
+          completed_callback.call();
+        }
+        
+        $("#progress .bar").css({ width : "0%" });
+        $("#progress label").text("");
+        
+        if (!$("#attachments").data('errors')) {
+          Flasher.add(['notice',"Your photos have been successfully uploaded."],true);  
+        }
+        
+        $('#attachments').fileupload('enable').removeAttr('disabled').removeData('errors');
+        
+      },
+      progressall : function(e,data){
+
+        var progress = parseInt(data.loaded/data.total*100, 10);
+        $("#progress label").text("Still uploading ...");
+        $("#progress .bar").css({ width : progress + "%" });
+
+        if ($("#attachments").attr('disabled')!=='disabled') {
+          $('#attachments').fileupload('disable').attr('disabled','disabled');  
+        }
+
+      },
+      fail : function(e,data) {
+        
+        Flasher.add(['error',e],true);
+        $('#attachments').fileupload('enable').removeAttr('disabled');
+        $("#progress .bar").css({ width : "0%" });
+        $("#progress label").text("");
+        jqXHR.abort();
+
+      }
+    }).
+    bind('fileuploadprocessfail', function (e, data) {
+      
+      Flasher.add(['error',"Please ensure that your images are in GIF, JPEG or PNG format, and less than 5mb."],true);
+      $('#attachments').fileupload('enable').removeAttr('disabled');
+      jqXHR.abort();
+
+    });
 
   },
 

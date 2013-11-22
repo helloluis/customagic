@@ -8,13 +8,13 @@ div id='designer'
     div class='asset_tools_container'
       fieldset
         input type='hidden' name='asset_id' value='' class='asset_id_field input_field'
-        ul class='asset_tools nolist disabled'
-          li class='font_family'
+        ul class='asset_tools nolist disabled show_asset_text_fields'
+          li class='font_family asset_text_field'
             label Font
             select name='font_family' class='font_family_control select_field' disabled='disabled'
               - App.fonts.each do |slug,font|
                 option value=slug = font
-          li class='font_size'
+          li class='font_size asset_text_field'
             label Size
             select name='font_size' class='font_size_control select_field' disabled='disabled'
               option 14px
@@ -27,19 +27,25 @@ div id='designer'
               option 72px
               option 96px
               option 120px
-          li class='alignment'
+          li class='alignment asset_text_field asset_photo_field'
             label Alignment
             input type='hidden' name='alignment' class='alignment_control' disabled='disabled'
             ul class='alignment_buttons nolist'
               li class='alignment_button alignment_left'
               li class='alignment_button alignment_center current'
               li class='alignment_button alignment_right'
-          li class='color'
+          li class='color asset_text_field'
             label Color
             input type='text' name='color' class='color_control input_field' disabled='disabled'
-          li class='bg_color'
+          li class='bg_color asset_text_field'
             label Fill
             input type='text' name='background-color' class='bg_color_control input_field' value='transparent' disabled='disabled'
+          li class='zindexes asset_text_field asset_photo_field'
+            button class='increase_zindex' Bring Forwards
+            button class='decrease_zindex' Send Backwards
+          li class='clone_and_delete asset_text_field asset_photo_field'
+            button class='clone_asset' Clone
+            button class='delete_asset' Delete
 
     div class='editable_area'
       div class='editable_area_label' Editable Area
@@ -49,8 +55,50 @@ div id='designer'
 
     div class='content_buttons'
       button class='add_text' Add Text
-      button class='add_art' Add Art
+      button class='add_art' Add Artwork
   
+    div class='artwork_container hidden'
+      
+      div class='artwork_uploader'
+        
+        form id='photo_uploader' accept-charset="UTF-8" action=create_photo_shop_assets_path(@shop) enctype="multipart/form-data" method="post" class="nolist uploads_form_wrapper"
+          | <input type='hidden' name='utf8' value='✓' />
+          | <input type='hidden' name='_method' value='post' />
+          | <input type='hidden' name='authenticity_token' value='#{form_authenticity_token}' />
+          fieldset class="inputs" id="photo_fields"
+            ol class="content"
+              li class="input"
+                label
+                  input name='photo_source' class="photo_source" type="radio" value="local_file" checked="checked"
+                  | Upload files from your computer
+                label
+                  input name='photo_source' class="photo_source" type="radio" value="remote_file"
+                  | Upload from the web
+              li id='local_file' class='photo_source_input'
+                label class="hidden label" for="asset_attachment"
+                  | File
+                
+                input id='attachments' class='photo_source_input' name='attachments[]' type='file' class='gray34' data-url=create_photo_shop_assets_path(@shop) data-sequential-uploads='true' data-type='json' multiple='multiple'
+                div id='progress'
+                  label 0 files selected
+                  div class='bar'
+                
+              li id='remote_file' class="photo_source_input hidden"
+                label class="hidden label" for="asset_remote_attachment_url"
+                  | URL
+                input id="asset_attachment_url" disabled="disabled" name="asset[remote_attachment_url]" placeholder="http://www.yahoo.com/images/photo.jpg" type="text" class="text attachment_url"
+                
+          fieldset class='buttons hidden'
+            ul class="nolist inputs clearfix"
+              li 
+                input type='submit' class='restricted submit orange34 button submit_photo' value='Upload' data-loading="Uploading..."
+              li
+                a href='#!' class='cancel' Cancel
+      
+      div class='artwork_viewer'
+        ul class='artwork'
+
+
     div class='colors'
       ul class='swatches' data-target=''
         
@@ -89,19 +137,15 @@ div id='designer'
       h1
         | {{{content}}}
 
-  script id='asset_text_tmpl' type='text/template'
+  script id='asset_photo_tmpl' type='text/template'
     div id="{{__id}}" class='asset asset_{{asset_type}}' data-id="{{__id}}"
-      img src="{{attachment.thumbnail.url}}"
-
-  / script id='asset_tools_tmpl' type='text/template'
-  /   div id='asset_tools_{{__id}}' class='asset_tools' data-target="{{__id}}"
-      
+      img src="{{attachment_medium_url}}" data-original="{{attachment_url}}"
 
   javascript:
     var SHOP = #{@shop.to_json.html_safe},
         PRODUCT_STYLES = #{App.product_types.to_json.html_safe},
         PRODUCT = #{@product.to_json(methods: [:slug]).html_safe},
-        ASSETS  = #{@assets.to_json(methods: [:__id]).html_safe};
+        ASSETS  = #{@assets.to_json(methods: [:__id, :attachment_url, :attachment_medium_url, :attachment_thumb_url]).html_safe};
 
     $(function(){
       Editor.initialize(PRODUCT_STYLES, PRODUCT, ASSETS);

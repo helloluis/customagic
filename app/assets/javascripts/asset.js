@@ -30,6 +30,8 @@ function Asset(){
         top         :  this.hash.coordinates[0],
         left        :  this.hash.coordinates[1],
         zIndex      :  this.hash.coordinates[2],
+        width       :  this.hash.width,
+        height      :  this.hash.height,
         fontSize    :  this.hash.font_size,
         fontFamily  :  this.hash.font_family,
         color       :  this.hash.color,
@@ -47,7 +49,7 @@ function Asset(){
     $("#" + that.hash.__id).
       click(function(){
         $(this).addClass('selected').
-          siblings(".asset").removeClass('.selected');
+          siblings(".asset").removeClass('selected');
         that.initialize_settings();
       }).
       draggable({
@@ -80,6 +82,12 @@ function Asset(){
     var that = this,
         tools = $(".asset_tools");
     
+    if (that.hash.asset_type=='text') {
+      tools.removeClass('show_asset_photo_fields').addClass('show_asset_text_fields');
+    } else {
+      tools.addClass('show_asset_photo_fields').removeClass('show_asset_text_fields');
+    }
+
     tools.
       removeClass('disabled').
       find(".input_field, .select_field, .alignment_control").

@@ -537,9 +537,9 @@ class Product
 
   def create_first_asset
     if a = self.assets.create(content: "Awesome Shirt")
-      logger.info "!! #{a.inspect} !!"
+      #logger.info "!! #{a.inspect} !!"
     else
-      logger.info "!! #{a.errors.inspect} !!"
+      #logger.info "!! #{a.errors.inspect} !!"
     end
   end
 

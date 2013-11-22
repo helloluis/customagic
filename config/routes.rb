@@ -54,18 +54,21 @@ Customagic::Application.routes.draw do
   #     resources :products
   #   end
   resources :shops do
+    resources :assets do
+      post :create_photo, on: :collection
+    end
     resources :products
   end
 
   resources :users
   
-  get "/:id" => "shops#show"
-
   get "/:shop_id/:id" => "products#show"
   
   get "/:shop_id/products/new" => "products#new"
 
   get "/:shop_id/products/:id/edit" => "products#edit"
+
+  get "/:id" => "shops#show"
 
   root :to => "landing#index"
 

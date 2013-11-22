@@ -15,4 +15,5 @@
 //= require jquery.jsonp
 //= require mustache
 //= require underscore
+//= require jquery.fileupload
 //= require_tree .

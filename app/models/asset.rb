@@ -5,9 +5,10 @@ class Asset
   
   belongs_to :shop
   belongs_to :product
-  
+
   field :asset_type,    type: String,   default: "text"
   field :coordinates,   type: Array,    default: [0,0,1] # x, y, z
+  field :filesize,      type: Integer   
   field :width,         type: Integer,  default: 300 
   field :height,        type: Integer,  default: 100
   field :color,         type: String,   default: "#000000"
@@ -18,8 +19,44 @@ class Asset
   
   field :content
 
+  # CARRIERWAVE ATTACHMENT 
+  mount_uploader :attachment, AssetAttachment
+
   def __id
     _id.to_s
   end
 
+  def get_dimensions_and_filesize
+    
+    self.filesize     = attachment.file.size
+
+    return true unless asset_type=='photo'
+
+    begin
+      if image = MiniMagick::Image.open(attachment.current_path)
+        width  = "#{image[:width]}px"
+        height = "#{image[:height]}px"
+      end
+      
+    rescue Exception => e
+      logger.info "!! ERROR: #{attachment.current_path} #{e.inspect} !!"
+    end
+  end
+
+  def attachment_filename
+    attachment ? attachment.original_filename : ""
+  end
+
+  def attachment_url
+    attachment ? attachment.url : ""
+  end
+
+  def attachment_thumb_url
+    attachment ? attachment.thumb.url : ""
+  end
+
+  def attachment_medium_url
+    attachment ? attachment.medium.url : ""
+  end
+  
 end
