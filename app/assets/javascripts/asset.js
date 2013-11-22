@@ -201,7 +201,7 @@ function Asset(){
 
         $.ajax({
           url      : "/shops/" + Editor.shop.slug + "/assets/" + that.id,
-          data     : { asset : _.that.hash },
+          data     : { asset : that.saveable_hash },
           dataType : "JSON",
           method   : "PUT",
           success  : function(data){

@@ -1,7 +1,7 @@
 class ProductsController < ApplicationController
 
   before_filter :set_shop
-  before_filter :set_product, only: [ :edit, :update, :delete, :show ]
+  before_filter :set_product, only: [ :edit, :edit_info, :update, :delete, :show ]
 
   def index
 
@@ -26,6 +26,10 @@ class ProductsController < ApplicationController
 
   def edit
     @assets = @product.assets
+  end
+
+  def edit_info
+
   end
 
   def update

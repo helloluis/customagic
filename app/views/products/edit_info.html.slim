@@ -3,3 +3,37 @@
 div id='editor' class='information'
 
   div class='viewer'
+
+    div class='item'
+
+    div class='item_specifications'
+
+      dl
+        dt 
+          strong #{@product.product_type_object.name} Style
+        dd = "#{@product.product_style_object.name} (#{@product.product_sub_style_object.name})"
+        dt 
+          strong Color
+        dd 
+          = "#{@product.color}"
+          span class='color_swatch' style='background-color:#{@product.color}'
+        dt 
+          strong Base Price
+        dd == "#{@shop.currency_symbol} #{number_to_currency(@product.base_price,precision:2)}"
+
+  div class='info_form_container'
+
+    = simple_form_for @product, :url => shop_product_path(@shop, @product), :method => :put do |f|
+
+      = f.input :name
+
+      = f.input :description, :as => :text
+
+      = f.input :sales_goal
+
+      = f.input :price
+
+      = f.submit "Save"
+
+      a href="/shops/#{@shop.slug}/edit" 
+        | Design Your Shop &raquo; (optional)

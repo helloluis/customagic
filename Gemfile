@@ -32,6 +32,8 @@ gem 'country_select'
 
 gem 'kaminari'
 
+gem 'simple_form'
+
 gem 'fog'
 
 gem 'fb_graph'

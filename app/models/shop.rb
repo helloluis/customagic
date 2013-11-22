@@ -9,6 +9,8 @@ class Shop
   has_many :products
   has_many :orders
   has_many :assets
+  has_many :images
+
   field :name
   field :description
   field :items_count,     type: Integer, default: 0
@@ -20,5 +22,9 @@ class Shop
   slug :name
 
   index({slug: 1, category_slug: 1})
+
+  def currency_symbol
+    "PhP"
+  end
 
 end

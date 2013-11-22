@@ -1,4 +1,4 @@
-class AssetAttachment < CarrierWave::Uploader::Base
+class ImageAttachment < CarrierWave::Uploader::Base
   include CarrierWave::MiniMagick
 
   storage :fog
