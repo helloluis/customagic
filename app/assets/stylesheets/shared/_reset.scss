@@ -8,7 +8,7 @@ ins{text-decoration:none}
 del{text-decoration:line-through}
 table{border-collapse:collapse;border-spacing:0}
 .clear{clear:both;display:block;overflow:hidden;visibility:hidden;width:0;height:0}
-body{font-size:13px;@extend .lucida_grande_fontstack;z-index:0;}
+body{font-size:13px; font-family: Helvetica; z-index:0; background-color:#ddd; color:#444; }
 a:focus{outline:1px dotted invert}
 hr{clear:both;height:0}
 h1{font-size:25px}
@@ -20,15 +20,7 @@ h6{font-size:15px}
 ol{list-style:decimal}
 ul{list-style:disc}
 li{margin-left:30px}
-p{margin-bottom:5px}
-//.cols{overflow:hidden;padding:0;border:0;}
+p{margin:0px}
 strong{font-weight:bold;}
 em{font-style:italic;}
 .hidden {display:none;}
-body {
-  font-family: Helvetica;
-  font-size:13px;
-}
-p { 
-  margin:0px; 
-}

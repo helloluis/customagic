@@ -8,8 +8,8 @@ module ApplicationHelper
     App.partner_name
   end
 
-  def app_default_item_type
-    App.default_item_type
+  def app_default_product_type
+    App.default_product_type
   end
 
   def app_facebook_id

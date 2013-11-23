@@ -49,9 +49,9 @@ javascript:
       FB.api('/me', function(response) {
 
         var cont    = $(".facebook_profile_container"),
-            profile = $("<span class='fb_user_name'></span>").append("Logged in as <a href='" + response.link + "' class='user_override'>" + response.name + "</a>. (<a class='fb_logout'>logout</a>)"),
+            profile = $("<span class='fb_user_name'></span>").append("Hello, <a href='" + response.link + "' class='user_override'>" + response.name + "</a>! (<a class='fb_logout'>logout</a>)"),
             avatar  = $("<span class='fb_user_avatar'></span>").css({backgroundImage:'url(https://graph.facebook.com/' + response.id + '/picture?type=small)'}),
-            button = $("<button class='start_designing'>Get Started!</button>").click(create_account);
+            button = $("<button class='start_designing'>Get Started &raquo;</button>").click(create_account);
         
         cont.empty().append(profile).append(avatar).append(button);
         

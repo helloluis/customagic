@@ -24,7 +24,24 @@ function Asset(){
 
   this.render = function(){
 
-    var tmpl = $("#asset_" + this.hash.asset_type + "_tmpl").html();
+    var tmpl  = $("#asset_" + this.hash.asset_type + "_tmpl").html(),
+      scale   = function(w, h){
+        var cont = Editor.product_editable_area,
+            cont_w = cont.width(),
+            cont_h = cont.height(),
+            w = parseInt(w),
+            h = parseInt(h);
+
+        
+        if (cont_w>w){
+          
+        } else if (cont_h>h) {
+          return [w*(h/cont_h), cont_h];
+        } else {
+          return [w,h];
+        }
+
+      };
 
     Editor.product_editable_area.append( Mustache.to_html( tmpl, this.hash ) );
     
@@ -34,8 +51,8 @@ function Asset(){
         left        :  parseInt(this.hash.coordinates[0]), // x
         top         :  parseInt(this.hash.coordinates[1]), // y
         zIndex      :  parseInt(this.hash.coordinates[2]), // z
-        width       :  parseInt(this.hash.width),
-        height      :  parseInt(this.hash.height),
+        width       :  scale(this.hash.width, this.hash.height, true),
+        height      :  scale(this.hash.width, this.hash.height, false),
         fontSize    :  this.hash.font_size,
         fontFamily  :  this.hash.font_family,
         color       :  this.hash.color,
