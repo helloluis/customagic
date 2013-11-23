@@ -1,4 +1,6 @@
 
+div class='loading_indicator' Loading ...
+
 = render :partial => "products/steps"
 
 div id='designer'
@@ -125,7 +127,7 @@ div id='designer'
         == "#{app_currency_symbol}100.00"
 
     div class='next_step'
-      button class='next_step' data-target='step_2' 
+      button class='next_step' data-href="/#{@current_shop.slug}/products/#{@product.slug}/edit_info"
         | Next Step &raquo;  
 
 - content_for :page_scripts do
@@ -136,7 +138,7 @@ div id='designer'
 
   script id='asset_text_tmpl' type='text/template'
     div id="{{__id}}" class='asset asset_{{asset_type}}' data-id="{{__id}}" contenteditable="true" title="Double-click to edit!"
-      h1
+      span
         | {{{content}}}
 
   script id='asset_photo_tmpl' type='text/template'
@@ -144,7 +146,7 @@ div id='designer'
       img src="{{attachment_medium_url}}" data-original="{{attachment_url}}"
 
   javascript:
-    var SHOP = #{@shop.to_json(methods: [:slug]).html_safe},
+    var SHOP = #{@current_shop.to_json(methods: [:slug]).html_safe},
         PRODUCT_STYLES = #{App.product_types.to_json.html_safe},
         PRODUCT = #{@product.to_json(methods: [:slug]).html_safe},
         ASSETS  = #{@assets.to_json(methods: [:__id, :attachment_url, :attachment_medium_url, :attachment_thumb_url]).html_safe};

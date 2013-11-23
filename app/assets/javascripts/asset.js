@@ -13,7 +13,7 @@ function Asset(){
     this.coordinates  = asset_hash.coordinates;
     this.dimensions   = asset_hash.dimensions;
     this.hash         = asset_hash;
-
+    this.asset_type   = asset_hash.asset_type;
     this.dom          = this.render();
 
     this.initialize_controls();
@@ -162,6 +162,8 @@ function Asset(){
   this.edit_content = function(){
 
     this.is_editing = true;
+    
+    Editor.start_editing();
 
     if (this.hash.asset_type=='text') {
       this.edit_content_text();
@@ -177,13 +179,15 @@ function Asset(){
     
     this.dom.attr('contenteditable','true');
 
-    this.select_text( this.dom.find("h1")[0] );
+    this.select_text( this.dom.find("span")[0] );
 
   };
 
   this.stop_editing = function(){
 
     this.dom.removeAttr('contenteditable');
+    Editor.stop_editing();
+
   };
 
   this.select_text = function(el){
@@ -251,7 +255,7 @@ function Asset(){
       height:       this.dom.height(),                    // type: Integer,  default: 100
       color:        this.dom.css('color'),                // type: String,   default: "#000000"
       bg_color:     this.dom.css('background-color'),     // type: String,   default: "transparent"
-      font:         this.dom.css('font-family'),          // type: String,   default: "Helvetica"
+      font_family:  this.dom.css('font-family'),          // type: String,   default: "Helvetica"
       font_size:    this.dom.css('font-size'),            // type: String,   default: "36px"
       alignment:    this.dom.css('text-align'),           // type: String,   default: "center"
       content:      this.dom.text()                       // type: String,   default: "Text"

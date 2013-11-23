@@ -11,7 +11,7 @@ class Shop
   has_many :assets
   has_many :images
 
-  field :name
+  field :name,            type: String,  default: "New Shop"
   field :description
   field :items_count,     type: Integer, default: 0
   field :active,          type: Boolean, default: true

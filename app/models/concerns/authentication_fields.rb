@@ -3,6 +3,8 @@ module AuthenticationFields
 
   included do
 
+    field :password
+
     # devise fields
     field :encrypted_password,      :type => String, :default => ""
     field :password_changed_at,     :type => Time
@@ -28,7 +30,7 @@ module AuthenticationFields
     field :failed_attempts,         :type => Integer, :default => 0 # Only if lock strategy is :failed_attempts
     field :unlock_token,            :type => String # Only if unlock strategy is :email or :both
     field :locked_at,               :type => Time
-    
+
     field :authentication_token,    :type => String
     field :invitation_token,        :type => String
     field :invitation_sent_at,      :type => Time
@@ -40,6 +42,8 @@ module AuthenticationFields
     # omniauth fields
     field :provider
     field :uid
+
+    validates :uid, :uniqueness => true
 
   end
 

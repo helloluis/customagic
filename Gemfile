@@ -45,6 +45,11 @@ gem 'carrierwave'
 gem 'carrierwave-mongoid', require: 'carrierwave/mongoid'
 gem 'mini_magick'
 
+gem 'imgkit'
+# after your bundle install, run this command (from your application root) 
+# to install the actual binary that actually generates the images:
+# rvmsudo imgkit --install-wkhtmltoimage
+
 gem 'sanitize'
 
 gem 'aws-ses', require: 'aws/ses'

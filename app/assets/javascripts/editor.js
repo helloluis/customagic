@@ -2,12 +2,16 @@ var Editor = {
 
   assets_path : "/assets",
 
+  scale : 0.12,
+
   initialize : function(shop, types, product, assets) {
     
     this.shop    = shop;
     this.product_types = types;
     this.product = product;
     this.assets  = assets;
+    
+    this.current_side  = 0; // which side of the item are we viewing? (front/back/etc)
 
     this.initialize_product();
     this.initialize_viewer();
@@ -19,8 +23,9 @@ var Editor = {
     
     var that = this;
 
-    this.product_type = this.product_types[0]; // shirt
+    this.product_type  = this.product_types[0]; // shirt
     this.product_style = this.product_types[0].product_styles[0]; // basic tee
+    
 
     if (that.product.product_type) {
       if (type = _.find(that.product_types,function(p){ return p.slug==that.product.product_type; })) {
@@ -38,7 +43,10 @@ var Editor = {
     var that = this;
 
     that.product_preview = $(".viewer .product");
+    
     that.product_editable_area = $(".viewer .editable_area");
+
+    that.initialize_scale();
 
     that.asset_objects = [];
 
@@ -57,10 +65,44 @@ var Editor = {
 
   },
 
+  initialize_scale : function(){
+
+    var that = this;
+    
+    that.target_dpi    = this.product_type.dpi_target;
+    that.full_width    = that.product_type.sides[that.current_side].editable_area[0]*this.product_type.dpi_target;
+    that.full_height   = that.product_type.sides[that.current_side].editable_area[1]*this.product_type.dpi_target;
+    that.scaled_width  = that.full_width*that.scale;
+    that.scaled_height = that.full_height*that.scale;
+
+    that.product_editable_area.css({ 
+      width  : that.scaled_width, 
+      height : that.scaled_height,
+      left   : (that.product_preview.width()-that.scaled_width)/2
+    });
+
+  },
+
   initialize_controls : function() {
 
-    this.initialize_color_swatches();
-    this.initialize_content_buttons();
+    var that = this;
+
+    that.initialize_color_swatches();
+    that.initialize_content_buttons();
+
+    $(".next_step").click(function(){
+      
+      var el   = $(this).attr('disabled','disabled').text('Saving ...'),
+          href = el.is("a") ? el.attr('href') : el.attr('data-href');;
+      
+      Flasher.add(['notice',"Please wait, we're saving your changes."], true);
+
+      that.publish(function(){
+        window.location.replace( href );
+      });
+      
+      return false;
+    });
 
   },
 
@@ -231,21 +273,97 @@ var Editor = {
 
   },
 
-  update_product : function() {
-    
+  publish : function(success_callback){
+
     var that = this;
+    
     that.loading();
-    $.ajax({
-      url : "/products/" + that.product.slug,
+
+    that.temporary_div = that.scale_up_assets();
+
+   $.ajax({
+      url : "/shops/" + that.shop.slug + "/products/" + that.product.slug,
       type : "PUT",
+      data : { product : { raw_html : that.temporary_div }, publish : true },
       dataType : "JSON",
       success : function(data) {
-
+        if (typeof success_callback!=='undefined') {
+          success_callback.call();
+        }
       },
       complete : function(x) {
         that.loading_stop();
       }
     });
+
+  },
+
+  scale_up_assets : function(){
+
+    var that = this,
+        mod  = (100/(that.scale*100)),
+        main = $("<div class='main'></div>").
+                css({
+                  position  : "absolute",
+                  width     : that.full_width,
+                  height    : that.full_height
+                }),
+        content = $("<div class='content'></div>").
+                css({ 
+                  position  : "absolute",
+                  transform : "scale(" + mod + ")",
+                  "transform-origin" : "top left",
+                  width     : that.scaled_width, 
+                  height    : that.scaled_height
+                });
+
+    _.each(that.asset_objects, function(a){
+      
+      a.dom.
+        clone().
+        css({
+          position: 'absolute'
+        }).
+        appendTo(content).
+        removeClass('ui-resizable').
+        removeClass('ui-draggable').
+        find(".ui-resizable-handle").
+        remove();
+      
+    });
+
+
+
+    return "<html><body>" + main.append(content.outerHTML()).outerHTML() + "</body></html>";
+
+  },
+
+  freeze : function(){
+
+    this.is_frozen = true;
+    this.product_editable_area.find(".asset").resizable('enable').draggable('enable');
+    this.reset_settings_panel();
+
+  },
+
+  thaw : function(){
+
+    this.is_frozen = false;
+    this.product_editable_area.find(".asset").resizable('disable').draggable('disable');
+
+  },
+
+  start_editing : function(){
+
+    this.is_editing = true;
+    $(".next_step").attr('disabled','disabled');
+
+  },
+
+  stop_editing : function(){
+
+    this.is_editing = false;
+    $(".next_step").removeAttr('disabled');
 
   },
 

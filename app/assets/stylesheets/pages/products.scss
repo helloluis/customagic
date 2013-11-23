@@ -210,6 +210,9 @@
       height:480px;
       margin-bottom:10px;
       border:1px solid #ccc;
+      background-repeat:no-repeat;
+      background-position: 50% 0%;
+      background-size: contain;
     }
   }
   .info_form_container {
@@ -227,4 +230,25 @@
       margin-bottom:20px;
     }
   }
+  .totals {
+    margin:20px 0px;
+    dt { font-size:12px; }
+    dd { font-size:18px; margin-bottom:10px; }
+  }
+}
+
+.loading_indicator {
+  background:#f90;
+  text-align:center;
+  color:#fff;
+  font-weight:bold;
+  display:none;
+  position:absolute;
+  top:0px;
+  left:900px;
+  padding:5px 10px;
+}
+
+body.loading .loading_indicator {
+  display:block;
 }

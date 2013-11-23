@@ -4,7 +4,7 @@ div id='editor' class='information'
 
   div class='viewer'
 
-    div class='item'
+    div class='item' style='background-image:url(#{@product.final_art.attachment.medium.url}?#{Time.now.to_i})'
 
     div class='item_specifications'
 
@@ -19,11 +19,11 @@ div id='editor' class='information'
           span class='color_swatch' style='background-color:#{@product.color}'
         dt 
           strong Base Price
-        dd == "#{@shop.currency_symbol} #{number_to_currency(@product.base_price,precision:2)}"
+        dd == "#{@current_shop.currency_symbol} #{number_to_currency(@product.base_price,precision:2)}"
 
   div class='info_form_container'
 
-    = simple_form_for @product, :url => shop_product_path(@shop, @product), :method => :put do |f|
+    = simple_form_for @product, :url => shop_product_path(@current_shop, @product), :method => :put do |f|
 
       = f.input :name
 
@@ -31,9 +31,35 @@ div id='editor' class='information'
 
       = f.input :sales_goal
 
-      = f.input :price
+      = f.input :base_price, label: "Base Price (#{@current_shop.currency_symbol})", :disabled => true
 
+      = f.input :retail_price, label: "Retail Price (#{@current_shop.currency_symbol})"
+      p class='profit_indicator' 
+        | You make #{@current_shop.currency_symbol}
+        span class='profit_margin' 0
+        |  per shirt!
+      
+      dl class='totals'
+        dt Total Sales
+        dd 
+          = @current_shop.currency_symbol
+          span class='total_sales'
+        dt Total Earnings
+        dd 
+          = @current_shop.currency_symbol
+          span class='total_earnings' 
       = f.submit "Save"
 
-      a href="/shops/#{@shop.slug}/edit" 
+      a href="/shops/#{@current_shop.slug}/edit" 
         | Design Your Shop &raquo; (optional)
+
+- content_for :page_scripts do
+  
+  javascript:
+    var SHOP = #{@current_shop.to_json(methods: [:slug]).html_safe},
+        PRODUCT_STYLES = #{App.product_types.to_json.html_safe},
+        PRODUCT = #{@product.to_json(methods: [:slug]).html_safe};
+
+    $(function(){
+      Calculator.initialize(SHOP, PRODUCT_STYLES, PRODUCT);
+    });

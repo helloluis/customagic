@@ -6,19 +6,22 @@ class User
   include Mongoid::Timestamps
   include AuthenticationFields
 
-  devise :database_authenticatable, :registerable, :recoverable, :rememberable, :trackable, :validatable, :omniauthable, :omniauth_providers => [ :facebook ]
+  #devise :database_authenticatable, :registerable, :recoverable, :rememberable, :trackable, :validatable, :omniauthable, :omniauth_providers => [ :facebook ]
+  devise :trackable, :validatable, :omniauthable, :omniauth_providers => [ :facebook ]
 
-  field :fb_id
-  field :fb_url
-  field :fb_username
+  field :urls
   field :name
+  field :username
   field :first_name
   field :last_name
   field :avatar
   field :email
   field :mobile
+  field :location
+  field :hometown
   field :city
   field :country
+  field :extras
   field :partner, default: "customagic"
 
   field :access_token
@@ -27,7 +30,7 @@ class User
 
   field :favorite_product_ids, type: Array, default: []
 
-  index({fb_id:1, partner: 1})
+  index({uid:1, partner: 1})
   index({username:1})
   index({email:1})
 
@@ -35,11 +38,10 @@ class User
   has_many :products
   has_many :orders
 
-  validates :fb_id, :uniqueness => true
   validates :name,  :presence => true, :length => { :minimum => 2 }
   validates :email, :format => { :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i, :on => :create }
 
-  after_create :create_shop
+  # after_create :create_shop
 
   # https://github.com/plataformatec/devise/wiki/OmniAuth%3a-Overview
   def self.new_with_session(params, session)
@@ -98,7 +100,24 @@ class User
   end
   
   def create_shop
-    Shop.create(name: fb_username||name, user_id: _id)
+    Shop.create(name: username||name, user_id: _id)
+  end
+
+  def update_with_facebook(req)
+    write_attributes(
+      avatar:     req['uid'],
+      first_name: req['extra']['raw_info']['first_name'],
+      last_name:  req['extra']['raw_info']['last_name'],
+      username:   req['extra']['raw_info']['username'],
+      urls:       req['urls'],
+      location:   req['extra']['raw_info']['location'],
+      hometown:   req['extra']['raw_info']['hometown'],
+      extras:     req['extra']['raw_info']
+    )
+  end
+
+  def is_owner?(some_shop)
+    self.shop==some_shop
   end
 
 end
