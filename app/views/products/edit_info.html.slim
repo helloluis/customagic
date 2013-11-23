@@ -29,7 +29,7 @@ div id='editor' class='information'
 
       = f.input :description, :as => :text
 
-      = f.input :sales_goal
+      = f.input :sales_goal, label: "How Many Will You Sell?"
 
       = f.input :base_price, label: "Base Price (#{@current_shop.currency_symbol})", :disabled => true
 
@@ -39,19 +39,22 @@ div id='editor' class='information'
         span class='profit_margin' 0
         |  per shirt!
       
-      dl class='totals'
-        dt Total Sales
-        dd 
-          = @current_shop.currency_symbol
-          span class='total_sales'
-        dt Total Earnings
-        dd 
-          = @current_shop.currency_symbol
-          span class='total_earnings' 
-      = f.submit "Save"
+      = f.submit "Save"      
 
       a href="/shops/#{@current_shop.slug}/edit" 
         | Design Your Shop &raquo; (optional)
+
+  dl class='totals'
+    dt Total Sales
+    dd 
+      = @current_shop.currency_symbol
+      span class='total_sales'
+    dt Total Earnings
+    dd 
+      = @current_shop.currency_symbol
+      span class='total_earnings' 
+
+
 
 - content_for :page_scripts do
   
