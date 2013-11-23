@@ -26,21 +26,23 @@ function Asset(){
 
     var tmpl  = $("#asset_" + this.hash.asset_type + "_tmpl").html(),
       scale   = function(w, h){
-        var cont = Editor.product_editable_area,
-            cont_w = cont.width(),
-            cont_h = cont.height(),
-            w = parseInt(w),
-            h = parseInt(h);
+        var cont     = Editor.product_editable_area,
+            cont_w   = cont.width(),
+            cont_h   = cont.height(),
+            width    = parseInt(w),
+            height   = parseInt(h),
+            scaled_w = w,
+            scaled_h = h;
 
-        
-        if (cont_w>w){
-          
-        } else if (cont_h>h) {
-          return [w*(h/cont_h), cont_h];
-        } else {
-          return [w,h];
+        if (cont_w>w || cont_h>h){
+          if (cont_w>w) {
+            scaled_h = h*(w/cont_w);
+          }
+          if (cont_h>h) {
+            scaled_w = w*(h/cont_h);
+          }
         }
-
+        return [scaled_w, scaled_h];
       };
 
     Editor.product_editable_area.append( Mustache.to_html( tmpl, this.hash ) );
