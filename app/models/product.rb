@@ -40,6 +40,7 @@ class Product
   field :num_favorites, type: Integer,  default: 0
   field :status,        type: Integer,  default: 0    # 0 = in progress, 1 = hidden, 2 = visible, 3 = out of stock, 4 = coming soon, 9 = demo
   
+  field :buy_now_price, type: Float,    default: 0.0
   field :base_price,    type: Float,    default: 0.0
   field :retail_price,  type: Float,    default: 0.0
   field :lowest_price,  type: Float,    default: 0.0

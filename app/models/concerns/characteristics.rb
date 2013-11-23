@@ -27,9 +27,11 @@ module Characteristics
   # end
 
   def update_sales_information!
+    
+    self.buy_now_price = product_sub_style_object.buy_now_price
 
     if pp = product_sub_style_object.prices.find{|p| (p.first).to_a.include?(sales_goal)} 
-      base_price = pp.last
+      self.base_price = pp.last
     end
 
   end

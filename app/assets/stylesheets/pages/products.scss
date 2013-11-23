@@ -206,6 +206,7 @@
   .viewer {
     width:360px;
     padding:20px;
+    overflow:visible;
     .item {
       height:480px;
       margin-bottom:10px;
@@ -230,13 +231,22 @@
       margin-bottom:20px;
     }
   }
+  .totals_and_instructions {
+    float:left;
+    width:250px;
+  }
   .totals {
     background:#fff;
-    float:left;
     padding:20px;
     margin:20px 0px;
-    dt { font-size:12px; }
-    dd { font-size:18px; margin-bottom:10px; }
+    dt { font-size:16px; }
+    dd { font-size:24px; margin-bottom:10px; }
+  }
+  .help {
+    padding:10px;
+    h3,p {
+      margin-bottom:10px;
+    }
   }
 }
 

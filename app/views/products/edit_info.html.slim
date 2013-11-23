@@ -17,9 +17,14 @@ div id='editor' class='information'
         dd 
           = "#{@product.color}"
           span class='color_swatch' style='background-color:#{@product.color}'
-        dt 
-          strong Base Price
-        dd == "#{@current_shop.currency_symbol} #{number_to_currency(@product.base_price,precision:2)}"
+        dt
+          strong Buy-Now Price
+        dd data-hint="Your buyers may opt to pay more to get their item immediately" class="hint--right"
+          span class='currency' = @product.product_sub_style_object.buy_now_price
+        dt
+          strong Download Print-Ready Image
+        dd
+          = link_to truncate(@product.final_art.attachment.url, length:50), @product.final_art.attachment.url, target: "_blank"
 
   div class='info_form_container'
 
@@ -31,35 +36,59 @@ div id='editor' class='information'
 
       = f.input :sales_goal, label: "How Many Will You Sell?"
 
-      = f.input :base_price, label: "Base Price (#{@current_shop.currency_symbol})", :disabled => true
+      = f.input :base_price, label: "Base Price (#{@current_shop.currency_symbol})", disabled: true, input_html: { class: 'currency'}
 
-      = f.input :retail_price, label: "Retail Price (#{@current_shop.currency_symbol})"
-      p class='profit_indicator' 
-        | You make #{@current_shop.currency_symbol}
-        span class='profit_margin' 0
-        |  per shirt!
-      
-      = f.submit "Save"      
+      = f.input :retail_price, label: "Retail Price (#{@current_shop.currency_symbol})", input_html: { class: 'currency' }
 
-      a href="/shops/#{@current_shop.slug}/edit" 
-        | Design Your Shop &raquo; (optional)
+      = f.submit "Save and Proceed"      
 
-  dl class='totals'
-    dt Total Sales
-    dd 
-      = @current_shop.currency_symbol
-      span class='total_sales'
-    dt Total Earnings
-    dd 
-      = @current_shop.currency_symbol
-      span class='total_earnings' 
+      / a href="/shops/#{@current_shop.slug}/edit" 
+      /   | Design Your Shop &raquo; (optional)
 
+  div class='totals_and_instructions'
 
+    dl class='totals'
+      dt Sales Goal
+      dd data-hint="How many #{@product.product_type}s you're going to sell" class='hint--left'
+        span class='sales_goal' 20
+        |  #{@product.product_type}s
+      dt Total Sales
+      dd data-hint="The total gross value of your sales goal" class='hint--left'
+        span class='total_sales currency'
+      dt Your Profit per Unit
+      dd data-hint="You make this much per sale" class='hint--left profit_margin currency' 0
+      dt Your Total Earnings
+      dd data-hint="You'll earn this much in total" class="hint--left"
+        span class='total_earnings currency' 
+
+    div class='help'
+      dl class='faq'
+        dt 
+          h3 How does this work?
+        dd
+          p 
+            | Once your #{@product.product_type} design is ready, all you need to do is figure out how many units of your #{@product.product_type} you want to sell before production can begin (your "Sales Goal"). 
+          p
+            | After your <strong>Sales Goal</strong> has been reached, #{app_name} will handle getting your #{@product.product_type}s printed, and will deliver all of them to your buyers within 10-14 days.
+          p
+            | Finally, when all orders have been sent out, we'll send your Paypal account an amount equivalent to the Total Earnings shown above.
+        dt
+          h3 
+            | What if I don't reach my sales goal?
+        dd
+          p
+            | Your #{@product.product_type}s will only be printed (and your buyers will only be charged) if the Sales Goal has been reached. You can relaunch the item with a different price if you want to try again.
+        dt
+          h3
+            | What is the Buy-Now Price?
+        dd
+          p
+            | Some buyers prefer not to wait, so they can opt to pay a higher price for their #{@product.product_type}s in exchange for getting them sooner. These one-off orders won't count towards your sales goal, but we will add the profit to your payout after the campaign is over.
 
 - content_for :page_scripts do
   
   javascript:
-    var SHOP = #{@current_shop.to_json(methods: [:slug]).html_safe},
+    var SHOP = #{@current_shop.to_json.html_safe},
         PRODUCT_STYLES = #{App.product_types.to_json.html_safe},
         PRODUCT = #{@product.to_json(methods: [:slug]).html_safe};
 

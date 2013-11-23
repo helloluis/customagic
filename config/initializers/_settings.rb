@@ -58,6 +58,7 @@ App.product_types = [
             description: "Budget friendly", 
             image: "shirt_thumb.png",
             min_order: 20,
+            buy_now_price: 350,
             prices: [
               [ 1..5,   300 ],
               [ 6..20,  290 ],
@@ -73,6 +74,7 @@ App.product_types = [
             description: "Premium materials", 
             image: "shirt_thumb.png",
             min_order: 20,
+            buy_now_price: 400,
             prices: [
               [ 1..5,   350 ],
               [ 6..20,  340 ],
@@ -87,6 +89,7 @@ App.product_types = [
             description: "Brand quality", 
             image: "shirt_thumb.png",
             min_order: 20,
+            buy_now_price: 450,
             prices: [
               [ 1..5,   400 ],
               [ 6..20,  390 ],

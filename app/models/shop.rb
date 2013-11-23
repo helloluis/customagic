@@ -24,7 +24,11 @@ class Shop
   index({slug: 1, category_slug: 1})
 
   def currency_symbol
-    "PhP"
+    "PHP"
+  end
+
+  def as_json(options = {})
+    super(options.reverse_merge(:methods => [:slug, :currency_symbol]))
   end
 
 end

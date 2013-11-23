@@ -146,7 +146,7 @@ div id='designer'
       img src="{{attachment_medium_url}}" data-original="{{attachment_url}}"
 
   javascript:
-    var SHOP = #{@current_shop.to_json(methods: [:slug]).html_safe},
+    var SHOP = #{@current_shop.to_json.html_safe},
         PRODUCT_STYLES = #{App.product_types.to_json.html_safe},
         PRODUCT = #{@product.to_json(methods: [:slug]).html_safe},
         ASSETS  = #{@assets.to_json(methods: [:__id, :attachment_url, :attachment_medium_url, :attachment_thumb_url]).html_safe};
