@@ -26,3 +26,6 @@ module Customagic
     # config.i18n.default_locale = :de
   end
 end
+
+#https://github.com/mongoid/moped/issues/21
+# BSON = Moped::BSON

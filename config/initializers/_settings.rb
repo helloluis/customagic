@@ -9,6 +9,7 @@ App = Hashie::Mash.new(settings)
 
 App.name = "Customagic"
 App.partner_name = "customagic"
+# App.uri = URI::HTTP.build(host: host, port: port.try(:to_i))
 App.url = Rails.env.development? ? "customagic.xxx" : "customagic.ph"
 App.default_product_type = "shirt"
 

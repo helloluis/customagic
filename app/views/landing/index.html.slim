@@ -6,8 +6,10 @@ div class='masthead'
 
     div class='facebook_profile_container clearfix'
       /fb:login-button width="200" max-rows="1"
-      button class='login_via_facebook big'
-        | Login to get started ...
+      h3 = link_to "Login to Get Started", user_omniauth_authorize_path(:facebook), :class => "login_via_facebook"
+
+      / button class='login_via_facebook big'
+      /   | Login to get started ...
 
 div class='features'
   div class='feature'

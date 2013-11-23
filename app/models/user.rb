@@ -4,6 +4,9 @@ class User
 
   include Mongoid::Document
   include Mongoid::Timestamps
+  include AuthenticationFields
+
+  devise :database_authenticatable, :registerable, :recoverable, :rememberable, :trackable, :validatable, :omniauthable, :omniauth_providers => [ :facebook ]
 
   field :fb_id
   field :fb_url
@@ -37,6 +40,28 @@ class User
   validates :email, :format => { :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i, :on => :create }
 
   after_create :create_shop
+
+  # https://github.com/plataformatec/devise/wiki/OmniAuth%3a-Overview
+  def self.new_with_session(params, session)
+    super.tap do |user|
+      if data = session["devise.facebook_data"] && session["devise.facebook_data"]["extra"]["raw_info"]
+        user.email = data["email"] if user.email.blank?
+      end
+    end
+  end
+
+  def self.find_for_facebook_oauth(auth, signed_in_resource=nil)
+    user = User.where(:provider => auth.provider, :uid => auth.uid).first
+    unless user
+      user = User.create(name:auth.extra.raw_info.name,
+                           provider:auth.provider,
+                           uid:auth.uid,
+                           email:auth.info.email,
+                           password:Devise.friendly_token[0,20]
+                           )
+    end
+    user
+  end
 
   def toggle_favorite!(product)
     if self.favorite_product_ids.include?(product._id)

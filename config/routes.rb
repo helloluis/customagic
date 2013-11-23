@@ -60,10 +60,12 @@ Customagic::Application.routes.draw do
     resources :products
   end
 
+  devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
+
   resources :users
   
   get "/:shop_id/:id" => "products#show"
-  
+
   get "/:shop_id/products/new" => "products#new"
 
   get "/:shop_id/products/:id/edit" => "products#edit"

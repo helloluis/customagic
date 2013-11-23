@@ -23,6 +23,9 @@ gem 'uglifier', '>= 1.3.0'
 
 gem 'devise'
 gem 'devise_invitable'
+gem 'omniauth'
+gem 'omniauth-facebook'
+
 gem 'hashie'
 gem 'stripe', :git => 'https://github.com/stripe/stripe-ruby'
 gem 'slim'
@@ -45,6 +48,14 @@ gem 'mini_magick'
 gem 'sanitize'
 
 gem 'aws-ses', require: 'aws/ses'
+
+# redis related gems
+gem 'redis'
+gem 'redis-rails'
+gem 'redis-store' #, "~> 1.1.0"
+gem 'sidekiq' #, "~> 2.0.0"
+# gem 'kiqstand'
+
 
 # Use CoffeeScript for .js.coffee assets and views
 # gem 'coffee-rails', '~> 4.0.0'
