@@ -12,6 +12,6 @@ staging:
   <<: *defaults
 
 production:
-  host: grideye.redistogo.com
-  password: ed82059bd102255572cd71c5cc80f41b
-  port: 9483
+  host: pub-redis-19687.us-east-1-2.1.ec2.garantiadata.com
+  password: kdUx4MqsHttMNdW9
+  port: 19687

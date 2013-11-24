@@ -8,10 +8,10 @@ class ApplicationController < ActionController::Base
   end
 
   def authenticate_user!
-    #logger.info "!! SIGNED IN? #{user_signed_in?} #{current_user && current_user.account.sites.any?} !!"
+    logger.info "!! SIGNED IN? #{user_signed_in?} #{current_user && current_user.shop} !!"
     unless user_signed_in? && current_user.shop #&& current_user.account.sites.any?
       respond_to do |format|
-        format.html { redirect_to login_path, :alert => "You need to log in to do that." and return }
+        format.html { redirect_to root_path, :alert => "You need to log in to do that." and return }
         format.json { render :json => { :errors => "You need to log in to do that." }, :status => 401 }
       end
     end

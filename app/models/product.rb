@@ -4,7 +4,7 @@ class Product
   include Mongoid::Slug
   include Mongoid::Timestamps
 
-  include Characteristics
+  include Product::Characteristics
 
   belongs_to :shop
   belongs_to :album

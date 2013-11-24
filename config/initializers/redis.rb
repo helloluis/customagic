@@ -18,9 +18,14 @@
 #end
 
 
-unless Rails.env.production?
+# unless Rails.env.production?
 
-  App.redis_config = YAML::load(File.open("#{Rails.root}/config/redis.yml"))[Rails.env]
-  App.redis = Redis.new(App.redis_config)
+#   App.redis_config = YAML::load(File.open("#{Rails.root}/config/redis.yml"))[Rails.env]
+#   App.redis = Redis.new(App.redis_config)
+
+# else
   
-end
+#   uri = URI.parse("redis://rediscloud:kdUx4MqsHttMNdW9@pub-redis-19687.us-east-1-2.1.ec2.garantiadata.com:19687")
+#   App.redis = Redis.new(host: uri.host, port: uri.port, password: uri.password)
+
+# end

@@ -1,20 +1,25 @@
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.0.0'
+gem 'rails', '3.2.15'
 gem 'rake'
-gem 'activeresource'
+# gem 'activeresource'
 
-gem 'mongoid', '~> 4', :github => 'mongoid/mongoid'
+#gem 'mongoid', '~> 4.0', :github => 'mongoid/mongoid'
+gem 'mongoid', '3.1.5'
+gem 'bson_ext'
 gem 'mongoid_search'
 gem 'mongoid_slug'
-gem 'mongoid-sadstory' # https://github.com/mongoid/mongoid/issues/2954
+# gem 'mongoid-sadstory' # https://github.com/mongoid/mongoid/issues/2954
 gem 'mongoid_taggable'
-gem 'mongoid_rating'
+# gem 'mongoid_rating'
+gem 'mongoid_rateable'
+gem 'mongo_session_store-rails3'
+# gem "mongo_sessions", :require => "mongo_sessions/rails_mongo_store", :git => 'git://github.com/biilmann/mongo_sessions'
 # gem 'mongoid_rails_migrations'
 
 # Use SCSS for stylesheets
-gem 'sass-rails', '~> 4.0.0'
+gem 'sass-rails' #, '~> 4.0.0'
 gem 'compass'
 gem 'compass-rails'
 
@@ -55,9 +60,9 @@ gem 'sanitize'
 gem 'aws-ses', :require => 'aws/ses'
 
 # redis related gems
-gem 'redis'
-gem 'redis-rails'
-gem 'redis-store' #, "~> 1.1.0"
+# gem 'redis'
+# gem 'redis-rails'
+# gem 'redis-store' #, "~> 1.1.0"
 # gem 'sidekiq' #, "~> 2.0.0"
 # gem 'kiqstand'
 

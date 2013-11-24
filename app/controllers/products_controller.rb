@@ -5,6 +5,8 @@ class ProductsController < ApplicationController
   before_filter :authenticate_user!, except: [ :show ]
   before_filter :authorize_account_user!
 
+  respond_to :html, :json
+
   def index
 
   end
@@ -58,7 +60,7 @@ class ProductsController < ApplicationController
 
   protected
     def set_shop
-      @current_shop = Shop.find(params[:shop_id])
+      @current_shop = @shop = Shop.find(params[:shop_id])
     end
 
     def set_product

@@ -32,9 +32,10 @@ production:
   sessions:
     default:
       hosts: 
-        - mongodb://heroku:fde6573767034583506a1e4e403c794e@dharma.mongohq.com:10080/app19768989 
-        #<%= ENV['MONGOHQ_URL'] %> # mongodb.customagic.ph:27017 # doesn't work yet
-      database: customagic
+        - mongodb://dharma.mongohq.com:10080
+      username: heroku
+      password: fde6573767034583506a1e4e403c794e
+      database: app19768989
   options:
     use_utc : true
     raise_not_found_error: false

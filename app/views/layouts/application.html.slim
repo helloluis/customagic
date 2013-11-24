@@ -42,7 +42,13 @@ head
 body
   
   /= render :partial => "shared/facebook_integration"
-
+  - if flash[:alert]
+    div class='flash alert'
+      h3 = flash[:alert]
+  - elsif flash[:notice]
+    div class='flash notice'
+      h3 = flash[:notice]
+      
   = yield
 
   = javascript_include_tag "application", "data-turbolinks-track" => true

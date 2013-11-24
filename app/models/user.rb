@@ -4,7 +4,7 @@ class User
 
   include Mongoid::Document
   include Mongoid::Timestamps
-  include AuthenticationFields
+  include User::AuthenticationFields
 
   #devise :database_authenticatable, :registerable, :recoverable, :rememberable, :trackable, :validatable, :omniauthable, :omniauth_providers => [ :facebook ]
   devise :trackable, :validatable, :omniauthable, :omniauth_providers => [ :facebook ]

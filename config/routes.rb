@@ -67,15 +67,15 @@ Customagic::Application.routes.draw do
   end
   resources :users
   
-  get "/:shop_id/:id" => "products#show"
+  match "/:shop_id/:id" => "products#show", :method => :get
 
-  get "/:shop_id/products/new" => "products#new"
+  match "/:shop_id/products/new" => "products#new", :method => :get
 
-  get "/:shop_id/products/:id/edit" => "products#edit"
+  match "/:shop_id/products/:id/edit" => "products#edit", :method => :get
 
-  get "/:shop_id/products/:id/edit_info" => "products#edit_info"
+  match "/:shop_id/products/:id/edit_info" => "products#edit_info", :method => :get
 
-  get "/:id" => "shops#show"
+  match "/:id" => "shops#show", :method => :get
 
   root :to => "landing#index"
 
