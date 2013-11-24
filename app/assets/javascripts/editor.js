@@ -88,6 +88,7 @@ var Editor = {
     var that = this;
 
     that.initialize_color_swatches();
+    that.initialize_sub_styles();
     that.initialize_content_buttons();
 
     $(".next_step").click(function(){
@@ -104,6 +105,30 @@ var Editor = {
       return false;
     });
 
+  },
+
+  initialize_sub_styles : function(){
+    
+    var that = this;
+
+    $(".product_sub_style.sub_style_" + that.product.sub_style).
+      addClass('current').
+      siblings(".product_sub_style").
+      removeClass("current");
+
+    $(".product_sub_style").click(function(){
+      var el = $(this),
+          slug = el.attr('data-target'),
+          price = el.attr('data-base-price');
+
+      el.addClass('current').
+        siblings(".product_sub_style").
+        removeClass('current');
+
+      $("#product_product_sub_style").val( slug );
+      $(".price_container .currency").text( price ).currency({ region : that.shop.currency_symbol });
+
+    });
   },
 
   initialize_content_buttons : function(){
@@ -226,6 +251,8 @@ var Editor = {
         that.set_color(this);
       });
 
+    $(".swatches .swatch[data-hex='" + this.product.color + "']").click();
+
   },
 
   create_text_asset : function(){
@@ -269,6 +296,7 @@ var Editor = {
     el.addClass('current').siblings().removeClass('current');
 
     that.product.color = el.attr('data-hex');
+    $("#product_color").val( el.attr('data-hex') );
     that.product_preview.css({ 'backgroundImage': "url(" + that.assets_path + "/" + el.attr('data-image') + ")" });
 
   },
@@ -284,7 +312,14 @@ var Editor = {
    $.ajax({
       url : "/shops/" + that.shop.slug + "/products/" + that.product.slug,
       type : "PUT",
-      data : { product : { raw_html : that.temporary_div }, publish : true },
+      data : { 
+        product : { 
+          raw_html : that.temporary_div,
+          product_style : $("#product_product_style").val(),
+          product_sub_style : $("#product_product_sub_style").val(),
+          color : $("#product_color").val()
+        }, 
+        publish : true },
       dataType : "JSON",
       success : function(data) {
         if (typeof success_callback!=='undefined') {
@@ -311,6 +346,7 @@ var Editor = {
         content = $("<div class='content'></div>").
                 css({ 
                   position  : "absolute",
+                  backgroundColor: that.product.color,
                   transform : "scale(" + mod + ")",
                   "transform-origin" : "top left",
                   width     : that.scaled_width, 
