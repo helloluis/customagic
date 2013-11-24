@@ -91,6 +91,7 @@ end
 # Use Capistrano for deployment
 group :development do
   gem 'capistrano', "~> 2.15.0"
+  gem 'rvm-capistrano'
   gem 'capistrano_colors'
   gem 'capistrano-ext'
   gem 'capistrano-nginx'

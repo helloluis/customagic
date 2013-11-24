@@ -30,6 +30,7 @@ set :unicorn_pid, "#{shared_path}/pids/unicorn.pid"
 
 require 'capistrano/ext/multistage'
 require 'bundler/capistrano'
+require "rvm/capistrano"
 # require 'sidekiq/capistrano'
 require 'capistrano/nginx/tasks'
 require 'capistrano-unicorn'
