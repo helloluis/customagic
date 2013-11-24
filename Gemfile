@@ -5,7 +5,7 @@ gem 'rails', '4.0.0'
 gem 'rake'
 gem 'activeresource'
 
-gem 'mongoid', '~> 4', github: 'mongoid/mongoid'
+gem 'mongoid', '~> 4', :github => 'mongoid/mongoid'
 gem 'mongoid_search'
 gem 'mongoid_slug'
 gem 'mongoid-sadstory' # https://github.com/mongoid/mongoid/issues/2954
@@ -89,7 +89,13 @@ end
 # gem 'unicorn'
 
 # Use Capistrano for deployment
-# gem 'capistrano', group: :development
-
+group :development do
+  gem 'capistrano', "~> 2.15.0"
+  gem 'capistrano_colors'
+  gem 'capistrano-ext'
+  gem 'capistrano-nginx'
+  gem 'capistrano-unicorn'
+  gem 'capistrano-deploytags'
+end
 # Use debugger
 # gem 'debugger', group: [:development, :test]
