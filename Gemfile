@@ -98,5 +98,10 @@ group :development do
   gem 'capistrano-unicorn'
   gem 'capistrano-deploytags'
 end
+
+gem 'rails_12factor', group: :production
+
 # Use debugger
 # gem 'debugger', group: [:development, :test]
+
+ruby "1.9.3"
