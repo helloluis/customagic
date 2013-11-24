@@ -20,10 +20,17 @@ App.fonts = {
   courier: "Courier"
 }
 
-App.facebook = {
-  id: "700564963290007",
-  secret: "9a3121de3121af4e42bcc22384030fe3" 
-}
+if Rails.env.production?
+  App.facebook = {
+    id: "1413468338889809",
+    secret: "67f2ef66eda8d231d92fed8fdba66558" 
+  }
+else
+  App.facebook = {
+    id: "700564963290007",
+    secret: "9a3121de3121af4e42bcc22384030fe3" 
+  }
+end
 
 App.currency = {
   symbol: "&#8369;",
