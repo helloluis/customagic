@@ -6,7 +6,7 @@ Devise.setup do |config|
 
   require "omniauth-facebook"
   OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE if Rails.env.development? 
-  config.omniauth :facebook, "700564963290007", "9a3121de3121af4e42bcc22384030fe3",
+  config.omniauth :facebook, App.facebook.id, App.facebook.secret,
     { :scope => 'email, offline_access', :strategy_class => OmniAuth::Strategies::Facebook}
 
   config.mailer_sender = "hello@infinite.ly"
