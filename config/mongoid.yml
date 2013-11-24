@@ -16,7 +16,6 @@ test:
         - localhost:27017
   options:
     use_utc: true
-    allow_dynamic_fields : false
     raise_not_found_error: false
 
 staging:
@@ -27,7 +26,6 @@ staging:
       database: customagic-staging
   options:
     use_utc : true
-    allow_dynamic_fields : false
     raise_not_found_error: false
 
 production:
@@ -38,5 +36,4 @@ production:
       database: customagic
   options:
     use_utc : true
-    allow_dynamic_fields : false
     raise_not_found_error: false

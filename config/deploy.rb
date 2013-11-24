@@ -28,6 +28,8 @@ set :log_files,   %w(unicorn.stderr.log unicorn.stdout.log resque-scheduler.log)
 
 set :unicorn_pid, "#{shared_path}/pids/unicorn.pid"
 
+set :rvm_type, :system
+
 require 'capistrano/ext/multistage'
 require 'bundler/capistrano'
 require "rvm/capistrano"
