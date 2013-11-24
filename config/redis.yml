@@ -12,5 +12,6 @@ staging:
   <<: *defaults
 
 production:
-  host: redistogo:ed82059bd102255572cd71c5cc80f41b@grideye.redistogo.com
+  host: grideye.redistogo.com
+  password: ed82059bd102255572cd71c5cc80f41b
   port: 9483

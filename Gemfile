@@ -58,7 +58,7 @@ gem 'aws-ses', :require => 'aws/ses'
 gem 'redis'
 gem 'redis-rails'
 gem 'redis-store' #, "~> 1.1.0"
-gem 'sidekiq' #, "~> 2.0.0"
+# gem 'sidekiq' #, "~> 2.0.0"
 # gem 'kiqstand'
 
 
