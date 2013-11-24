@@ -31,11 +31,12 @@ staging:
 production:
   sessions:
     default:
-      hosts: 
-        - mongodb://dharma.mongohq.com:10080
-      username: heroku
-      password: fde6573767034583506a1e4e403c794e
-      database: app19768989
+      uri: <%= ENV['MONGOHQ_URL'] %>
+      # hosts: 
+      #   - mongodb://dharma.mongohq.com:10080
+      # username: heroku
+      # password: fde6573767034583506a1e4e403c794e
+      # database: app19768989
   options:
     use_utc : true
     raise_not_found_error: false
