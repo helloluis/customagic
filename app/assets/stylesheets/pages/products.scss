@@ -159,7 +159,7 @@
   width:70px;
 }
 .asset_tools .alignment {
-  width:100px;
+  width:80px;
 }
 .asset_tools .alignment ul {
   list-style-type:none;
@@ -172,10 +172,13 @@
   height:25px;
 }
 .asset_tools .color {
-  width:120px;
+  width:60px;
 }
 .asset_tools .fill {
-  width:120px;
+  width:60px;
+}
+.asset_tools .zindexes, .asset_tools .clone_and_delete {
+  width:80px;
 }
 
 .asset_tools > li {

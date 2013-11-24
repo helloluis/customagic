@@ -110,6 +110,8 @@ function Asset(){
     var that = this,
         tools = $(".asset_tools");
     
+    Editor.selected_asset = this;
+
     if (that.hash.asset_type=='text') {
       tools.removeClass('show_asset_photo_fields').addClass('show_asset_text_fields');
     } else if (that.hash.asset_type=='photo') {
@@ -145,11 +147,13 @@ function Asset(){
 
     tools.
       find(".color_control").
-      val( this.hash.color );
+      val( this.hash.color ).
+      spectrum('enable');
 
     tools.
       find(".bg_color_control").
-      val ( this.hash.bg_color );
+      val ( this.hash.bg_color ).
+      spectrum('enable');
 
   };
 

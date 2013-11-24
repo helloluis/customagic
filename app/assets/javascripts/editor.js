@@ -16,6 +16,7 @@ var Editor = {
     this.initialize_product();
     this.initialize_viewer();
     this.initialize_controls();
+    this.initialize_styler();
 
   },
 
@@ -94,7 +95,7 @@ var Editor = {
     $(".next_step").click(function(){
       
       var el   = $(this).attr('disabled','disabled').text('Saving ...'),
-          href = el.is("a") ? el.attr('href') : el.attr('data-href');;
+          href = el.is("a") ? el.attr('href') : el.attr('data-href');
       
       Flasher.add(['notice',"Please wait, we're saving your changes."], true);
 
@@ -104,6 +105,43 @@ var Editor = {
       
       return false;
     });
+
+  },
+
+  initialize_styler : function(){
+
+    $(".font_family_control, .font_size_control, .alignment_control").
+      change(function(){
+        var css_name = $(this).attr('data-css-name');
+        Editor.selected_asset.dom.css(css_name, $(this).val());
+        Editor.selected_asset.save();
+      });
+
+    $(".color_control").
+      spectrum({
+        showPalette: true,
+        showSelectionPalette: true,
+        palette: [],
+        localStorageKey: "spectrum.homepage",
+        change : function(color){
+          Editor.selected_asset.dom.
+            css({ color: color });
+          Editor.selected_asset.save();
+        }
+      });
+
+    $(".bg_color_control").
+      spectrum({
+        showPalette: true,
+        showSelectionPalette: true,
+        palette: [],
+        localStorageKey: "spectrum.homepage",
+        change : function(color){
+          Editor.selected_asset.dom.
+            css({ backgroundColor: color });
+          Editor.selected_asset.save();
+        }
+      });
 
   },
 
@@ -286,6 +324,10 @@ var Editor = {
     
     $('.asset_tools').find(".asset_id_field").val("");
 
+    $(".asset_tools").
+      find(".color_control, .bg_color_control").
+      spectrum('disable');
+
   },
 
   set_color : function(el){
@@ -355,16 +397,24 @@ var Editor = {
 
     _.each(that.asset_objects, function(a){
       
-      a.dom.
-        clone().
-        css({
-          position: 'absolute'
+      var clone = a.dom.clone();
+  
+      clone.css({
+          position: 'absolute',
+          width:    a.dom.width(),
+          height:   a.dom.height()
         }).
         appendTo(content).
         removeClass('ui-resizable').
         removeClass('ui-draggable').
         find(".ui-resizable-handle").
         remove();
+
+      var img = clone.find("img").css({ width: '100%' });
+
+      if (img.length) {
+        img.attr('src', img.attr('data-original'));
+      }
       
     });
 

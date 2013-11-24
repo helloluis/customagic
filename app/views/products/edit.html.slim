@@ -13,12 +13,12 @@ div id='designer'
         ul class='asset_tools nolist disabled show_asset_text_fields'
           li class='font_family asset_text_field'
             label Font
-            select name='font_family' class='font_family_control select_field' disabled='disabled'
+            select name='font_family' class='font_family_control select_field' disabled='disabled' data-css-name='font-family'
               - App.fonts.each do |slug,font|
-                option value=slug = font
+                option value=font = font
           li class='font_size asset_text_field'
             label Size
-            select name='font_size' class='font_size_control select_field' disabled='disabled'
+            select name='font_size' class='font_size_control select_field' disabled='disabled' data-css-name='font-size'
               option 14px
               option 18px
               option 24px
@@ -31,20 +31,20 @@ div id='designer'
               option 120px
           li class='alignment asset_text_field asset_photo_field'
             label Alignment
-            input type='hidden' name='alignment' class='alignment_control' disabled='disabled'
+            input type='hidden' name='alignment' class='alignment_control' disabled='disabled' data-css-name='text-align'
             ul class='alignment_buttons nolist'
-              li class='alignment_button alignment_left'
-              li class='alignment_button alignment_center current'
-              li class='alignment_button alignment_right'
+              li class='alignment_button alignment_left' L
+              li class='alignment_button alignment_center current' C
+              li class='alignment_button alignment_right' R
           li class='color asset_text_field'
             label Color
-            input type='text' name='color' class='color_control input_field' disabled='disabled'
+            input type='color' name='color' class='color_control input_field' disabled='disabled'
           li class='bg_color asset_text_field'
             label Fill
-            input type='text' name='background-color' class='bg_color_control input_field' value='transparent' disabled='disabled'
+            input type='color' name='background-color' class='bg_color_control input_field' value='transparent' disabled='disabled'
           li class='zindexes asset_text_field asset_photo_field'
-            button class='increase_zindex' Bring Forwards
-            button class='decrease_zindex' Send Backwards
+            button class='increase_zindex' Forwards
+            button class='decrease_zindex' Backwards
           li class='clone_and_delete asset_text_field asset_photo_field'
             button class='clone_asset' Clone
             button class='delete_asset' Delete
@@ -63,7 +63,7 @@ div id='designer'
       
       div class='artwork_uploader'
         
-        form id='photo_uploader' accept-charset="UTF-8" action=create_photo_shop_assets_path(@shop) enctype="multipart/form-data" method="post" class="nolist uploads_form_wrapper"
+        form id='photo_uploader' accept-charset="UTF-8" action=create_photo_shop_assets_path(@current_shop) enctype="multipart/form-data" method="post" class="nolist uploads_form_wrapper"
           | <input type='hidden' name='utf8' value='✓' />
           | <input type='hidden' name='_method' value='post' />
           | <input type='hidden' name='authenticity_token' value='#{form_authenticity_token}' />
@@ -80,7 +80,7 @@ div id='designer'
                 label class="hidden label" for="asset_attachment"
                   | File
                 
-                input id='attachments' class='photo_source_input' name='attachments[]' type='file' class='gray34' data-url=create_photo_shop_assets_path(@shop) data-sequential-uploads='true' data-type='json' multiple='multiple'
+                input id='attachments' class='photo_source_input' name='attachments[]' type='file' class='gray34' data-url=create_photo_shop_assets_path(@current_shop) data-sequential-uploads='true' data-type='json' multiple='multiple'
                 div id='progress'
                   label 0 files selected
                   div class='bar'
@@ -128,8 +128,8 @@ div id='designer'
         h2 class='price currency'
           == number_to_currency(base_price_for_units(@product.product_sub_style_object,20), unit: app_currency_symbol)
 
-      div class='next_step'
-        == f.submit "Next Step &raquo;".html_safe, "data-href".to_sym => "/#{@current_shop.slug}/products/#{@product.slug}/edit_info" 
+      div class='submit_button'
+        == f.submit "Next Step &raquo;".html_safe, "data-href".to_sym => "/#{@current_shop.slug}/products/#{@product.slug}/edit_info", class: "next_step"
         / button class='next_step' 
         /   | Next Step &raquo;  
 
@@ -146,7 +146,8 @@ div id='designer'
 
   script id='asset_photo_tmpl' type='text/template'
     div id="{{__id}}" class='asset asset_{{asset_type}}' data-id="{{__id}}"
-      img src="{{attachment_medium_url}}" data-original="{{attachment_url}}"
+      img src="{{attachment_medium_url}}" data-original="{{attachment_url}}" style='width:100%'
+      
 
   javascript:
     var SHOP = #{@current_shop.to_json.html_safe},
