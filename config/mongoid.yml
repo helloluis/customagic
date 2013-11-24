@@ -32,7 +32,7 @@ production:
   sessions:
     default:
       hosts: 
-        - mongodb.customagic.ph:27017 # doesn't work yet
+        - <%= ENV['MONGOHQ_URL'] %> # mongodb.customagic.ph:27017 # doesn't work yet
       database: customagic
   options:
     use_utc : true
