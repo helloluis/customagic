@@ -12,5 +12,5 @@ staging:
   <<: *defaults
 
 production:
-  host: redis.infinite.ly
-  port: 6379
+  host: redis://redistogo:ed82059bd102255572cd71c5cc80f41b@grideye.redistogo.com
+  port: 9483
