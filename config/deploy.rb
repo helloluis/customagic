@@ -14,7 +14,7 @@ set :deploy_to,     "/var/apps/#{application}"
 set :scm,           :git
 set :keep_releases, 3
 set :branch,        "staging"
-set :deploy_via,    :copy
+set :deploy_via,    :remote_cache
 
 set :user,          "deploy"
 set :sudo_user,     "deploy"

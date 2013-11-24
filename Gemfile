@@ -42,7 +42,7 @@ gem 'fog'
 gem 'fb_graph'
 
 gem 'carrierwave'
-gem 'carrierwave-mongoid', require: 'carrierwave/mongoid'
+gem 'carrierwave-mongoid', :require => 'carrierwave/mongoid'
 gem 'mini_magick'
 
 gem 'imgkit'
@@ -52,7 +52,7 @@ gem 'imgkit'
 
 gem 'sanitize'
 
-gem 'aws-ses', require: 'aws/ses'
+gem 'aws-ses', :require => 'aws/ses'
 
 # redis related gems
 gem 'redis'
