@@ -26,36 +26,8 @@ var Calculator = {
   initialize_sales_goal : function(){
     
     var that = this,
-        find_base_price = function(int) {
-          var bp = _.find(that.prices, function(p){
-            var range = p[0].split("..");
-            if (int>=parseInt(range[0]) && int<=parseInt(range[1])) {
-              return true;
-            }
-          });
-          
-          if (bp){
-            return bp[1];  
-          } else {
-            return 0;
-          }
-          
-        },
         refresh_indicators = function(){
-          
-          var bp = find_base_price(that.sales_goal.val()),
-              rp = bp+(bp*0.2);
-          
-          that.base_price.val(bp);
-          that.retail_price.val(rp);
-          that.profit.text(rp-bp);
-          
-          that.sales_goal_indicator.text(that.sales_goal.val());
-          that.total_sales.text(rp*parseInt(that.sales_goal.val()));
-          that.total_earn.text((rp-bp)*parseInt(that.sales_goal.val()));
-
-          $(".currency").not("input").currency({ region: SHOP.currency_symbol });
-
+          that.refresh_indicators();
         };
 
     this.sales_goal   = $("#product_sales_goal");
@@ -66,21 +38,63 @@ var Calculator = {
     this.total_sales  = $(".total_sales");
     this.total_earn   = $(".total_earnings");
 
-    this.sales_goal.keyup(refresh_indicators).keyup();
+    this.sales_goal.keyup(refresh_indicators);
+
+    this.refresh_indicators(true);
 
   },
 
   initialize_currency : function(){
+    
+    var that = this;
 
-    $("input.currency").change(function(){
-      var el = $(this);
-      if (el.data('timer')) { el.data('timer').stop(); }
-      el.data('timer', $.timer(function(){
-        el.currency({ region: 'NA' });
-      }));
-      el.data('timer').set({ time: 1000, autostart: true });
-    }).
-    change();
+    $("input.currency").
+      keyup(function(){
+        clearTimeout($.data(this,'timer'));
+        var wait = setTimeout(function(){ that.refresh_indicators(); }, 2000);
+        $(this).data('timer',wait);
+      });
+
+  },
+  
+  find_base_price : function(int) {
+    
+    var that = this,
+          bp = _.find(that.prices, function(p){
+                  var range = [p[0][0], p[0][p[0].length-1]];
+                  if (int>=parseInt(range[0]) && int<=parseInt(range[1])) {
+                    return true;
+                  }
+                });
+    
+    if (bp){
+      return bp[1];  
+    } else {
+      return 0;
+    }
+    
+  },
+
+  refresh_indicators : function(with_default_retail_price){
+
+    var that = this,
+        bp   = that.find_base_price(that.sales_goal.val()),
+        rp   = with_default_retail_price ? bp+(bp*0.2) : parseFloat(that.retail_price.val());
+          
+    that.base_price.val(bp);
+
+    if (with_default_retail_price) {
+      that.retail_price.val(rp);  
+    }
+    
+    that.profit.text(rp-bp);
+    
+    that.sales_goal_indicator.text(that.sales_goal.val());
+    that.total_sales.text(rp*parseInt(that.sales_goal.val()));
+    that.total_earn.text((rp-bp)*parseInt(that.sales_goal.val()));
+
+    $(".currency").not("input").currency({ region: SHOP.currency_symbol });
+    $("input.currency").currency({ region : 'NA' });
 
   }
 
