@@ -34,7 +34,7 @@ class FinalArt
 
     kit = IMGKit.new(self.product.raw_html, :quality => 100, :width => width, :height => height)
     
-    file = kit.to_file(Rails.root.join("public","generated_images","#{self.product._id}_#{Time.now.to_i}.jpg"))
+    file = kit.to_file(Rails.root.join("tmp","#{self.product._id}_#{Time.now.to_i}.jpg"))
 
     self.attachment = File.open(file)
 
