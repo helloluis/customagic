@@ -8,7 +8,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     @user.update_with_facebook(omniauth_request)
     
     if @user.persisted?
-      @shop = @user.create_shop
+      @shop = @user.create_shop unless @user.shop.any?
       # sign_in_and_redirect @user, :event => :authentication #this will throw if @user is not activated
       sign_in @user
       redirect_to "/#{@shop.slug}/products/new" #, :event => :authentication #this will throw if @user is not activated
