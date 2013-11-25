@@ -63,7 +63,7 @@ class AssetsController < ApplicationController
 
   def update
     if @asset = @shop.assets.find(params[:id])
-      @asset.update_attributes(params[:asset].permit!)
+      @asset.update_attributes(params[:asset])
       respond_to do |format|
         format.json { render :json => @asset }
       end

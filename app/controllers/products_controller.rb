@@ -37,7 +37,7 @@ class ProductsController < ApplicationController
   end
 
   def update
-    if @product.update_attributes(params[:product].permit!)
+    if @product.update_attributes(params[:product])
       @product.create_final_art if params[:publish]
       respond_to do |format|
         format.json { render :json => @product }
@@ -46,7 +46,7 @@ class ProductsController < ApplicationController
   end
 
   def update_sales_information
-    if @product.update_attributes(params[:product].permit!)
+    if @product.update_attributes(params[:product])
       @product.update_sales_information!
       respond_to do |format|
         format.json { render :json => @product }
