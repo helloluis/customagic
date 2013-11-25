@@ -2,16 +2,21 @@ var Editor = {
 
   assets_path : "/assets",
 
+  scale : 0.12,
+
   initialize : function(shop, types, product, assets) {
     
     this.shop    = shop;
     this.product_types = types;
     this.product = product;
     this.assets  = assets;
+    
+    this.current_side  = 0; // which side of the item are we viewing? (front/back/etc)
 
     this.initialize_product();
     this.initialize_viewer();
     this.initialize_controls();
+    this.initialize_styler();
 
   },
 
@@ -19,8 +24,9 @@ var Editor = {
     
     var that = this;
 
-    this.product_type = this.product_types[0]; // shirt
+    this.product_type  = this.product_types[0]; // shirt
     this.product_style = this.product_types[0].product_styles[0]; // basic tee
+    
 
     if (that.product.product_type) {
       if (type = _.find(that.product_types,function(p){ return p.slug==that.product.product_type; })) {
@@ -38,7 +44,10 @@ var Editor = {
     var that = this;
 
     that.product_preview = $(".viewer .product");
+    
     that.product_editable_area = $(".viewer .editable_area");
+
+    that.initialize_scale();
 
     that.asset_objects = [];
 
@@ -57,11 +66,107 @@ var Editor = {
 
   },
 
+  initialize_scale : function(){
+
+    var that = this;
+    
+    that.target_dpi    = this.product_type.dpi_target;
+    that.full_width    = that.product_type.sides[that.current_side].editable_area[0]*this.product_type.dpi_target;
+    that.full_height   = that.product_type.sides[that.current_side].editable_area[1]*this.product_type.dpi_target;
+    that.scaled_width  = that.full_width*that.scale;
+    that.scaled_height = that.full_height*that.scale;
+
+    that.product_editable_area.css({ 
+      width  : that.scaled_width, 
+      height : that.scaled_height,
+      left   : (that.product_preview.width()-that.scaled_width)/2
+    });
+
+  },
+
   initialize_controls : function() {
 
-    this.initialize_color_swatches();
-    this.initialize_content_buttons();
+    var that = this;
 
+    that.initialize_color_swatches();
+    that.initialize_sub_styles();
+    that.initialize_content_buttons();
+
+    $(".next_step").click(function(){
+      
+      var el   = $(this).attr('disabled','disabled').text('Saving ...'),
+          href = el.is("a") ? el.attr('href') : el.attr('data-href');
+      
+      Flasher.add(['notice',"Please wait, we're saving your changes."], true);
+
+      that.publish(function(){
+        window.location.replace( href );
+      });
+      
+      return false;
+    });
+
+  },
+
+  initialize_styler : function(){
+
+    $(".font_family_control, .font_size_control, .alignment_control").
+      change(function(){
+        var css_name = $(this).attr('data-css-name');
+        Editor.selected_asset.dom.css(css_name, $(this).val());
+        Editor.selected_asset.save();
+      });
+
+    $(".color_control").
+      spectrum({
+        showPalette: true,
+        showSelectionPalette: true,
+        palette: [],
+        localStorageKey: "spectrum.homepage",
+        change : function(color){
+          Editor.selected_asset.dom.
+            css({ color: color });
+          Editor.selected_asset.save();
+        }
+      });
+
+    $(".bg_color_control").
+      spectrum({
+        showPalette: true,
+        showSelectionPalette: true,
+        palette: [],
+        localStorageKey: "spectrum.homepage",
+        change : function(color){
+          Editor.selected_asset.dom.
+            css({ backgroundColor: color });
+          Editor.selected_asset.save();
+        }
+      });
+
+  },
+
+  initialize_sub_styles : function(){
+    
+    var that = this;
+
+    $(".product_sub_style.sub_style_" + that.product.sub_style).
+      addClass('current').
+      siblings(".product_sub_style").
+      removeClass("current");
+
+    $(".product_sub_style").click(function(){
+      var el = $(this),
+          slug = el.attr('data-target'),
+          price = el.attr('data-base-price');
+
+      el.addClass('current').
+        siblings(".product_sub_style").
+        removeClass('current');
+
+      $("#product_product_sub_style").val( slug );
+      $(".price_container .currency").text( price ).currency({ region : that.shop.currency_symbol });
+
+    });
   },
 
   initialize_content_buttons : function(){
@@ -184,6 +289,8 @@ var Editor = {
         that.set_color(this);
       });
 
+    $(".swatches .swatch[data-hex='" + this.product.color + "']").click();
+
   },
 
   create_text_asset : function(){
@@ -217,6 +324,10 @@ var Editor = {
     
     $('.asset_tools').find(".asset_id_field").val("");
 
+    $(".asset_tools").
+      find(".color_control, .bg_color_control").
+      spectrum('disable');
+
   },
 
   set_color : function(el){
@@ -227,25 +338,118 @@ var Editor = {
     el.addClass('current').siblings().removeClass('current');
 
     that.product.color = el.attr('data-hex');
+    $("#product_color").val( el.attr('data-hex') );
     that.product_preview.css({ 'backgroundImage': "url(" + that.assets_path + "/" + el.attr('data-image') + ")" });
 
   },
 
-  update_product : function() {
-    
+  publish : function(success_callback){
+
     var that = this;
+    
     that.loading();
-    $.ajax({
-      url : "/products/" + that.product.slug,
+
+    that.temporary_div = that.scale_up_assets();
+
+   $.ajax({
+      url : "/shops/" + that.shop.slug + "/products/" + that.product.slug,
       type : "PUT",
+      data : { 
+        product : { 
+          raw_html : that.temporary_div,
+          product_style : $("#product_product_style").val(),
+          product_sub_style : $("#product_product_sub_style").val(),
+          color : $("#product_color").val()
+        }, 
+        publish : true },
       dataType : "JSON",
       success : function(data) {
-
+        if (typeof success_callback!=='undefined') {
+          success_callback.call();
+        }
       },
       complete : function(x) {
         that.loading_stop();
       }
     });
+
+  },
+
+  scale_up_assets : function(){
+
+    var that = this,
+        mod  = (100/(that.scale*100)),
+        main = $("<div class='main'></div>").
+                css({
+                  position  : "absolute",
+                  width     : that.full_width,
+                  height    : that.full_height
+                }),
+        content = $("<div class='content'></div>").
+                css({ 
+                  position  : "absolute",
+                  backgroundColor: that.product.color,
+                  transform : "scale(" + mod + ")",
+                  "transform-origin" : "top left",
+                  width     : that.scaled_width, 
+                  height    : that.scaled_height
+                });
+
+    _.each(that.asset_objects, function(a){
+      
+      var clone = a.dom.clone();
+  
+      clone.css({
+          position: 'absolute',
+          width:    a.dom.width(),
+          height:   a.dom.height()
+        }).
+        appendTo(content).
+        removeClass('ui-resizable').
+        removeClass('ui-draggable').
+        find(".ui-resizable-handle").
+        remove();
+
+      var img = clone.find("img").css({ width: '100%' });
+
+      if (img.length) {
+        img.attr('src', img.attr('data-original'));
+      }
+      
+    });
+
+
+
+    return "<html><body>" + main.append(content.outerHTML()).outerHTML() + "</body></html>";
+
+  },
+
+  freeze : function(){
+
+    this.is_frozen = true;
+    this.product_editable_area.find(".asset").resizable('enable').draggable('enable');
+    this.reset_settings_panel();
+
+  },
+
+  thaw : function(){
+
+    this.is_frozen = false;
+    this.product_editable_area.find(".asset").resizable('disable').draggable('disable');
+
+  },
+
+  start_editing : function(){
+
+    this.is_editing = true;
+    $(".next_step").attr('disabled','disabled');
+
+  },
+
+  stop_editing : function(){
+
+    this.is_editing = false;
+    $(".next_step").removeAttr('disabled');
 
   },
 

@@ -1,20 +1,25 @@
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.0.0'
+gem 'rails', '3.2.15'
 gem 'rake'
-gem 'activeresource'
+# gem 'activeresource'
 
-gem 'mongoid', '~> 4', github: 'mongoid/mongoid'
+#gem 'mongoid', '~> 4.0', :github => 'mongoid/mongoid'
+gem 'mongoid', '3.1.5'
+gem 'bson_ext'
 gem 'mongoid_search'
 gem 'mongoid_slug'
-gem 'mongoid-sadstory' # https://github.com/mongoid/mongoid/issues/2954
+# gem 'mongoid-sadstory' # https://github.com/mongoid/mongoid/issues/2954
 gem 'mongoid_taggable'
-gem 'mongoid_rating'
+# gem 'mongoid_rating'
+gem 'mongoid_rateable'
+gem 'mongo_session_store-rails3'
+# gem "mongo_sessions", :require => "mongo_sessions/rails_mongo_store", :git => 'git://github.com/biilmann/mongo_sessions'
 # gem 'mongoid_rails_migrations'
 
 # Use SCSS for stylesheets
-gem 'sass-rails', '~> 4.0.0'
+gem 'sass-rails' #, '~> 4.0.0'
 gem 'compass'
 gem 'compass-rails'
 
@@ -42,18 +47,23 @@ gem 'fog'
 gem 'fb_graph'
 
 gem 'carrierwave'
-gem 'carrierwave-mongoid', require: 'carrierwave/mongoid'
+gem 'carrierwave-mongoid', :require => 'carrierwave/mongoid'
 gem 'mini_magick'
+
+gem 'imgkit'
+# after your bundle install, run this command (from your application root) 
+# to install the actual binary that actually generates the images:
+# rvmsudo imgkit --install-wkhtmltoimage
 
 gem 'sanitize'
 
-gem 'aws-ses', require: 'aws/ses'
+gem 'aws-ses', :require => 'aws/ses'
 
 # redis related gems
-gem 'redis'
-gem 'redis-rails'
-gem 'redis-store' #, "~> 1.1.0"
-gem 'sidekiq' #, "~> 2.0.0"
+# gem 'redis'
+# gem 'redis-rails'
+# gem 'redis-store' #, "~> 1.1.0"
+# gem 'sidekiq' #, "~> 2.0.0"
 # gem 'kiqstand'
 
 
@@ -74,7 +84,7 @@ gem 'jbuilder', '~> 1.2'
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
-  gem 'sdoc', require: false
+  gem 'sdoc', :require => false
 end
 
 # Use ActiveModel has_secure_password
@@ -84,7 +94,19 @@ end
 # gem 'unicorn'
 
 # Use Capistrano for deployment
-# gem 'capistrano', group: :development
+group :development do
+  gem 'capistrano', "~> 2.15.0"
+  gem 'rvm-capistrano'
+  gem 'capistrano_colors'
+  gem 'capistrano-ext'
+  gem 'capistrano-nginx'
+  gem 'capistrano-unicorn'
+  gem 'capistrano-deploytags'
+end
+
+gem 'rails_12factor', group: :production
 
 # Use debugger
 # gem 'debugger', group: [:development, :test]
+
+ruby "1.9.3"

@@ -159,7 +159,7 @@
   width:70px;
 }
 .asset_tools .alignment {
-  width:100px;
+  width:80px;
 }
 .asset_tools .alignment ul {
   list-style-type:none;
@@ -172,10 +172,13 @@
   height:25px;
 }
 .asset_tools .color {
-  width:120px;
+  width:60px;
 }
 .asset_tools .fill {
-  width:120px;
+  width:60px;
+}
+.asset_tools .zindexes, .asset_tools .clone_and_delete {
+  width:80px;
 }
 
 .asset_tools > li {
@@ -206,10 +209,14 @@
   .viewer {
     width:360px;
     padding:20px;
+    overflow:visible;
     .item {
       height:480px;
       margin-bottom:10px;
       border:1px solid #ccc;
+      background-repeat:no-repeat;
+      background-position: 50% 0%;
+      background-size: contain;
     }
   }
   .info_form_container {
@@ -227,4 +234,37 @@
       margin-bottom:20px;
     }
   }
+  .totals_and_instructions {
+    float:left;
+    width:250px;
+  }
+  .totals {
+    background:#fff;
+    padding:20px;
+    margin:20px 0px;
+    dt { font-size:16px; }
+    dd { font-size:24px; margin-bottom:10px; }
+  }
+  .help {
+    padding:10px;
+    h3,p {
+      margin-bottom:10px;
+    }
+  }
+}
+
+.loading_indicator {
+  background:#f90;
+  text-align:center;
+  color:#fff;
+  font-weight:bold;
+  display:none;
+  position:absolute;
+  top:0px;
+  left:900px;
+  padding:5px 10px;
+}
+
+body.loading .loading_indicator {
+  display:block;
 }

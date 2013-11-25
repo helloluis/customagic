@@ -14,7 +14,7 @@ class Asset
   field :height,        type: Integer,  default: 100
   field :color,         type: String,   default: "#000000"
   field :bg_color,      type: String,   default: "transparent"
-  field :font,          type: String,   default: "Helvetica"
+  field :font_family,   type: String,   default: "Helvetica"
   field :font_size,     type: String,   default: "36px"
   field :alignment,     type: String,   default: "center"
   field :product_side,  type: Integer,  default: 0  # what side of the product is this asset on? a shirt will have two sides (0 = front, 1 = back)

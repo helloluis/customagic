@@ -11,7 +11,7 @@ class Shop
   has_many :assets
   has_many :images
 
-  field :name
+  field :name,            type: String,  default: "New Shop"
   field :description
   field :items_count,     type: Integer, default: 0
   field :active,          type: Boolean, default: true
@@ -24,7 +24,11 @@ class Shop
   index({slug: 1, category_slug: 1})
 
   def currency_symbol
-    "PhP"
+    "PHP"
+  end
+
+  def as_json(options = {})
+    super(options.reverse_merge(:methods => [:slug, :currency_symbol]))
   end
 
 end

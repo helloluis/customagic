@@ -61,18 +61,21 @@ Customagic::Application.routes.draw do
   end
 
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
-
+  devise_scope :user do
+    get 'sign_in', :to => 'devise/sessions#new', :as => :new_user_session
+    get 'sign_out', :to => 'devise/sessions#destroy', :as => :destroy_user_session
+  end
   resources :users
   
-  get "/:shop_id/:id" => "products#show"
+  match "/:shop_id/:id" => "products#show", :method => :get
 
-  get "/:shop_id/products/new" => "products#new"
+  match "/:shop_id/products/new" => "products#new", :method => :get
 
-  get "/:shop_id/products/:id/edit" => "products#edit"
+  match "/:shop_id/products/:id/edit" => "products#edit", :method => :get
 
-  get "/:shop_id/products/:id/edit_info" => "products#edit_info"
+  match "/:shop_id/products/:id/edit_info" => "products#edit_info", :method => :get
 
-  get "/:id" => "shops#show"
+  match "/:id" => "shops#show", :method => :get
 
   root :to => "landing#index"
 

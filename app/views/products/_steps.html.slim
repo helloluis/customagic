@@ -1,11 +1,14 @@
 div class='steps'
   ol
     li class='step' data-target='step_1' 
-      a href="/#{@shop.slug}/products/#{@product.slug}/edit" 
+      a href="/#{@current_shop.slug}/products/#{@product.slug}/edit" 
         | Design Your #{@product.product_type}
-    li class='step' data-target='step_2' 
-      a href="/#{@shop.slug}/products/#{@product.slug}/edit_info" 
+    li class='step next_step' data-target='step_2' 
+      a href="/#{@current_shop.slug}/products/#{@product.slug}/edit_info" class="next_step"
         | Add Price and Goal
     li class='step' data-target='step_3'
-      a href="/shops/#{@shop.slug}/edit" 
-        | Design Your Shop (optional)
+      a href="/shops/#{@current_shop.slug}/edit" class="next_step"
+        | Launch!
+  
+  - if user_signed_in?
+    h2 Hey there, #{current_user.first_name}!

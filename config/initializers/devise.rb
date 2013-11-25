@@ -2,11 +2,11 @@
 # Many of these configuration options can be set straight in your model.
 Devise.setup do |config|
 
-  config.secret_key = '9f0823a5ecad0906a7532978dce280d497fef38fbfa23db198ff6679f6a127897a2da57e5494125fc504c1d2b805b23c1324a67b3122e9e843d1f54a132bffc4'
+  # config.secret_key = '9f0823a5ecad0906a7532978dce280d497fef38fbfa23db198ff6679f6a127897a2da57e5494125fc504c1d2b805b23c1324a67b3122e9e843d1f54a132bffc4'
 
   require "omniauth-facebook"
   OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE if Rails.env.development? 
-  config.omniauth :facebook, "700564963290007", "9a3121de3121af4e42bcc22384030fe3",
+  config.omniauth :facebook, App.facebook.id, App.facebook.secret,
     { :scope => 'email, offline_access', :strategy_class => OmniAuth::Strategies::Facebook}
 
   config.mailer_sender = "hello@infinite.ly"
@@ -98,7 +98,7 @@ Devise.setup do |config|
   # access will be blocked just in the third day. Default is 0.days, meaning
   # the user cannot access the website without confirming his account.
   # config.allow_unconfirmed_access_for = 2.days
-
+  
   # If true, requires any email changes to be confirmed (exctly the same way as
   # initial account confirmation) to be applied. Requires additional unconfirmed_email
   # db field (see migrations). Until confirmed new email is stored in
@@ -177,7 +177,7 @@ Devise.setup do |config|
   # and :restful_authentication_sha1 (then you should set stretches to 10, and copy
   # REST_AUTH_SITE_KEY to pepper)
   # config.encryptor = :sha512
-
+  config.encryptor = :sha512
   # ==> Configuration for :token_authenticatable
   # Defines name of the authentication token params key
   # config.token_authentication_key = :auth_token

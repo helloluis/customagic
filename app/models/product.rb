@@ -4,12 +4,14 @@ class Product
   include Mongoid::Slug
   include Mongoid::Timestamps
 
-  include Characteristics
+  include Product::Characteristics
 
   belongs_to :shop
   belongs_to :album
 
+  has_one :final_art
   has_many :assets
+
   has_many :tags, :class_name => "ProductTag"
   has_many :reviews, :class_name => "ProductReview" do
     def featured
@@ -37,6 +39,10 @@ class Product
   field :num_orders,    type: Integer,  default: 0
   field :num_favorites, type: Integer,  default: 0
   field :status,        type: Integer,  default: 0    # 0 = in progress, 1 = hidden, 2 = visible, 3 = out of stock, 4 = coming soon, 9 = demo
+  
+  field :buy_now_price, type: Float,    default: 0.0
+  field :base_price,    type: Float,    default: 0.0
+  field :retail_price,  type: Float,    default: 0.0
   field :lowest_price,  type: Float,    default: 0.0
   field :sales_goal,    type: Integer,  default: 20
   
@@ -48,6 +54,8 @@ class Product
   #   { :primary => 'medium', :secondary => 'white', :quantity => 10, :price => 100.00 },
   #   { :primary => 'medium', :secondary => 'black', :quantity => 10, :price => 100.00 }
   # ]
+
+  field :raw_html
 
   field :dont_track_quantities,   type: Boolean,  default: false
   field :hide_prices,             type: Boolean,  default: false
@@ -487,7 +495,7 @@ class Product
       if album.find{|a| a.products.find{|p| p.first==self._id } }
         album.check_integrity!
       end
-    end if shop.albums
+    end if shop && shop.albums
   end
 
   def check_remote_attachment_url
@@ -541,6 +549,10 @@ class Product
     else
       #logger.info "!! #{a.errors.inspect} !!"
     end
+  end
+
+  def create_final_art!
+    self.final_art.create(dpi_target: product_type.dpi_target)
   end
 
 end

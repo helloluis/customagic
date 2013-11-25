@@ -1,4 +1,6 @@
 
+div class='loading_indicator' Loading ...
+
 = render :partial => "products/steps"
 
 div id='designer'
@@ -62,7 +64,7 @@ div id='designer'
       
       div class='artwork_uploader'
         
-        form id='photo_uploader' accept-charset="UTF-8" action=create_photo_shop_assets_path(@shop) enctype="multipart/form-data" method="post" class="nolist uploads_form_wrapper"
+        form id='photo_uploader' accept-charset="UTF-8" action=create_photo_shop_assets_path(@current_shop) enctype="multipart/form-data" method="post" class="nolist uploads_form_wrapper"
           | <input type='hidden' name='utf8' value='✓' />
           | <input type='hidden' name='_method' value='post' />
           | <input type='hidden' name='authenticity_token' value='#{form_authenticity_token}' />
@@ -79,7 +81,7 @@ div id='designer'
                 label class="hidden label" for="asset_attachment"
                   | File
                 
-                input id='attachments' class='photo_source_input' name='attachments[]' type='file' class='gray34' data-url=create_photo_shop_assets_path(@shop) data-sequential-uploads='true' data-type='json' multiple='multiple'
+                input id='attachments' class='photo_source_input' name='attachments[]' type='file' class='gray34' data-url=create_photo_shop_assets_path(@current_shop) data-sequential-uploads='true' data-type='json' multiple='multiple'
                 div id='progress'
                   label 0 files selected
                   div class='bar'
@@ -101,33 +103,36 @@ div id='designer'
         / http://version1.api.memegenerator.net/Generators_Select_ByPopular?pageIndex=0&pageSize=12&days=7
         ul class='artwork'
 
-
-    div class='colors'
-      ul class='swatches' data-target=''
-        
-    div class='product_styles_container'
-      - App.product_types.each do |product_type|
-        select class="product_style_selector"
+    = simple_form_for :product do |f|
+      div class='colors'
+        = f.input :color, as: :hidden
+        ul class='swatches' data-target=''
+          
+      div class='product_styles_container'
+        - App.product_types.each do |product_type|
+          
+          = f.input :product_style, collection: product_type.product_styles.map{|ps|[ps.name,ps.slug]}
+          
+          = f.input :product_sub_style, as: :hidden
+          
           - product_type.product_styles.each do |product_style|
-            option value=product_style.slug = product_style.name
-        
-        - product_type.product_styles.each do |product_style|
-          ul class='product_sub_styles'
-            - product_style.sub_styles.each_with_index do |sub_style,i|
-              li class='product_sub_style #{i==0 ? 'current' : ''}' data-target=sub_style.slug
-                div class='thumbnail' style="background-image:url(#{asset_path(sub_style.image)})" = sub_style.image
-                h4 = sub_style.name
-                p = sub_style.description
+            ul class='product_sub_styles'
+              - product_style.sub_styles.each_with_index do |sub_style,i|
+                li class='product_sub_style sub_style_#{sub_style.slug} #{i==0 ? 'current' : ''}' data-target=sub_style.slug data-base-price=base_price_for_units(sub_style,20)
+                  div class='thumbnail' style="background-image:url(#{asset_path(sub_style.image)})" = sub_style.image
+                  h4 = sub_style.name
+                  p = sub_style.description
 
-    div class='price_container'
-      p class='price_description'
-        | Base cost @ 20 shirts
-      h2 class='price currency'
-        == "#{app_currency_symbol}100.00"
+      div class='price_container hint--left' data-hint="Prices decrease the more #{@product.product_type}s we produce!"
+        p class='price_description'
+          | Base cost @ 20 #{@product.product_type}s
+        h2 class='price currency'
+          == number_to_currency(base_price_for_units(@product.product_sub_style_object,20), unit: app_currency_symbol)
 
-    div class='next_step'
-      button class='next_step' data-target='step_2' 
-        | Next Step &raquo;  
+      div class='submit_button'
+        == f.submit "Next Step &raquo;".html_safe, "data-href".to_sym => "/#{@current_shop.slug}/products/#{@product.slug}/edit_info", class: "next_step"
+        / button class='next_step' 
+        /   | Next Step &raquo;  
 
 - content_for :page_scripts do
 
@@ -137,15 +142,16 @@ div id='designer'
 
   script id='asset_text_tmpl' type='text/template'
     div id="{{__id}}" class='asset asset_{{asset_type}}' data-id="{{__id}}" contenteditable="true" title="Double-click to edit!"
-      h1
+      span
         | {{{content}}}
 
   script id='asset_photo_tmpl' type='text/template'
     div id="{{__id}}" class='asset asset_{{asset_type}}' data-id="{{__id}}"
-      img src="{{attachment_medium_url}}" data-original="{{attachment_url}}"
+      img src="{{attachment_medium_url}}" data-original="{{attachment_url}}" style='width:100%'
+      
 
   javascript:
-    var SHOP = #{@shop.to_json(methods: [:slug]).html_safe},
+    var SHOP = #{@current_shop.to_json.html_safe},
         PRODUCT_STYLES = #{App.product_types.to_json.html_safe},
         PRODUCT = #{@product.to_json(methods: [:slug]).html_safe},
         ASSETS  = #{@assets.to_json(methods: [:__id, :attachment_url, :attachment_medium_url, :attachment_thumb_url]).html_safe};

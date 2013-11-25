@@ -28,6 +28,11 @@ module ApplicationHelper
     App.currency.symbol
   end
 
+  def base_price_for_units(sub_style, num)
+    sub_style.prices.find{|prices| prices.first.to_a.include?(num.to_i)}.last #rescue 0
+  end
+
+
   def document_title
     @page_title || "Welcome to #{app_name}"
   end

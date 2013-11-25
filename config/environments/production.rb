@@ -78,3 +78,5 @@ Customagic::Application.configure do
   # Use default logging formatter so that PID and timestamp are not suppressed.
   config.log_formatter = ::Logger::Formatter.new
 end
+
+# ENV['REDISTOGO_URL'] = "redis://redistogo:ed82059bd102255572cd71c5cc80f41b@grideye.redistogo.com:9483/"

@@ -17,4 +17,6 @@
 //= require underscore
 //= require jquery.fileupload
 //= require jquery.timer
+//= require jquery.currency
+//= require spectrum
 //= require_tree .
