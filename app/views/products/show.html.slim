@@ -9,19 +9,33 @@ div class='product standalone_product'
 
   div class='product_prices'
     ul 
-      li class='group_price' 
-        p class='preorder_label' Preorder at
-        h4 = link_to number_to_currency(@product.group_price, unit: @current_shop.currency_symbol), shop_product_path(@current_shop, @product)
-        p class='remaining'
-          | Only 
-          = @product.remaining
-          |  left!
-      li class='buy_now_price'
-        p 
-          | (Or #{link_to('buy it now', shop_product_path(@current_shop, @product))} for #{number_to_currency(@product.buy_now_price, unit: @current_shop.currency_symbol)})
+      - if user_signed_in?
+        li class='group_price' 
+          p class='preorder_label' Preorder at
+          h4 = link_to number_to_currency(@product.group_price, unit: @current_shop.currency_symbol), add_product_shop_carts_path(@current_shop, product_id: @product.slug, preorder: true)
+          p class='remaining'
+            | Only 
+            = @product.remaining
+            |  left!
+        li class='buy_now_price'
+          p 
+            | (Or #{link_to('buy it now', add_product_shop_carts_path(@current_shop, product_id: @product.slug, buy_now: true))} for #{number_to_currency(@product.buy_now_price, unit: @current_shop.currency_symbol)})
+      - else
+        li class='group_price disabled' 
+          p class='preorder_label' Preorder at
+          h4 = link_to number_to_currency(@product.group_price, unit: @current_shop.currency_symbol), user_omniauth_authorize_path(:facebook, :return_to_product => @product.slug), :class => "login_via_facebook"
+          p class='remaining'
+            | Only 
+            = @product.remaining
+            |  left!
+          p class='facebook_warning'
+            | You will be asked to login via Facebook to order this.
+        li class='buy_now_price disabled'
+          p 
+            | (Or #{link_to('buy it now', user_omniauth_authorize_path(:facebook, :return_to_product => @product.slug))} for #{number_to_currency(@product.buy_now_price, unit: @current_shop.currency_symbol)})
 
-  div class='product_countdown' data-campaign-length=@product.campaign_length data-campaign-start=@product.availability_start = countdown(@product)
 
+  div class='product_countdown' data-campaign-length=@product.campaign_length data-campaign-start=@product.availability_start.strftime("%m/%d/%Y %H:%M:%S") == countdown(@product)
 
 - if is_owner?(@current_shop)
   div class='owner_tools'

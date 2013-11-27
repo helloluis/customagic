@@ -39,7 +39,11 @@ class User
   has_one  :shop
   has_many :products
   has_many :orders
-  has_many :carts
+  has_many :carts do
+    def active
+      where(checked_out: false).desc(:created_at)
+    end
+  end
 
   validates :name,  :presence => true, :length => { :minimum => 2 }
   validates :email, :format => { :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i, :on => :create }

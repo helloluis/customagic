@@ -11,8 +11,11 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       @shop = @user.create_shop unless @user.shop
       # sign_in_and_redirect @user, :event => :authentication #this will throw if @user is not activated
       sign_in @user
-      redirect_to "/#{@shop.slug}/products/new" #, :event => :authentication #this will throw if @user is not activated
-
+      if params[:redirect_to_product] && (@product=Product.find(params[:redirect_to_product]))
+        redirect_to "/#{@product.shop.slug}/#{@product.slug}"
+      else
+        redirect_to "/#{@shop.slug}/products/new"
+      end
       set_flash_message(:notice, :success, :kind => "Facebook") if is_navigational_format?
     else
       session["devise.facebook_data"] = request.env["omniauth.auth"]
