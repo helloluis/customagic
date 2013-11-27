@@ -17,8 +17,8 @@ class Shop
   field :active,          type: Boolean, default: true
   field :category_slug,   type: String,  default: "recent"
   field :max_products,    type: Integer, default: 5
-  field :partner,         type: String,  default: "customagic"
-
+  field :partner,         type: String,  default: "poolpartee"
+  field :time_zone,       type: String,  default: "Singapore"
   slug :name
 
   index({slug: 1, category_slug: 1})

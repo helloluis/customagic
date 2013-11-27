@@ -1,0 +1,139 @@
+<% @page_title = "Orders" %>
+<% @shop = current_site.shop %>
+<% @currency = @shop.currency_symbol.html_safe %>
+
+<% content_for :css do %>
+  <style>
+    <%= render_shop_css(current_site.assets.shop,true) %>
+  </style>
+<% end %>
+
+<% content_for :js do %>
+  <%= javascript_include_tag "order_manager" %>
+<% end %>
+
+<%= render :partial => "shops/header" %>
+
+<div class='background clearfix'>
+
+  <div class='main_widget shop_widget orders_list orders_page'>
+
+    <header>
+      <h1>Orders</h1>
+      <div class='statistics_wrapper'>
+        <h3 class="total_monthly_sales stat" title="<%= @currency %><%= number_with_precision(@total_monthly_order_value_with_shipping, :precision => 2, :delimiter => ",")%>, including shipping">
+          <%= @currency %>
+          <%= number_with_precision(@total_monthly_order_value, :precision => 2, :delimiter => ",") %>
+          <small>Total Sales (Last 30 days)</small>
+        </h3>
+        <h3 class='total_monthly_sales stat' title="<%= @currency %><%= number_with_precision(@total_monthly_order_value_with_shipping, :precision => 2, :delimiter => ',')%>, including shipping">
+          <%= @currency %><%= number_with_precision(@total_order_value, :precision => 2, :delimiter => ",") %>
+          <small>Total Sales (All-Time)</small>
+        </h3>
+        <h3 class='total_orders stat'>
+          <%= @orders.length %>
+          <small>Total Orders</small>
+        </h3>
+        <h3 class='average_cart stat'>
+          <%= @currency %><%= number_with_precision(@shop.average_order_size, :precision => 2, :delimiter => ',') %>
+          <small>Average Cart Size<br />of Past 10 Orders</small>
+        </h3>
+        <% if current_site.is_billable? %>
+        <h3 class='stat'>
+          <%= @currency %>
+          <%= number_with_precision(current_site.unbilled_transactions_total, :precision => 2, :delimiter => ',') %>
+          <small>
+            Unbilled Txn Fees
+            <% if current_site.next_invoice %>
+            <br />(Next : <%= current_site.next_invoice.strftime("%d %B %Y") %>)
+            <a href="<%= current_site.url %>/help#help_shop_transactions">[?]</a>
+            <% end %>
+          </small>
+        </h3>
+        <% end %>
+        <small class='order_summary stat'><%= order_summary(@orders) %></small>
+      </div>
+    </header>
+
+    <div class='sorter_and_filter'>
+      <div class='finder'>
+        <form>
+          <label>Search</label>
+          <input type='text' name='q' value="<%= @q %>" placeholder="Customer name or email" title="Type a word to search for, then press Enter"/>
+          <% if @q %>
+            <a href="?" class='clear_search' title="Reset search"><i class='icon-remove-sign'></i></a>
+          <% end %>
+        </form>
+      </div>
+      <div class='sorter'>
+        Sort orders by
+        <select class='sorting_types'>
+          <% [['newest', 'Newest'], ['oldest', 'Oldest'], ['highest','Most Expensive'], ['lowest','Least Expensive']].each do |st| %>
+          <option value="<%= st[0] %>" <%= st[0]==@sort ? 'selected' : '' %>><%= st[1] %></option>
+          <% end %>
+        </select>
+      </div>
+      <div class='filter'>
+        View 
+        <select class='filter_types'>
+          <option value=''>All Orders</option>
+          <% %w(pending processing shipped fulfilled rejected cancelled).each_with_index do |st,i| %>
+          <option value="<%= i %>" <%= @status && i==@status.to_i ? 'selected' : '' %>>Only <%= st.titleize %> Orders</option>
+          <% end %>
+        </select>
+      </div>
+    </div>
+
+    <% if @orders.empty? %>
+    <p class='aligncenter' style='margin-top:20px;'>
+      You haven't received any orders yet.
+    </p>
+    <% end %>
+
+    <ul class='orders orders-table'>
+      <% @orders.each do |order| %>
+      <%= render :partial => "orders/order", :locals => { order: order } %>
+      <% end %>
+    </ul>
+
+    <div class='pagination'>
+      <%= paginate @orders %>
+    </div>
+
+  </div>
+
+</div>
+
+<script id="message_tmpl" type="text/template">
+  <div id="order_message_form" class='lightbox order_status_{{type}}'>
+    <div class='order_status'></div>
+    <form name='message_form' action='/orders/message' method='post'>
+      <h3>{{title}}</h3>
+      <label>Give your customer more information about what's going on with their order by sending them an email:</label>
+      <textarea name='message' class='order_message text'>{{order_message}}</textarea>
+      <div class='buttons'>
+        <button class='cancel close gray34'>Cancel</button>
+        <input type='hidden' name='id' class='order_id' value='{{_id}}' />
+        <input type='hidden' name='status' class='order_status' value='{{type}}' />
+        <input type='hidden' name='no_message' class='order_no_message' value=0 />
+        <input type='submit' class='submit submit_status_change orange34' value="{{button_label}}" />
+        <a href="#!" class='status_change_with_no_message'>{{button_label_no_message}}</a>
+      </div>
+    </form>
+  </div>
+</script>
+
+<script>
+  
+  ORDERS = <%= @orders.to_json(only: [:_id, :status], methods: [ :status_in_words ]).html_safe %>;
+
+  $(function(){
+    $(".sorting_types").change(function(){
+      document.location.href = document.location.pathname + "?sort=" + $(this).val();
+    });
+    $(".filter_types").change(function(){
+      document.location.href = document.location.pathname + "?status=" + $(this).val();
+    });
+    OrderManager.initialize(ORDERS);
+  });
+</script>

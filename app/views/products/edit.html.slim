@@ -11,12 +11,12 @@ div id='designer'
       ul class='asset_tools nolist disabled show_asset_text_fields'
         li class='font_family asset_text_field'
           label Font
-          select name='font_family' class='font_family_control select_field' disabled='disabled'
+          select name='font_family' class='font_family_control select_field' data-css-name='font-family' disabled='disabled'
             - App.fonts.each do |slug,font|
               option value=slug = font
         li class='font_size asset_text_field'
           label Size
-          select name='font_size' class='font_size_control select_field' disabled='disabled'
+          select name='font_size' class='font_size_control select_field' data-css-name='font-size' disabled='disabled'
             option 14px
             option 18px
             option 24px
@@ -27,7 +27,7 @@ div id='designer'
             option 72px
             option 96px
             option 120px
-        li class='alignment asset_text_field asset_photo_field'
+        li class='alignment asset_text_field asset_photo_field' data-css-name='text-align'
           label Alignment
           input type='hidden' name='alignment' class='alignment_control' disabled='disabled'
           ul class='alignment_buttons nolist'
@@ -36,13 +36,13 @@ div id='designer'
             li class='alignment_button alignment_right'
         li class='color asset_text_field'
           label Color
-          input type='text' name='color' class='color_control input_field' disabled='disabled'
+          input type='text' name='color' class='color_control input_field' data-css-name='color' disabled='disabled'
         li class='bg_color asset_text_field'
           label Fill
-          input type='text' name='background-color' class='bg_color_control input_field' value='transparent' disabled='disabled'
-        li class='zindexes asset_text_field asset_photo_field'
-          button class='increase_zindex' Bring Forwards
-          button class='decrease_zindex' Send Backwards
+          input type='text' name='background-color' class='bg_color_control input_field' data-css-name='background-color' value='transparent' disabled='disabled'
+        li class='zindexes asset_text_field asset_photo_field' data-css-name='z-index'
+          button class='increase_zindex' Forwards
+          button class='decrease_zindex' Backwards
         li class='clone_and_delete asset_text_field asset_photo_field'
           button class='clone_asset' Clone
           button class='delete_asset' Delete

@@ -74,6 +74,19 @@ class AssetsController < ApplicationController
     end
   end
 
+  def destroy
+    if @asset = @shop.assets.find(params[:id])
+      @asset.destroy
+      respond_to do |format|
+        format.json { render :json => { success: true } }
+      end
+    else
+      respond_to do |format|
+        format.json { render :json => { errors: true } }
+      end
+    end
+  end
+
   protected
 
     def set_shop

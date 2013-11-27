@@ -3,7 +3,7 @@ class Product
   include Mongoid::Document
   include Mongoid::Slug
   include Mongoid::Timestamps
-
+  include Mongoid::MultiParameterAttributes
   include Product::Characteristics
 
   belongs_to :shop
@@ -40,9 +40,11 @@ class Product
   field :num_favorites, type: Integer,  default: 0
   field :status,        type: Integer,  default: 0    # 0 = in progress, 1 = hidden, 2 = visible, 3 = out of stock, 4 = coming soon, 9 = demo
   
+  field :campaign_length, type: Integer, default: 10  # days
+
   field :buy_now_price, type: Float,    default: 0.0
   field :base_price,    type: Float,    default: 0.0
-  field :retail_price,  type: Float,    default: 0.0
+  field :group_price,   type: Float,    default: 0.0
   field :lowest_price,  type: Float,    default: 0.0
   field :sales_goal,    type: Integer,  default: 20
   
@@ -74,7 +76,7 @@ class Product
   field :trusted,                 type: Boolean,  default: false
   field :premium,                 type: Boolean,  default: false
   field :deactivated,             type: Boolean,  default: false
-  field :has_availability_period, type: Boolean,  default: false
+  field :has_availability_period, type: Boolean,  default: true
   field :availability_start,      type: DateTime
   field :availability_end,        type: DateTime
   field :remote_attachment_url
@@ -536,11 +538,11 @@ class Product
   end
 
   def availability_start
-    attributes['availability_start'].in_time_zone(self.shop.site.time_zone) if has_availability_period? && self.shop && self.shop.site
+    attributes['availability_start'].in_time_zone(self.shop.time_zone) if has_availability_period? && self.shop 
   end
 
   def availability_end
-    attributes['availability_end'].in_time_zone(self.shop.site.time_zone) if has_availability_period? && self.shop && self.shop.site
+    attributes['availability_start'].in_time_zone(self.shop.time_zone) + campaign_length.days if self.shop
   end
 
   def create_first_asset

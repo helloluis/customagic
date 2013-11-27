@@ -11,7 +11,8 @@ function Asset(){
 
     this.id           = asset_hash.__id;
     this.coordinates  = asset_hash.coordinates;
-    this.dimensions   = asset_hash.dimensions;
+    this.width        = asset_hash.width;
+    this.height       = asset_hash.height;
     this.hash         = asset_hash;
     this.asset_type   = asset_hash.asset_type;
     this.dom          = this.render();
@@ -115,11 +116,13 @@ function Asset(){
     Editor.selected_asset = this;
 
     if (that.hash.asset_type=='text') {
-      tools.removeClass('show_asset_photo_fields').addClass('show_asset_text_fields');
+      tools.removeClass('show_asset_photo_fields').
+        addClass('show_asset_text_fields');
     } else if (that.hash.asset_type=='photo') {
-      tools.addClass('show_asset_photo_fields').removeClass('show_asset_text_fields');
+      tools.addClass('show_asset_photo_fields').
+        removeClass('show_asset_text_fields');
     }
-
+    
     tools.
       removeClass('disabled').
       find(".input_field, .select_field, .alignment_control").
@@ -149,13 +152,15 @@ function Asset(){
 
     tools.
       find(".color_control").
-      val( this.hash.color ).
-      spectrum('enable');
-
+      val(this.hash.color).
+      spectrum('enable').
+      spectrum('set', this.hash.color);
+    
     tools.
       find(".bg_color_control").
-      val ( this.hash.bg_color ).
-      spectrum('enable');
+      val(this.hash.bg_color).
+      spectrum('enable').
+      spectrum('set', this.hash.bg_color);
 
   };
 
@@ -228,7 +233,7 @@ function Asset(){
 
         $.ajax({
           url      : "/shops/" + Editor.shop.slug + "/assets/" + that.id,
-          data     : { asset : that.saveable_hash },
+          data     : { asset : that.hash },
           dataType : "JSON",
           method   : "PUT",
           success  : function(data){
@@ -253,19 +258,32 @@ function Asset(){
 
   this.update_hash = function(){
     
-    this.saveable_hash = {
+    // this.saveable_hash = {
+    //   coordinates:  [ this.dom.position().left, 
+    //                   this.dom.position().top, 
+    //                   parseInt(this.dom.css('zIndex')) ], // type: Array,    default: [0,0,1] # x, y, z
+    //   width:        this.dom.width(),                     // type: Integer,  default: 250 
+    //   height:       this.dom.height(),                    // type: Integer,  default: 100
+    //   color:        this.dom.css('color'),                // type: String,   default: "#000000"
+    //   bg_color:     this.dom.css('background-color'),     // type: String,   default: "transparent"
+    //   font_family:  this.dom.css('font-family'),          // type: String,   default: "Helvetica"
+    //   font_size:    this.dom.css('font-size'),            // type: String,   default: "36px"
+    //   alignment:    this.dom.css('text-align'),           // type: String,   default: "center"
+    //   content:      this.dom.text()                       // type: String,   default: "Text"
+    // };
+    this.hash = _.extend(this.hash, {
       coordinates:  [ this.dom.position().left, 
                       this.dom.position().top, 
                       parseInt(this.dom.css('zIndex')) ], // type: Array,    default: [0,0,1] # x, y, z
-      width:        this.dom.width(),                     // type: Integer,  default: 250 
-      height:       this.dom.height(),                    // type: Integer,  default: 100
-      color:        this.dom.css('color'),                // type: String,   default: "#000000"
-      bg_color:     this.dom.css('background-color'),     // type: String,   default: "transparent"
-      font_family:  this.dom.css('font-family'),          // type: String,   default: "Helvetica"
-      font_size:    this.dom.css('font-size'),            // type: String,   default: "36px"
-      alignment:    this.dom.css('text-align'),           // type: String,   default: "center"
-      content:      this.dom.text()                       // type: String,   default: "Text"
-    };
+      width:          this.dom.width(),                   // type: Integer,  default: 250 
+      height:         this.dom.height(),                  // type: Integer,  default: 100
+      color:          this.dom.css('color'),              // type: String,   default: "#000000"
+      bg_color:       this.dom.css('background-color'),   // type: String,   default: "transparent"
+      font_family:    this.dom.css('font-family'),        // type: String,   default: "Helvetica"
+      font_size:      this.dom.css('font-size'),          // type: String,   default: "36px"
+      alignment:      this.dom.css('text-align'),         // type: String,   default: "center"
+      content:        this.dom.text()                     // type: String,   default: "Text"
+    });
 
   };
 

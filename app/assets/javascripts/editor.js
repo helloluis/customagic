@@ -16,7 +16,7 @@ var Editor = {
     this.initialize_product();
     this.initialize_viewer();
     this.initialize_controls();
-    this.initialize_styler();
+    this.initialize_asset_settings();
 
   },
 
@@ -108,7 +108,9 @@ var Editor = {
 
   },
 
-  initialize_styler : function(){
+  initialize_asset_settings : function(){
+    
+    var that = this;
 
     $(".font_family_control, .font_size_control, .alignment_control").
       change(function(){
@@ -120,10 +122,13 @@ var Editor = {
     $(".color_control").
       spectrum({
         showPalette: true,
+        showInitial: true,
+        showInput:   true,
         showSelectionPalette: true,
         palette: [],
         localStorageKey: "spectrum.homepage",
         change : function(color){
+          console.log(color);
           Editor.selected_asset.dom.
             css({ color: color });
           Editor.selected_asset.save();
@@ -133,16 +138,35 @@ var Editor = {
     $(".bg_color_control").
       spectrum({
         showPalette: true,
+        showInitial: true,
+        showInput:   true,
         showSelectionPalette: true,
         palette: [],
+        allowEmpty: true,
         localStorageKey: "spectrum.homepage",
-        change : function(color){
+        change: function(color){
           Editor.selected_asset.dom.
             css({ backgroundColor: color });
           Editor.selected_asset.save();
         }
       });
 
+    $(".increase_zindex, .decrease_zindex, .clone_asset").click(function(){
+      alert("This doesn't work yet :P");
+    });
+
+    $(".delete_asset").click(function(){
+      var id = that.selected_asset.id;
+      $.ajax({
+        url  : "/shops/" + that.shop.slug + "/assets/" + id,
+        type : "DELETE",
+        success : function(data) {
+          that.selected_asset.dom.remove();
+          that.selected_asset  = false;
+          Editor.asset_objects = _.reject(Editor.asset_objects, function(ao){ return ao.id==id; });
+        }
+      });
+    });
   },
 
   initialize_sub_styles : function(){

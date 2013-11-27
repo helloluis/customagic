@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 gem 'rails', '3.2.15'
 gem 'rake'
 # gem 'activeresource'
-
+gem 'time_diff'
 #gem 'mongoid', '~> 4.0', :github => 'mongoid/mongoid'
 gem 'mongoid', '3.1.5'
 gem 'bson_ext'

@@ -1,0 +1,26 @@
+- content_for :js do
+  = javascript_include_tag "pages", "cart"
+
+- content_for :js_bottom do
+  javascript:
+    $(function(){
+      Cart.initialize('#{@guest}',#{(@cart && @cart.contents ? @cart.contents.to_json : '{}').html_safe},false,true);
+      Cart.checkout();
+    });
+
+div class="shop widget_addon"
+  div class="background clearfix standalone_shopping_cart"
+
+    div class='main_widget shop_widget'
+      div class='shopping_cart #{@shop.can_transact? ? 'has_paypal' : 'no_paypal'}' 
+        div class="shopping_cart_inner"
+
+          = render :partial => "shops/payment_options"
+
+      div class='empty_shopping_cart'
+        h2
+          a href="#{current_site.public_url+"/shop"}" target="_parent" 
+            == "Go back to #{current_site.name}"
+
+
+== render :partial => "products/facebook_integration"

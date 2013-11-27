@@ -32,7 +32,7 @@ var Calculator = {
 
     this.sales_goal   = $("#product_sales_goal");
     this.base_price   = $("#product_base_price");
-    this.retail_price = $("#product_retail_price");
+    this.retail_price = $("#product_group_price");
     this.profit       = $(".profit_margin");
     this.sales_goal_indicator = $(".sales_goal");
     this.total_sales  = $(".total_sales");

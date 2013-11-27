@@ -1,0 +1,52 @@
+- content_for :css do
+  - if current_partner && current_partner.short!='infinitely'
+    == stylesheet_link_tag "partners/#{current_partner.short}/mobile-shop" 
+  - else 
+    = stylesheet_link_tag "mobile-shop"
+
+- content_for :js do
+  = javascript_include_tag "pages", "cart"
+
+- content_for :js_bottom do
+  javascript:
+    $(function(){
+      Cart.initialize('#{@guest}',#{(@cart && @cart.contents ? @cart.contents.to_json : '{}').html_safe},true,true);
+      Cart.checkout();
+    });
+
+div class='mobile_panels'
+
+  div class='front_panel panel background clearfix'
+    /edited 09/24 KP - added mobile class
+    div class='main_widget shop_widget standalone_cart shopping_cart mobile'
+
+      /added KP 09/03
+      div class='widget_header shop_header clearfix mobile_header'
+
+        a href="/shop#cart" class='go_back' target="_parent"
+          span class="icon go-back"
+
+        h1 title="Payment" class='merchant_name page-title' Payment
+      
+      /added 09/24 KP - switched order
+      div class="shipping_costs_container" 
+        ul
+          li
+            = render :partial => "shops/discount_code"
+          li
+            div class='total_label number_labels parallel' colspan='3'  
+              label 
+                | Total 
+                a href="#items"
+                  | (View your cart)
+              div class='total'
+
+      div class='shopping_cart_contents shopping_cart_details'
+        
+        /= render :partial => "shops/cart_contents"
+
+        = render :partial => "shops/payment_forms"
+
+        = render :partial => "shops/mobile_cart"
+
+= render :partial => "products/facebook_integration"

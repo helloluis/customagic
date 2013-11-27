@@ -41,4 +41,8 @@ module ApplicationHelper
 
   end
   
+  def is_owner?(shop)
+    user_signed_in? && shop && current_user.shop==shop
+  end
+    
 end

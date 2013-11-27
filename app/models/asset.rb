@@ -13,7 +13,7 @@ class Asset
   field :width,         type: Integer,  default: 250 
   field :height,        type: Integer,  default: 100
   field :color,         type: String,   default: "#000000"
-  field :bg_color,      type: String,   default: "transparent"
+  field :bg_color,      type: String,   default: ""
   field :font_family,   type: String,   default: "Helvetica"
   field :font_size,     type: String,   default: "36px"
   field :alignment,     type: String,   default: "center"

@@ -28,5 +28,4 @@ class ApplicationController < ActionController::Base
   end
   alias :require_account_user :authorize_account_user!
 
-
 end

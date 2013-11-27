@@ -11,6 +11,10 @@ class Product
 
     end
 
+    def remaining
+      sales_goal-num_orders
+    end
+
     def product_type_object
       App.product_types.find{|pt|pt.slug==product_type}
     end
@@ -34,6 +38,8 @@ class Product
       if pp = product_sub_style_object.prices.find{|p| (p.first).to_a.include?(sales_goal)} 
         self.base_price = pp.last
       end
+
+      self.save
 
     end
 

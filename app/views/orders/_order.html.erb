@@ -1,0 +1,88 @@
+<li id="order_<%= order.id %>" data-id="<%= order.id %>" class="order order_<%= order.id %> order_status_<%= order.status %>" data-status="<%= order.status %>">
+  <div class='order_status'>
+    <div class='order_id'>
+      <i class='status_icon'></i> Order #<%= order.id %>
+    </div>
+    <div class='order_status_label'>
+      <%= order.status_in_words %> 
+    </div>
+    
+  </div>
+  <div class='customer'>
+    <strong><%= order.first_name %> <%= order.last_name %></strong><br />
+    <%= mail_to order.email %><br />
+    <a href='tel:<%= order.phone%>'><%= order.phone %></a><br />
+    <%= order.city_and_country %>
+  </div>
+  <div class='products'>
+    <ul class="nolist products_list">
+      <% order.contents_with_product_names_values.each do |cc| %>
+        <li class='product'>
+          <a href="<%= site_product_url(current_site, cc['slug']) %>" title="See product page">
+            <strong class='quantity'> (<%= cc['quantity'] %>)</strong>
+            <span class='variant_name'> <%= cc['name'] %> <%= cc['variant_name'] %></span>
+          </a>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+  <div class='total' data-currency='<%= @currency %>'>
+    <strong class='currency' title="Total without shipping"><%= order.total_without_shipping_and_with_discount %></strong>
+    <span class='shipping_cost' title='Shipping'>
+      <% if order.discount_code_type=='free_shipping' %><del><% end %>
+      <em>(Shipping)</em> <span class='currency'><%= number_with_precision(order.shipping_cost,:precision=>2) %>
+      <% if order.discount_code_type=='free_shipping' %></del><% end %>
+    </span>
+    <% if order.is_discounted %>
+      <% if order.discount_code_type=='free_shipping' %>
+        <small class='discount' title="DISCOUNT CODE: <%= order.discount_code %>">FREE SHIPPING</small>
+      <% else %>
+        <small class='actual_total'>was <span class="currency" title="ORIGINAL TOTAL"><%= order.total %></span></small><small class='discount' title='DISCOUNT CODE: <%= order.discount_code %>'>-<span class="currency"><%= order.discount %></span></small>
+      <% end %>
+    <% end %>
+    <br />
+    <span class='payment_status'>
+      <% if order.offline_payment %>
+        <span class='payment_method' title='Payment Method'><%= order.payment_method %> payment</span>
+      <% end %>
+      <% if order.online_payment %>
+        <span class='payment_method' title='Payment Method'>Paypal Status<br />
+          <%= order.payment_status %>
+        </span>
+      <% end %>
+      <br /><span class="created_at"><%= order.created %></span>
+    </span>
+    <br />
+    
+  </div>
+  <div class='order_details_wrapper'>
+    <span class='buttons clearfix'>
+      <button class="orange34 send_message start_processing" data-target="1">Accept</button>
+      <button class="orange34 send_message ship" data-target="2">Ship</button>
+      <button class="orange34 send_message fulfill" data-target="3">Fulfill</button>
+      <button class="action34 send_message reject" data-target="5">Reject</button>
+      <button class="gray34 send_message" data-target="message">Contact Buyer</button>
+    </span>
+    <div class='order_details' style="display:none">
+
+        <dl>
+          <dt>Full Name</dt>
+          <dd><%= order.first_name %> <%= order.last_name %></dd>
+
+          <dt>Email</dt>
+          <dd class='order_email' data-email="#{order.email}">
+            <%= mail_to order.email %></dd>
+
+          <dt>Phone</dt>
+          <dd><a href='tel:<%= order.phone %>'><%= order.phone %></a></dd>
+
+          <dt>Address</dt>
+          <dd><%= order.full_address %></dd>
+
+          <dt>Instructions</dt>
+          <dd><%= order.instructions %></dd>
+
+    </div>
+    <a class='toggle_details' data-target="order_details"><i class="icon-chevron-down"></i> Show details</a>
+  </div>
+</li>

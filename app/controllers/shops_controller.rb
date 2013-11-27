@@ -4,7 +4,10 @@ class ShopsController < ApplicationController
 
   def index;end
 
-  def show;end
+  def show
+    @products = @current_shop.products.desc(:availability_start)
+    @edit_mode = true if is_owner?(@current_shop)
+  end
 
   protected
 

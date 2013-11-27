@@ -8,6 +8,8 @@ class User
 
   #devise :database_authenticatable, :registerable, :recoverable, :rememberable, :trackable, :validatable, :omniauthable, :omniauth_providers => [ :facebook ]
   devise :trackable, :validatable, :omniauthable, :omniauth_providers => [ :facebook ]
+  
+  attr_accessible :urls, :name, :username, :first_name, :last_name, :avatar, :location, :hometown, :extras, :email, :password, :password_confirmation, :remember_me, :provider, :uid, :oauth_token, :oauth_expires_at
 
   field :urls
   field :name

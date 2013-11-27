@@ -1,7 +1,7 @@
 class ProductsController < ApplicationController
 
   before_filter :set_shop
-  before_filter :set_product, only: [ :edit, :edit_info, :update, :delete, :show ]
+  before_filter :set_product, only: [ :edit, :edit_info, :update, :update_info, :delete, :show ]
   before_filter :authenticate_user!, except: [ :show ]
   before_filter :authorize_account_user!
 
@@ -45,11 +45,18 @@ class ProductsController < ApplicationController
     end
   end
 
-  def update_sales_information
+  def update_info
     if @product.update_attributes(params[:product])
       @product.update_sales_information!
       respond_to do |format|
-        format.json { render :json => @product }
+        format.html { redirect_to "/#{@current_shop.slug}" }
+      end
+    else
+      respond_to do |format|
+        format.html do
+          flash[:alert] = "Your product information couldn't be saved!"
+          render :action => :edit_info
+        end
       end
     end
   end
@@ -60,7 +67,7 @@ class ProductsController < ApplicationController
 
   protected
     def set_shop
-      @current_shop = @shop = Shop.find(params[:shop_id])
+      @current_shop = Shop.find(params[:shop_id])
     end
 
     def set_product
@@ -68,5 +75,6 @@ class ProductsController < ApplicationController
         flash[:alert] = "We couldn't find that item."
         redirect_to "/#{@current_shop.slug}"
       end
+      @current_product = @product
     end
 end
