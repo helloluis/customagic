@@ -1,5 +1,6 @@
 class ShopsController < ApplicationController
 
+  include ApplicationHelper
   before_filter :set_shop, except: [:index]
 
   def index;end

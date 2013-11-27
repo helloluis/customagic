@@ -11,6 +11,7 @@ li class='product'
   div class='product_prices'
     ul 
       li class='group_price' 
+        p class='preorder_label' Preorder at
         h4 = link_to number_to_currency(product.group_price, unit: @current_shop.currency_symbol), shop_product_path(@current_shop, product)
         p class='remaining'
           | Only 
@@ -20,5 +21,5 @@ li class='product'
         p 
           | (Or #{link_to('buy it now', shop_product_path(@current_shop, product))} for #{number_to_currency(product.buy_now_price, unit: @current_shop.currency_symbol)})
 
-  div class='product_countdown' data-campaign-length=product.campaign_length data-campaign-start=product.availability_start = countdown(product)
+  div class='product_countdown' data-campaign-length=product.campaign_length data-campaign-start=product.availability_start.strftime("%m/%d/%Y %H:%M:%S") == countdown(product)
 

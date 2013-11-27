@@ -3,10 +3,10 @@ class Cart
   include Mongoid::Document
   include Mongoid::Timestamps
 
-  belongs_to :site
   belongs_to :shop
   belongs_to :user
   has_one :order
+  
   field :guest_id
 
   index({guest_id:1})

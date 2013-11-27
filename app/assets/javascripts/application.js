@@ -18,5 +18,6 @@
 //= require jquery.fileupload
 //= require jquery.timer
 //= require jquery.currency
+//= require jquery.countdown
 //= require spectrum
 //= require_tree .

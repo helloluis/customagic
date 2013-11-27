@@ -1,0 +1,15 @@
+javascript:
+  $(function(){
+    $('.product_countdown').
+      each(function(){
+        var el = $(this);
+        el.countdown( el.attr('data-campaign-start'), function(event) {
+           el.html(event.strftime(''
+             + '<span>%d</span> days '
+             + '<span>%H</span> hours '
+             + '<span>%M</span> minutes '
+             + '<span>%S</span> seconds'));
+         });
+      });
+      
+  });

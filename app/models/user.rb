@@ -36,9 +36,10 @@ class User
   index({username:1})
   index({email:1})
 
-  has_one :shop
+  has_one  :shop
   has_many :products
   has_many :orders
+  has_many :carts
 
   validates :name,  :presence => true, :length => { :minimum => 2 }
   validates :email, :format => { :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i, :on => :create }

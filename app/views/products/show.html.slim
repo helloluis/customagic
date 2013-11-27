@@ -1,3 +1,4 @@
+- @page_title = "#{@product.name} | #{@current_shop.name}"
 div class='product standalone_product'
   h1 = @product.name
   
@@ -9,6 +10,7 @@ div class='product standalone_product'
   div class='product_prices'
     ul 
       li class='group_price' 
+        p class='preorder_label' Preorder at
         h4 = link_to number_to_currency(@product.group_price, unit: @current_shop.currency_symbol), shop_product_path(@current_shop, @product)
         p class='remaining'
           | Only 

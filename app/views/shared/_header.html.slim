@@ -10,9 +10,9 @@
     li class='management_link'
       = link_to "Create a New Item &raquo;".html_safe, "/#{@current_shop.slug}/products/new"  
     li class='management_link'
-      = link_to "Orders", shop_orders_path
+      = link_to "Orders", shop_orders_path(@current_shop)
     li class='management_link'
-      = link_to "Customers", shop_customers_path
+      = link_to "Customers", shop_customers_path(@current_shop)
 
 - else
 
