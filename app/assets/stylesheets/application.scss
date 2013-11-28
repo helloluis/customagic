@@ -23,4 +23,11 @@
   background:transparent image-url("logo.png") no-repeat top center;
   width:330px;
   height:210px;
+  text-indent:-99999px;
+  -webkit-background-size:contain;
+  -khtml-background-size:contain;
+  -moz-background-size:contain;
+  -ms-background-size:contain;
+  -o-background-size:contain;
+  background-size:contain;
 }

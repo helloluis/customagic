@@ -15,7 +15,6 @@
     .logo {
       float:left;
       margin-right:20px;
-      @include background-size(contain);
     }
   
     h2 {

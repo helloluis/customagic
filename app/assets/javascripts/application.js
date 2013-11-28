@@ -20,6 +20,7 @@
 //= require jquery.currency
 //= require jquery.countdown
 //= require spectrum
+//= require foundation
 //= require_tree .
 
 $(function(){ $(document).foundation(); });
