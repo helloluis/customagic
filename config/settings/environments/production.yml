@@ -1,8 +1,8 @@
 # host: localhost:3000
 # tld_length: 0
 # host: infinite.ly.dev:3000
-host: boiling-castle-9993.heroku.com
+host: inkify.me
 
 ga_id: UA-17467184-X
 ga_fanpage_id: UA-17467184-X
-ga_url: .customagic.xxx
+ga_url: .inkify.me
