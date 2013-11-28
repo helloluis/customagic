@@ -21,3 +21,5 @@
 //= require jquery.countdown
 //= require spectrum
 //= require_tree .
+
+$(function(){ $(document).foundation(); });

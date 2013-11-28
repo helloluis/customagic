@@ -2,38 +2,36 @@ div class='masthead'
   
   div class='inner'
 
-    div class='logo'
+    header class="row"
+      h1 class="small-12 medium-4 columns" class='logo'
+      h2 class="small-12 columns medium-7" #{app_name} is a simple, easy, and free way to design and sell #{app_default_product_type}s online!
 
-    h1 #{app_name} is a simple, easy, and free way to design and sell #{app_default_product_type}s online!
-
-    div class='facebook_profile_container clearfix'
+    div class='facebook_profile_container clearfix small-12 small-uncentered columns medium-5 medium-centered'
       /fb:login-button width="200" max-rows="1"
       - if current_user #user_signed_in?
-        h3 = link_to "Start Designing!", "#{current_user.shop.slug}/products/new" 
+        p = link_to "Start Designing!", "#{current_user.shop.slug}/products/new" 
       - else
-        h3 = link_to "Login to Get Started", user_omniauth_authorize_path(:facebook), :class => "login_via_facebook"
+        p = link_to "Login to Get Started", user_omniauth_authorize_path(:facebook), :class => "login_via_facebook"
 
       / button class='login_via_facebook big'
       /   | Login to get started ...
 
 div class='features'
-  div class='feature'
-    h3 
-      | Design Like a Boss
-    p 
-      | Bosses don't like a lot of technical mumbo-jumbo, so #{app_name} doesn't have any of that. Type in your text or upload your artwork, then move it around and resize it any way you want via our awesome #{app_default_product_type} designer. It's almost as easy as having your secretary do it!
-  
-  div class='feature'
-    h3 
-      | Sell Like a Celebrity
-    p 
-      | Watch as people flock to your beautiful mobile-friendly store to gaze upon your wares. You may not be the best looking person on the planet, but your #{app_default_product_type}s will 100% make up for that!
+  ul class='features-list row small-block-grid-1 medium-block-grid-3 nolist'
+    li class="feature"
+      h2 Design Like a Boss
+      p 
+        | Bosses don't like a lot of technical mumbo-jumbo, so #{app_name} doesn't have any of that. Type in your text or upload your artwork, then move it around and resize it any way you want via our awesome #{app_default_product_type} designer. It's almost as easy as having your secretary do it!
+    
+    li class='feature'
+      h2 Sell Like a Celebrity
+      p 
+        | Watch as people flock to your beautiful mobile-friendly store to gaze upon your wares. You may not be the best looking person on the planet, but your #{app_default_product_type}s will 100% make up for that!
 
-  div class='feature'
-    h3 
-      | Earn Like a Tycoon
-    p 
-      | Increase your revenues by adjusting your profit margins, managing your sales channels, leveraging unicorn rainbows, and other important phrases that rich people like to say. Set your sales goals for each new design, and once you have enough preorders, #{app_name} will start producing and delivering your #{app_default_product_type}s to your buyers!
+    li class='feature'
+      h2 Earn Like a Tycoon
+      p 
+        | Increase your revenues by adjusting your profit margins, managing your sales channels, leveraging unicorn rainbows, and other important phrases that rich people like to say. Set your sales goals for each new design, and once you have enough preorders, #{app_name} will start producing and delivering your #{app_default_product_type}s to your buyers!
 
 
 div class='more_information'
@@ -41,7 +39,7 @@ div class='more_information'
   p
     | I don't know yet, but I'm sure it'll be cool.
 
-div class='footer'
+div class='footer' id="colophon"
   div class='inner'
     p 
       | In case you have just stumbled randomly on to this page, please be aware that you are looking at a proof-of-concept and not a fully functional application.

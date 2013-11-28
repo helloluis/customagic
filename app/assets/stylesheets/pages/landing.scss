@@ -1,30 +1,36 @@
+@import "compass";
+//@import "foundation_and_overrides";
 
 .masthead {
   width:100%;
-  height: 400px;
   background-color:#fff;
   box-shadow:0 0 10px #999;
   margin-bottom:30px;
+
   .inner {
     margin:0px auto 0px auto;
     padding-top:100px;
     max-width:980px;
+  
     .logo {
       float:left;
       margin-right:20px;
+      @include background-size(contain);
     }
-    h1 {
+  
+    h2 {
       font-size:40px;
       font-weight:normal;
       margin:30px 0px;
     }
-    .login_via_facebook, .start_designing {
-      font-size:24px;
-    }
+  
     .facebook_profile_container {
-      margin:20px auto;
-      width:400px;
-    }
+
+      p {
+          font-size:24px;
+          text-align:center;
+        }
+      }
   }
 }
 
@@ -32,21 +38,21 @@
   margin: 0 auto 50px auto;
   max-width:980px;
   overflow:hidden;
-  .feature {
-    float:left;
-    width:28%;
-    margin-right:4%;
-    padding:10px 0px;
-    h2, h3 {
-      margin-bottom:10px;
-    }
-    p {
-      line-height:1.6;
-    }
-    &:first-child {
-      padding-left:0%;
-    }
-  }
+//  .feature {
+//    float:left;
+//    width:28%;
+//    margin-right:4%;
+//    padding:10px 0px;
+//    h2, h3 {
+//      margin-bottom:10px;
+//    }
+//    p {
+//      line-height:1.6;
+//    }
+//    &:first-child {
+//      padding-left:0%;
+//    }
+//  }
 }
 
 .footer {
@@ -55,7 +61,7 @@
   margin-top:20px;
   .inner {
     margin:0px auto 0px auto;
-    width:980px;
+    max-width:980px;
     padding:20px;
   }
 }
