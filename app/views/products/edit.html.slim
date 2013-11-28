@@ -1,11 +1,10 @@
-
-div class='loading_indicator' Loading ...
-
-= render :partial => "products/steps"
-
-div id='designer'
+div id='designer' class="small-12 small-uncentered medium-10 medium-centered row"
   
-  div class='asset_tools_container'
+  = render :partial => "products/steps"
+
+  div class='loading_indicator' Loading ...
+
+  div class='asset_tools_container medium-8 small-12'
     fieldset
       input type='hidden' name='asset_id' value='' class='asset_id_field input_field'
       ul class='asset_tools nolist disabled show_asset_text_fields'
@@ -47,18 +46,20 @@ div id='designer'
           button class='clone_asset' Clone
           button class='delete_asset' Delete
 
-  div class='viewer'
+  div class='viewer medium-8 small-12'
 
     div class='editable_area'
       div class='editable_area_label' Editable Area | FRONT
 
     div class='product'
 
-  div class='styles'
+  div class='styles medium-4 small-12'
 
-    div class='content_buttons'
-      button class='add_text' Add Text
-      button class='add_art' Add Artwork
+    ul class='content_buttons button-group'
+      li 
+        button class='add_text button' Add Text
+      li
+        button class='add_art button' Add Artwork
   
     div class='artwork_container hidden'
       
@@ -130,7 +131,7 @@ div id='designer'
           == number_to_currency(base_price_for_units(@product.product_sub_style_object,20), unit: app_currency_symbol)
 
       div class='submit_button'
-        == f.submit "Next Step &raquo;".html_safe, "data-href".to_sym => "/#{@current_shop.slug}/products/#{@product.slug}/edit_info", class: "next_step"
+        == f.submit "Next Step &raquo;".html_safe, "data-href".to_sym => "/#{@current_shop.slug}/products/#{@product.slug}/edit_info", class: "next_step button"
         / button class='next_step' 
         /   | Next Step &raquo;  
 

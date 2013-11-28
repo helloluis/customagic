@@ -22,6 +22,8 @@ gem 'mongo_session_store-rails3'
 gem 'sass-rails' #, '~> 4.0.0'
 gem 'compass'
 gem 'compass-rails'
+gem 'zurb-foundation'
+gem 'foundation-rails'
 
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'

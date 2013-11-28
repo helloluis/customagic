@@ -1,36 +1,41 @@
-- if is_owner?(@current_shop)
+header id="main" class="top-bar"
+  h1 class="logo title-area" Inkify
 
-  ul class='navigation owner_navigation'
-    li class='nav_link'
-      a href="/marketplace" Marketplace
-    li class='nav_link'
-      a href="/#{@current_shop.slug}" Your Shop
-    - if @current_product
-      li class='nav_link'
-        a href="/#{@current_shop.slug}/#{@current_product.slug}" = @current_product.name
-    li class='management_link'
-      = link_to "Create a New Item &raquo;".html_safe, "/#{@current_shop.slug}/products/new"  
-    li class='management_link'
-      = link_to "Orders", shop_orders_path(@current_shop)
-    li class='management_link'
-      = link_to "Customers", shop_customers_path(@current_shop)
-    li class='management_link shop_settings_link'
-      = link_to "Settings", edit_shop_path(@current_shop)
+  section class="top-bar-section"
+    nav class="owner_navigation small-12"
+      ul class='navigation clearfix left'
+        - if is_owner?(@current_shop)
+          li class='nav_link left'
+            a href="/marketplace" Marketplace
+          li class='nav_link left'
+            a href="/#{@current_shop.slug}" Your Shop
+          - if @current_product
+            li class='nav_link left'
+              a href="/#{@current_shop.slug}/#{@current_product.slug}" = @current_product.name
+          li class='management_link right'
+            = link_to "Create a New Item &raquo;".html_safe, "/#{@current_shop.slug}/products/new"  
+          li class='management_link right'
+            = link_to "Orders", shop_orders_path(@current_shop)
+          li class='management_link right'
+            = link_to "Customers", shop_customers_path(@current_shop)
+          li class='management_link shop_settings_link right'
+            = link_to "Settings", edit_shop_path(@current_shop)
 
-- else
-
-  ul class='navigation'
-    li class='nav_link'
-      a href="/marketplace" Marketplace
-    - if @current_shop
-      li class='nav_link'
-        a href="/#{@current_shop.slug}" = @current_shop.name
-      - if @current_product
-        li class='nav_link'
-          a href="/#{@current_shop.slug}/#{@current_product.slug}" = @current_product.name
-    - else
-      li class='nav_link'
-        = link_to "Featured", featured_marketplace_path
-      - if user_signed_in?
-        li class='management_link'
-          = link_to "Manage Your Shop", "/#{current_user.shop.slug}"
+        - else
+          li class='nav_link left'
+            a href="/marketplace" Marketplace
+          - if @current_shop
+            li class='nav_link left'
+              a href="/#{@current_shop.slug}" = @current_shop.name
+            - if @current_product
+              li class='nav_link left'
+                a href="/#{@current_shop.slug}/#{@current_product.slug}" = @current_product.name
+          - else
+            li class='nav_link left'
+              = link_to "Featured", featured_marketplace_path
+            - if user_signed_in?
+              li class='management_link left'
+                = link_to "Manage Your Shop", "/#{current_user.shop.slug}"  
+  
+  - if user_signed_in?
+    h2 class="right" Hey there, #{current_user.first_name}!
