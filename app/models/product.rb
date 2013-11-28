@@ -48,7 +48,7 @@ class Product
   field :lowest_price,  type: Float,    default: 0.0
   field :sales_goal,    type: Integer,  default: 20
   
-  field :price_variant_classes, type: Hash, default: { primary: "", secondary: "" }
+  field :price_variant_classes, type: Hash,  default: { primary: "", secondary: "" }
   field :price_variants,        type: Array, default: [ { :primary => '',  :secondary => '', :quantity => 10, :price => 100.00 } ]
   # [ 
   #   { :primary => 'small',  :secondary => 'white', :quantity => 10, :price => 100.00 },
@@ -78,7 +78,7 @@ class Product
   field :deactivated,             type: Boolean,  default: false
   field :has_availability_period, type: Boolean,  default: true
   field :availability_start,      type: DateTime
-  field :availability_end,        type: DateTime
+  # field :availability_end,        type: DateTime
   field :remote_attachment_url
 
   # search_in :name, :tags_array, {:match => :any}
@@ -120,7 +120,7 @@ class Product
   index({ partner: 1, deactivated: 1, status: 1, visible_in_marketplace: -1, category_slug: 1, num_orders: -1 }, { name: 'most_popular_in_marketplace_category' })
 
   # index for availability
-  index({ has_availability_period: 1, availability_start: 1, availability_end: 1, status: 1 })
+  index({ has_availability_period: 1, availability_start: 1, status: 1 })
 
   #index for admin
   index({ partner: 1, featured_in_marketplace: -1, created_at: -1 }, { name: 'admin_partner_featured_newest'})
@@ -147,6 +147,10 @@ class Product
 
   def is_orderable?
     status==2
+  end
+  
+  def is_group_orderable?
+    status==2 && Time.now<availability_end
   end
 
   def within_availability_period?

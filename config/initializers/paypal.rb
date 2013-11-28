@@ -21,7 +21,7 @@ if Rails.env.production? # || Rails.env.staging?
 
   App.paypal = { url: 'https://www.paypal.com' }
 
-elsif Rails.env.development? || Rails.env.staging?
+else
 
   App.paypal = { url: 'https://www.sandbox.paypal.com' }
 

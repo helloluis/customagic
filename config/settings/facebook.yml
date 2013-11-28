@@ -2,9 +2,13 @@ development:
   id: 339664759508386
   secret: 909a80ab21a811800ebc9fa76744e3a9
 
+test:
+  id: 339664759508386
+  secret: 909a80ab21a811800ebc9fa76744e3a9
+
 staging:
-  id:
-  secret:
+  id: 339664759508386
+  secret: 909a80ab21a811800ebc9fa76744e3a9
 
 production:
   id: 339664759508386
