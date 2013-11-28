@@ -86,7 +86,7 @@ class Product
   RATING_RANGE = (1..5)
 
   validates_presence_of :name, :minlength => 2, :maxlength => 150
-  validate :start_time_must_be_before_end_time #, :on => :save
+  
   validate :check_number_of_products
 
   before_create  :check_marketplace_visibility
@@ -532,17 +532,17 @@ class Product
   end
 
   def start_time_must_be_before_end_time
-    if has_availability_period? && availability_start > availability_end
-      errors.add(:base, "Your availability start date must occur before your end date.")
-    end
+    # if has_availability_period?
+    #   errors.add(:base, "Your availability start date must occur before your end date.")
+    # end
   end
 
   def availability_start
-    attributes['availability_start'].in_time_zone(self.shop.time_zone) if has_availability_period? && self.shop 
+    attributes['availability_start'].in_time_zone(self.shop.time_zone) if has_availability_period? && self.shop && !self.attributes['availability_start'].blank?
   end
 
   def availability_end
-    attributes['availability_start'].in_time_zone(self.shop.time_zone) + campaign_length.days if self.shop
+    attributes['availability_start'].in_time_zone(self.shop.time_zone) + campaign_length.days if self.shop && !self.attributes['availability_start'].blank?
   end
 
   def create_first_asset

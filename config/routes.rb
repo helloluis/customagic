@@ -1,5 +1,8 @@
 Customagic::Application.routes.draw do
 
+  resource :marketplace do
+    get :featured
+  end
   resources :shops do
     resources :assets do
       post :create_photo, on: :collection

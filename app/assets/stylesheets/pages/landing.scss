@@ -9,10 +9,14 @@
     margin:0px auto 0px auto;
     padding-top:100px;
     max-width:980px;
+    .logo {
+      float:left;
+      margin-right:20px;
+    }
     h1 {
-      font-size:54px;
+      font-size:40px;
       font-weight:normal;
-      margin-bottom:20px;
+      margin:30px 0px;
     }
     .login_via_facebook, .start_designing {
       font-size:24px;

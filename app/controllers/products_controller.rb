@@ -1,9 +1,14 @@
 class ProductsController < ApplicationController
 
+  include ApplicationHelper
+
   before_filter :set_shop
+
   before_filter :set_product, only: [ :edit, :edit_info, :update, :update_info, :delete, :show ]
   before_filter :authenticate_user!, except: [ :show ]
   before_filter :authorize_account_user!
+
+  before_filter :check_product_visibility
 
   respond_to :html, :json
 
@@ -76,5 +81,12 @@ class ProductsController < ApplicationController
         redirect_to "/#{@current_shop.slug}"
       end
       @current_product = @product
+    end
+
+    def check_product_visibility
+      if @product.status<=1 && !is_owner?(@current_shop)
+        flash[:alert] = "This product isn't available yet."
+        redirect_to "/#{@current_shop.slug}"
+      end
     end
 end
