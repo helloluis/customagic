@@ -9,7 +9,10 @@ div class='masthead'
     div class='facebook_profile_container clearfix small-12 small-uncentered columns medium-5 medium-centered'
       /fb:login-button width="200" max-rows="1"
       - if current_user #user_signed_in?
-        p = link_to "Start Designing!", "#{current_user.shop.slug}/products/new" 
+        p = link_to "Start Designing!", "/#{current_user.shop.slug}/products/new" 
+        p 
+          | or 
+          = link_to "check out your shop", "/#{current_user.shop.slug}"
       - else
         p = link_to "Login to Get Started", user_omniauth_authorize_path(:facebook), :class => "login_via_facebook"
 
@@ -32,7 +35,6 @@ div class='features'
       h2 Earn Like a Tycoon
       p 
         | Increase your revenues by adjusting your profit margins, managing your sales channels, leveraging unicorn rainbows, and other important phrases that rich people like to say. Set your sales goals for each new design, and once you have enough preorders, #{app_name} will start producing and delivering your #{app_default_product_type}s to your buyers!
-
 
 div class='more_information'
   h2 How Does It Work?

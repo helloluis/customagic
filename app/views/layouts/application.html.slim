@@ -39,8 +39,10 @@ head
   javascript:
     SITE_URL = "#{app_url}";
     
-body
+body class=body_classes
   
+  = render :partial => "shared/facebook_initialization"
+
   div class='viewport'
 
     = render :partial => "shared/header"

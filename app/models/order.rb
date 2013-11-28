@@ -3,8 +3,9 @@ class Order
   include Mongoid::Document
   include Mongoid::Timestamps
 
+  belongs_to :cart
+
   field :session_id
-  field :cart_id
   
   field :first_name,                  default: ""
   field :last_name,                   default: ""

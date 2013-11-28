@@ -1,0 +1,79 @@
+h3 class='divider'
+  span
+    | review your items
+hr
+
+div class='empty_cart_message' 
+  h3 class='divider'
+    span
+      | your shopping cart is empty
+
+  p class='aligncenter'
+    a href="/shop" class='show_shopping_cart_panel gray34' 
+      span class='icon arrow_left'
+      | Back
+
+div class='cart_buttons review'
+  a href="/shop" class='show_shopping_cart_panel gray34' 
+    span class='icon arrow_left'
+    | Edit your cart
+  p class='hint'
+    | Click here to make changes to your orders.
+
+table id="items" class='loading'
+  tbody
+  tfoot id="shipping_costs_and_total" 
+    tr
+      td class='sub_total number_labels' colspan='3'
+        label Subtotal
+      td class='sub_total_price number'
+        == @shop.currency_symbol
+        | 0.00
+      td
+    tr
+      td class='shipping_cost_estimator number_labels' colspan='3' 
+        label Select your delivery location
+        select class='shipping_cost'
+      td class='shipping_cost_display number'
+        == @shop.currency_symbol 
+        | 0.00
+      td class="cart_controls"
+    tr class='discount_code_row_and_value'
+      td class='discount_code_row number_labels' colspan='3'
+        label Discount Code
+        input type='text' id='discount_code' class="discount_code_field text"
+        button type='button' class='check_discount_code alignright orange34' Apply code
+      td class='discount_code_value number'
+      td class="cart_controls"
+    tr
+      td class='total_label number_labels' colspan='3' Total
+      td class='total'
+      td
+
+
+script id="cart_item_tmpl" type="text/template"
+  tr class='cart_item {{^availability}}unavailable{{/availability}}' data-key="{{key}}" data-variant-name="{{variant_name}}" data-id="{{item_id}}" data-currency="{{currency}}" title="{{^availability}}This item is no longer available.{{/availability}}"
+    
+    td class='item_name'
+      a href="/shop/{{slug}}" {{name}} 
+      span class='item_variant_name'
+        | {{variant_name}}
+    td class='quantity_cell'
+      span href="#!" class='decrease_quantity'
+        i class="icon-minus-sign"
+      input type='text' name='quantity' value='{{quantity}}' data-maximum="{{variant_stock}}" disabled='disabled'
+      span href="#!" class='increase_quantity'
+        i class="icon-plus-sign"
+    td class='price' data-price="{{price}}"
+      | {{{formatted_price}}}
+    td class='subtotal' data-subtotal="{{subtotal}}"
+      | {{{formatted_subtotal}}}
+    td class='cart_controls'
+      a href='#!' class='remove_from_cart gray34' 
+        span class='icon trash'
+
+script id="paypal_hidden_field_tmpl" type='text/template'
+  input type="hidden" name="item_name_{{i}}" value="{{name}} {{variant}}"
+  input type="hidden" name="amount_{{i}}" value="{{price}}"
+  input type="hidden" name="shipping_{{i}}" value="{{shipping_price}}"
+  input type="hidden" name="quantity_{{i}}" value="{{quantity}}"

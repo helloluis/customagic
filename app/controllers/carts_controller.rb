@@ -6,20 +6,21 @@ class CartsController < ApplicationController
   before_filter :set_product
 
   def add_product
-    if params[:preorder]
+    if params[:preorder] && @product.within_availability_period?
       @preorder = true
     else
       @buy_now = true
     end
+    # logger.info "!! ORDERABLE #{@product.is_orderable?} !!"
     if @product.is_orderable?
-      if @product.has_available_variant?(params[:name],@cart,1)
-        @cart.add_to_cart(@product, params[:name], params[:price], current_site.shop.currency, params[:quantity])
-        @cart.save
-      else
-        @error = "That product variant only has #{@product.available_stock_for_variant(params[:name])} units available."
-      end
+      @cart.add_to_cart(@product, params[:name], @preorder ? @product.group_price : @product.buy_now_price, current_shop.currency_symbol, params[:quantity])
+      @cart.save
+      @order = @cart.build_order
     else
       @error = "That product is not available."
+    end
+    if @error
+      flash.now[:alert] = @error
     end
     render :action => :show
   end
@@ -38,7 +39,7 @@ class CartsController < ApplicationController
     end
 
     def set_cart
-      @cart = current_user.carts.active
+      @cart = current_user.find_or_create_cart
     end
 
     def set_product

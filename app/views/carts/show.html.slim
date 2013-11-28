@@ -15,12 +15,17 @@ div class="shop widget_addon"
       div class='shopping_cart #{@shop.can_transact? ? 'has_paypal' : 'no_paypal'}' 
         div class="shopping_cart_inner"
 
-          = render :partial => "shops/payment_options"
+          = render :partial => "carts/cart_contents"
+          
+          - if @buy_now
+            = render :partial => "carts/payment_forms"
+          - else
+            = render :partial => "carts/preorder_form"
 
       div class='empty_shopping_cart'
         h2
-          a href="#{current_site.public_url+"/shop"}" target="_parent" 
-            == "Go back to #{current_site.name}"
+          a href="/#{@current_shop.slug}" target="_parent" 
+            == "Go back to #{@current_shop.name}"
 
 
-== render :partial => "products/facebook_integration"
+/== render :partial => "products/facebook_integration"
