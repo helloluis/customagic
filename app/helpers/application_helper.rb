@@ -44,5 +44,13 @@ module ApplicationHelper
   def is_owner?(shop)
     user_signed_in? && shop && current_user.shop==shop
   end
+
+  def body_classes
+    if @current_shop
+      "shop shop_#{@current_shop.color_scheme}"
+    else
+      ""
+    end
+  end
     
 end

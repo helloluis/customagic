@@ -1,0 +1,55 @@
+div class='payment_options preorder_form'
+  
+  - if @shop.can_transact? && @order
+
+    h3 Preorder
+
+    = simple_form_for @order, url: shop_orders_path(@current_shop), method: :post do |f|
+
+      = f.input :cart_id,        :as => :hidden
+      = f.input :contents,       :as => :hidden
+      = f.input :shipping_cost,  :as => :hidden
+      = f.input :discount,       :as => :hidden
+      = f.input :discount_code,  :as => :hidden
+      = f.input :discount_code_type,  :as => :hidden
+      = f.input :total,          :as => :hidden
+      = f.input :payment_method, :as => :hidden
+
+      ul class='credit_card_fields'
+        li class='input card-number'
+          label Credit Card No.
+          div
+            input id='card_number' type="text" size="20" autocomplete="off" class="text card-number creditcard"
+        li class='input card-cvc'
+          label 
+            | CVC (<a href="#!" title='The CVC number is 3-4 digits long and located at the back of your credit card, usually after the 16-digit number.' class='qtip_target'>What's this?</a>)
+          div
+            input id='card_code' type="text" size="4" autocomplete="off" class="text card-cvc" 
+          span class='supported_cards'
+        li class='select card-expiration'
+          label Card Expiration
+          select id='card_month' class='text mm card-expiry-month'
+            - (1..12).to_a.each do |i|
+              option value='#{Date.new(2012,i).strftime('%m')}' = Date.new(2012,i).strftime('%B')
+          | &nbsp;/ 
+          select id='card_year' class='text mm card-expiry-year'
+            - (Time.now.year..(Time.now.year+10)).to_a.each do |i|
+              option = i
+
+      div class='order_form_column'
+        = f.input :first_name, :input_html => {:class => "text"}
+        = f.input :last_name, :input_html => {:class => "text"}
+        = f.input :email, :input_html => {:class => "text"}
+        = f.input :phone, :input_html => {:class => "text"}
+        = f.input :instructions, :label => "Special Instructions or Requests", :as => :text, :required => false, :input_html => {:class => "text"}
+
+      div class='order_form_column'
+        = f.input :address, :input_html => {:class => "text"}
+        = f.input :city, :input_html => {:class => "text"}
+        = f.input :state, :wrapper_html => { :class => "parallel" }, :input_html => {:class => "text"}
+        = f.input :postcode, :wrapper_html => { :class => "parallel" }, :input_html => {:class => "text"}
+        = f.input :country, :as => :country, :input_html => {:class => "text"}
+        div class='btn'
+          = f.button :submit, :value => "Send Order", :class => "place_order orange40"
+          - if @shop.can_transact?
+            a href="#!" class='cancel_order_form' Cancel

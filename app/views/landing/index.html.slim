@@ -9,7 +9,10 @@ div class='masthead'
     div class='facebook_profile_container clearfix'
       /fb:login-button width="200" max-rows="1"
       - if current_user #user_signed_in?
-        h3 = link_to "Start Designing!", "#{current_user.shop.slug}/products/new" 
+        h3 = link_to "Start Designing!", "/#{current_user.shop.slug}/products/new" 
+        p 
+          | or 
+          = link_to "check out your shop", "/#{current_user.shop.slug}"
       - else
         h3 = link_to "Login to Get Started", user_omniauth_authorize_path(:facebook), :class => "login_via_facebook"
 
@@ -27,7 +30,7 @@ div class='features'
     h3 
       | Sell Like a Celebrity
     p 
-      | Watch as people flock to your beautiful mobile-friendly store to gaze upon your wares. You may not be the best looking person on the planet, but your #{app_default_product_type}s will 100% make up for that!
+      | Watch as people flock to your beautiful mobile-friendly store to gaze upon your wares. Share your product designs with your thousands of friends and followers on Twitter, Facebook, Pinterest, and Google+.
 
   div class='feature'
     h3 

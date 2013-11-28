@@ -4,6 +4,8 @@ Customagic::Application.routes.draw do
     get :featured
   end
   resources :shops do
+    get  :successful_purchase
+    get  :cancelled_purchase
     resources :assets do
       post :create_photo, on: :collection
     end
@@ -25,7 +27,10 @@ Customagic::Application.routes.draw do
     get 'sign_out', :to => 'devise/sessions#destroy', :as => :destroy_user_session
   end
   resources :users
-  
+
+  match '/shop/successful_purchase' => 'shops#successful_purchase', :method => :get
+  match '/shop/cancelled_purchase'  => 'shops#cancelled_purchase',  :method => :get
+  match "/payment_notifications/paypal" => "payment_notifications#paypal", :as => :paypal_payment_notifications
   match "/:shop_id/:id" => "products#show", :method => :get
   match "/:shop_id/products/new" => "products#new", :method => :get
   match "/:shop_id/products/:id/edit" => "products#edit", :method => :get

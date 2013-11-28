@@ -8,7 +8,7 @@ class ProductsController < ApplicationController
   before_filter :authenticate_user!, except: [ :show ]
   before_filter :authorize_account_user!
 
-  before_filter :check_product_visibility
+  before_filter :check_product_visibility, only: [ :show ]
 
   respond_to :html, :json
 
@@ -72,7 +72,7 @@ class ProductsController < ApplicationController
 
   protected
     def set_shop
-      @current_shop = Shop.find(params[:shop_id])
+      @current_shop = @shop = Shop.find(params[:shop_id])
     end
 
     def set_product

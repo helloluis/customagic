@@ -1,5 +1,23 @@
 - @page_title = "#{@shop.name} on #{app_name}"
-h1 = @shop.name
+
+- unless @shop.attachment.url.nil?
+  div class='logo' style='background-image:url(#{@shop.attachment.url})'
+
+div class='shop_information'
+  h1 = @shop.name
+  p class='description' 
+    = @shop.description
+    br
+    = link_to "Edit &raquo;".html_safe, edit_shop_path(@shop)
+  ul class='social_networks'
+    - %w(twitter facebook pinterest instagram googleplus).each do |sn|
+      - unless @shop.attributes[sn].blank?
+        - if sn=='googleplus'
+          li class='sn googleplus' = "http://plus.google.com/#{@shop.googleplus}"
+        - else
+          li class='sn #{sn}' = "http://#{sn}.com/#{@shop.attributes[sn]}"
+
+  div class="fb-like" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"
 
 ul class='products'
   = render :partial => @products

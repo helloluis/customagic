@@ -127,4 +127,8 @@ class User
     self.shop==some_shop
   end
 
+  def find_or_create_cart
+    self.carts.active.any? ? self.carts.active.first : self.carts.create
+  end
+
 end

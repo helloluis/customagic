@@ -149,6 +149,10 @@ class Product
     status==2
   end
 
+  def within_availability_period?
+    availability_start >= Time.now.utc && availability_end < Time.now.utc
+  end
+
   def price_variants=(new_price_variants)
     if new_price_variants.is_a? Hash 
       new_price_variants = new_price_variants.values.map(&:values)
