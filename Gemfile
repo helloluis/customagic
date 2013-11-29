@@ -57,6 +57,8 @@ gem 'imgkit'
 # to install the actual binary that actually generates the images:
 # rvmsudo imgkit --install-wkhtmltoimage
 
+gem 'httparty'
+
 gem 'sanitize'
 
 gem 'aws-ses', :require => 'aws/ses'

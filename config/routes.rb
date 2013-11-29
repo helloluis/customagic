@@ -3,6 +3,9 @@ Customagic::Application.routes.draw do
   resource :marketplace do
     get :featured
   end
+  resources :images do 
+    get :memes, on: :collection
+  end
   resources :shops do
     get  :successful_purchase
     get  :cancelled_purchase

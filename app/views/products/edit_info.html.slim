@@ -101,9 +101,9 @@ div id='editor' class='information'
   
   javascript:
     var SHOP = #{@current_shop.to_json.html_safe},
-        PRODUCT_STYLES = #{App.product_types.to_json.html_safe},
+        TYPES = #{App.product_types.to_json.html_safe},
         PRODUCT = #{@product.to_json(methods: [:slug]).html_safe};
 
     $(function(){
-      Calculator.initialize(SHOP, PRODUCT_STYLES, PRODUCT);
+      Calculator.initialize(SHOP, TYPES, PRODUCT);
     });

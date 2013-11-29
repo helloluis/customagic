@@ -22,7 +22,11 @@ class AssetsController < ApplicationController
 
   def create_photo
     # logger.info "!! #{current_user.inspect} !!"
-    @image = @shop.images.new({ attachment: params[:attachments].first })
+    if params[:attachments]
+      @image = @shop.images.new({ attachment: params[:attachments].first })
+    elsif params[:image]
+      @image = @shop.images.new(params[:image])
+    end
     
     if @image.get_dimensions_and_filesize && @image.save
 
@@ -32,8 +36,8 @@ class AssetsController < ApplicationController
         image: @image })
       
       respond_to do |format|
-        format.html { render :inline => "<textarea>#{@asset.to_json(:methods => [:__id, :attachment_filename, :attachment_medium_url, :attachment_url, :attachment_thumb_url]).html_safe}</textarea>" }
-        format.json { render :json => @asset }
+        format.html { render :inline => "<textarea>#{[@asset.to_json.html_safe, @image.to_json.html_safe]}</textarea>" }
+        format.json { render :json => [@asset.to_json.html_safe, @image.to_json.html_safe] }
       end
 
     else

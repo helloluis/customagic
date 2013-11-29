@@ -35,10 +35,11 @@ class ProductsController < ApplicationController
 
   def edit
     @assets = @product.assets
+    @images = @shop.images
   end
 
   def edit_info
-    @product.buy_now_price = product_sub_style_object.buy_now_price
+    #@product.buy_now_price = @product.product_sub_style_object.buy_now_price
   end
 
   def update

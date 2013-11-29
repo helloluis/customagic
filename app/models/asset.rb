@@ -61,4 +61,8 @@ class Asset
     end
   end
 
+  def as_json(options = {})
+    super(options.reverse_merge(:methods => [:__id, :attachment_filename, :attachment_medium_url, :attachment_url, :attachment_thumb_url]))
+  end
+  
 end

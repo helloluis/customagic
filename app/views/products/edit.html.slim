@@ -59,7 +59,7 @@ div id='designer' class="small-12 small-uncentered medium-10 medium-centered row
       li 
         button class='add_text button' Add Text
       li
-        button class='add_art button' Add Artwork ...
+        button class='add_art button' Add Art ...
   
     div class='artwork_container hidden'
       
@@ -97,25 +97,30 @@ div id='designer' class="small-12 small-uncentered medium-10 medium-centered row
               li 
                 input type='submit' class='restricted submit orange34 button submit_photo' value='Upload' data-loading="Uploading..."
               li
-                a href='#!' class='cancel' Cancel
+                a href='#!' class='cancel add_art' Cancel
       
-      div class='artwork_viewer'
-        / we can connect to meme generator's api and pull images from here
-        / http://version1.api.memegenerator.net/Generators_Select_ByPopular?pageIndex=0&pageSize=12&days=7
-        ul class='artwork'
+    div class='artwork_viewer compact'
+      / we can connect to meme generator's api and pull images from here
+      / http://version1.api.memegenerator.net/Generators_Select_ByPopular?pageIndex=0&pageSize=12&days=7
+      ul class='artwork'
+
+    div class='toggle_artwork_viewer' View more art ...
 
     = simple_form_for :product do |f|
       div class='colors'
+        h3 Choose a #{@product.product_type.titleize} Color
         = f.input :color, as: :hidden
         ul class='swatches' data-target=''
           
       div class='product_styles_container'
         - App.product_types.each do |product_type|
           
-          = f.input :product_style, collection: product_type.product_styles.map{|ps|[ps.name,ps.slug]}
+          = f.input :product_style, as: :hidden 
+          /collection: product_type.product_styles.map{|ps|[ps.name,ps.slug]}
           
           = f.input :product_sub_style, as: :hidden
           
+          h3 Choose a Style
           - product_type.product_styles.each do |product_style|
             ul class='product_sub_styles'
               - product_style.sub_styles.each_with_index do |sub_style,i|
@@ -150,13 +155,27 @@ div id='designer' class="small-12 small-uncentered medium-10 medium-centered row
     div id="{{__id}}" class='asset asset_{{asset_type}}' data-id="{{__id}}"
       img src="{{attachment_medium_url}}" data-original="{{attachment_url}}" style='width:100%'
       
+  script id='image_object_tmpl' type='text/template'
+    li id="{{__id}}" class='image_object' data-id="{{__id}}"
+      div class='image_object_thumbnail' style='background-image:url({{attachment_thumb_url}})'
+      div class='image_object_title' {{attachment_filename}}
+      div class='instructions' Add this to your #{@product.product_type} ...
+      div class='loading_indicator' Loading ...
+
+  script id='external_image_object_tmpl' type='text/template'
+    li id="{{__id}}" class='image_object external_image_object' data-id="{{__id}}" data-url="{{large_url}}"
+      div class='image_object_thumbnail' style='background-image:url({{small_url}})'
+      div class='image_object_title' {{title}}
+      div class='instructions' Add this to your #{@product.product_type} ...
+      div class='loading_indicator' Loading ...
 
   javascript:
-    var SHOP = #{@current_shop.to_json.html_safe},
-        PRODUCT_STYLES = #{App.product_types.to_json.html_safe},
+    var SHOP    = #{@current_shop.to_json.html_safe},
+        TYPES   = #{App.product_types.to_json.html_safe},
         PRODUCT = #{@product.to_json(methods: [:slug]).html_safe},
-        ASSETS  = #{@assets.to_json(methods: [:__id, :attachment_url, :attachment_medium_url, :attachment_thumb_url]).html_safe};
+        ASSETS  = #{@assets.to_json.html_safe},
+        IMAGES  = #{@images.to_json.html_safe};
 
     $(function(){
-      Editor.initialize(SHOP, PRODUCT_STYLES, PRODUCT, ASSETS);
+      Editor.initialize(SHOP, TYPES, PRODUCT, ASSETS, IMAGES);
     });

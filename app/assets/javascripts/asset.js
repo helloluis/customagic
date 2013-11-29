@@ -9,6 +9,10 @@ function Asset(){
 
   this.initialize = function(asset_hash) {
 
+    if (typeof asset_hash=='string') {
+      asset_hash = $.parseJSON(asset_hash);
+    }
+
     this.id           = asset_hash.__id;
     this.coordinates  = asset_hash.coordinates;
     this.width        = asset_hash.width;

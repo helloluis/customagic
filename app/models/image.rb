@@ -14,9 +14,7 @@ class Image
 
 
   def get_dimensions_and_filesize
-    
     self.filesize     = attachment.file.size
-
     begin
       img = MiniMagick::Image.open(attachment.current_path)
       self.width  = [img[:width],50].max
@@ -41,6 +39,14 @@ class Image
 
   def attachment_medium_url
     attachment ? attachment.medium.url : ""
+  end
+
+  def __id
+    _id.to_s
+  end
+
+  def as_json(options = {})
+    super(options.reverse_merge(:methods => [:__id, :attachment_filename, :attachment_medium_url, :attachment_url, :attachment_thumb_url]))
   end
 
 end
