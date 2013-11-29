@@ -502,7 +502,35 @@ body.loading .loading_indicator {
 }
 
 .standalone_product {
-  .product_image, .product_purchase {
+  .product_image_container, .product_purchase {
     float:left;
   }
+}
+
+.product_image_container_shirt {
+  background:transparent image-url('mens_crew_ffffff.jpg') top center no-repeat;
+  position:relative;
+  height:750px;
+  .product_image {
+    position:absolute;
+    top:170px;
+    left:97px;
+    border:0px;
+  }
+  &.shirt_000000 {
+    background-image:image-url('mens_crew_000000.jpg');
+  }
+  &.shirt_003366 {
+    background-image:image-url('mens_crew_003366.jpg'); 
+  }
+  &.shirt_666666 {
+    background-image:image-url('mens_crew_666666.jpg'); 
+  }
+  &.shirt_551100 {
+    background-image:image-url('mens_crew_551100.jpg'); 
+  }
+}
+
+.inner {
+  padding:20px;
 }
