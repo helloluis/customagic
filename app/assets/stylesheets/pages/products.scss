@@ -405,6 +405,17 @@ body.loading .loading_indicator {
   .product_prices ul {
     list-style-type:none;
   }
+  .product_prices {
+    .label_unit_total, .label_unit_price, .total_price {
+      display:none;
+
+    }
+    &.volume_pricing {
+      .label_unit_total, .label_unit_price, .total_price {
+        display:block;
+      }
+    }
+  }
 }
 
 .artwork_viewer {
@@ -476,5 +487,11 @@ body.loading .loading_indicator {
   }
   .simple_form.product {
     display: none;
+  }
+}
+
+.standalone_product {
+  .product_image, .product_purchase {
+    float:left;
   }
 }

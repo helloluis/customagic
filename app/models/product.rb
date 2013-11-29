@@ -42,7 +42,7 @@ class Product
   
   field :campaign_length, type: Integer, default: 10  # days
 
-  field :buy_now_price, type: Float,    default: 0.0
+  field :buy_now_price, type: Float,    default: 350.0
   field :base_price,    type: Float,    default: 0.0
   field :group_price,   type: Float,    default: 0.0
   field :lowest_price,  type: Float,    default: 0.0
@@ -405,7 +405,7 @@ class Product
 
   def has_available_variant?(name, cart=false, desired_quantity=0)
 
-    return true if dont_track_quantities?
+    return true if dont_track_quantities? || name.blank?
     
     if price_variants.length==1
       matched_variant = price_variants.first 

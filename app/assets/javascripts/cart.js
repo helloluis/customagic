@@ -1,6 +1,5 @@
 var Cart = {
 
-  guest_id          : false,
   contents          : {},
   quantities        : 0,
   total_discount    : 0,
@@ -13,17 +12,12 @@ var Cart = {
   height_order_form : 585, // 1095
   initialized       : false,
 
-  initialize : function(guest_id, contents, mobile, standalone){
+  initialize : function(shop, contents, mobile, standalone){
 
     if (this.initialized) { return false; }
-
-    if (!guest_id.length && window.location.hash.indexOf('preview_mobile_site')===-1) {
-      Flasher.add(['error', "You cannot buy from this shop."],true);
-      return false;
-    }
     
     this.in_iframe  = self!==top;
-    this.guest_id   = guest_id;
+    this.shop       = shop;
     this.contents   = contents;
     this.standalone = standalone;
     this.mobile     = mobile;
@@ -681,7 +675,7 @@ var Cart = {
     
     //self.update_cart_contents();
 
-    var url = "/carts/" + self.guest_id + "/update_cart.json?callback=?";
+    var url = "/shops/" + self.shop.slug + "/carts/update_cart.json?callback=?";
    
     $.jsonp({
       url      : url,
@@ -720,7 +714,7 @@ var Cart = {
     
     self.update_cart_contents();
 
-    var url = "/carts/" + self.guest_id + "/check_out.json?callback=?";
+    var url = "/shops/" + self.shop.slug + "/carts/check_out.json?callback=?";
     
     $.jsonp({
       url      : url,
@@ -794,12 +788,13 @@ var Cart = {
             return variant['quantity'];  
           }
           return false;
-        };
+        },
+        url = "/shops/" + self.shop.slug + "/carts.json?callback=?";
     
     $(".shopping_cart table").addClass('loading');
     
     $.jsonp({
-      url : "/carts/" + self.guest_id + ".json?callback=?",
+      url : url,
       type : "GET",
       dataType : "jsonp",
       success : function(data) {
@@ -889,7 +884,7 @@ var Cart = {
     var self = this;
     self.contents = {};
     $.jsonp({
-      url : "/carts/" + self.guest_id + "/empty",
+      url : "/shops/" + self.shop.slug + "/carts/empty",
       dataType : "json",
       complete : function(data) {
         Flasher.add(['notice',"Your cart has been emptied."],true);
@@ -1008,7 +1003,7 @@ var Cart = {
 
     for (var prop in opts) {
       var shipping_price = _.isNaN(opts[prop]) ? '0.0' : opts[prop];
-      $("<option class='" + prop.to_param() + "' value='" + shipping_price + "'>" + prop.titleize() + " (" + SHOP_CURRENCY + shipping_price + ")</option>").appendTo(sc);
+      $("<option class='" + prop.underscore() + "' value='" + shipping_price + "'>" + prop.titleize() + " (" + self.shop.currency_symbol + shipping_price + ")</option>").appendTo(sc);
     }
 
     // move the "everywheres" to the bottom of the stack
@@ -1020,7 +1015,7 @@ var Cart = {
       var num_val = _.isNull($(this).val()) ? 0.0 : $(this).val();
       $(".shipping_cost_display",".shopping_cart").
         text(num_val).
-        formatCurrency({symbol:SHOP_CURRENCY});
+        formatCurrency({symbol:self.shop.currency_symbol});
       self.shipping = num_val;  
     }).change(); //.select2().change();
     //console.log(_.values(opts)[0] );
@@ -1110,19 +1105,19 @@ var Cart = {
   },
 
   initialize_order_form : function(){
-    $(".order_form form").validate({
-      rules : {
-        "order[firstname]" : { required : true },
-        "order[lastname]"  : { required : true },
-        "order[email]"     : { required : true, email : true },
-        "order[phone]"     : { required : true },
-        "order[address]"   : { required : true },
-        "order[city]"      : { required : true },
-        "order[postcode]"  : { required : true },
-        "order[country]"   : { required : true }
-      },
-      onsubmit : true
-    });
+    // $(".order_form form").validate({
+    //   rules : {
+    //     "order[firstname]" : { required : true },
+    //     "order[lastname]"  : { required : true },
+    //     "order[email]"     : { required : true, email : true },
+    //     "order[phone]"     : { required : true },
+    //     "order[address]"   : { required : true },
+    //     "order[city]"      : { required : true },
+    //     "order[postcode]"  : { required : true },
+    //     "order[country]"   : { required : true }
+    //   },
+    //   onsubmit : true
+    // });
   },
 
   checkout_with_nothing : function(){
@@ -1305,7 +1300,7 @@ var Cart = {
 
   apply_discount_code : function(total, quantity, discount_success_message){
     
-    var discount = 0;
+    var self = this, discount = 0;
     // console.log('applying');
     if (code = this.discount_code) {
 
@@ -1326,7 +1321,7 @@ var Cart = {
         
         } else if ( threshold_type=='price' && threshold_price>total ) {
         
-          Flasher.add(['alert', "Your shopping cart total must reach at least " + SHOP_CURRENCY + threshold_price + " to be eligible for this discount code."],true);
+          Flasher.add(['alert', "Your shopping cart total must reach at least " + self.shop.currency_symbol + threshold_price + " to be eligible for this discount code."],true);
         
         } else if ( threshold_type=='items' && threshold_items>quantity ) {
         
@@ -1339,26 +1334,26 @@ var Cart = {
         if ((percentage = parseInt(code.percentage)) && qualified) { 
           discount = total*(percentage/100);
           this.total_discount = discount;
-          $(".discount_code_value").text("-" + discount).formatCurrency({symbol:SHOP_CURRENCY});
+          $(".discount_code_value").text("-" + discount).formatCurrency({symbol:self.shop.currency_symbol});
         }
 
       } else if (code.code_type=='absolute' && qualified) {
         
         discount = parseFloat(code.absolute);
         this.total_discount = discount;
-        $(".discount_code_value").text("-" + discount).formatCurrency({symbol:SHOP_CURRENCY});
+        $(".discount_code_value").text("-" + discount).formatCurrency({symbol:self.shop.currency_symbol});
 
       } else if (code.code_type=='free_shipping' && qualified) {
         
         discount = this.shipping;
         this.total_discount = discount;
-        $(".discount_code_value").text("-" + this.shipping).formatCurrency({symbol:SHOP_CURRENCY});
+        $(".discount_code_value").text("-" + this.shipping).formatCurrency({symbol:self.shop.currency_symbol});
 
       }
 
       
     } else {
-      $(".discount_code_value").text("-0.00").formatCurrency({symbol:SHOP_CURRENCY});
+      $(".discount_code_value").text("-0.00").formatCurrency({symbol:self.shop.currency_symbol});
       this.total_discount = 0;
     }
     

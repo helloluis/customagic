@@ -1,26 +1,38 @@
 class CartsController < ApplicationController
   
+  include ShopsHelper  
+  include ActionView::Helpers::NumberHelper
   before_filter :authenticate_user!
   before_filter :set_shop
   before_filter :set_cart
-  before_filter :set_product
+  before_filter :set_product, only: [ :add_product, :remove_product ]
+  
+  def index
+    respond_to do |format|
+      format.html do
+        @order = current_site.shop.orders.new
+        if mobile_request?
+          @with_iframe = true
+          render :layout => "mobile_shops", :template => "carts/show_mobile" 
+        else
+          render :layout => "shops"
+        end
+      end
+      format.json do
+        @cart_with_info = cart_with_info(@shop, @cart)
+        render :json => @cart_with_info, :callback => params[:callback]
+      end
+    end
+  end
 
   def add_product
-    if params[:preorder] && @product.within_availability_period?
-      @preorder = true
-    else
-      @buy_now = true
-    end
-    # logger.info "!! ORDERABLE #{@product.is_orderable?} !!"
+    logger.info "!! #{@shop.can_transact?} #{@product.is_orderable?}"
     if @product.is_orderable?
       @cart.add_to_cart(@product, params[:name], @preorder ? @product.group_price : @product.buy_now_price, current_shop.currency_symbol, params[:quantity])
       @cart.save
       @order = @cart.build_order
     else
-      @error = "That product is not available."
-    end
-    if @error
-      flash.now[:alert] = @error
+      flash.now[:alert] = "That product is not available."
     end
     render :action => :show
   end

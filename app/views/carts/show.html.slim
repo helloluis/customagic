@@ -1,10 +1,10 @@
-- content_for :js do
-  = javascript_include_tag "pages", "cart"
 
-- content_for :js_bottom do
+- content_for :page_scripts do
+  = javascript_include_tag "cart"
   javascript:
+    var SHOP = #{@current_shop.to_json.html_safe};
     $(function(){
-      Cart.initialize('#{@guest}',#{(@cart && @cart.contents ? @cart.contents.to_json : '{}').html_safe},false,true);
+      Cart.initialize(SHOP,#{(@cart && @cart.contents ? @cart.contents.to_json : '{}').html_safe},false,true);
       Cart.checkout();
     });
 
@@ -17,11 +17,9 @@ div class="shop widget_addon"
 
           = render :partial => "carts/cart_contents"
           
-          - if @buy_now
+          - if @shop.can_transact? && @product.is_orderable?
             = render :partial => "carts/payment_forms"
-          - else
-            = render :partial => "carts/preorder_form"
-
+          
       div class='empty_shopping_cart'
         h2
           a href="/#{@current_shop.slug}" target="_parent" 

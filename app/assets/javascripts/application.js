@@ -22,6 +22,7 @@
 //= require spectrum
 //= require foundation
 //= require foundation/foundation.alert
+//= require inflection
 //= require_tree .
 
 $(function(){ $(document).foundation(); });
