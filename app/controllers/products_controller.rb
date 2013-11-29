@@ -38,7 +38,7 @@ class ProductsController < ApplicationController
   end
 
   def edit_info
-
+    @product.buy_now_price = product_sub_style_object.buy_now_price
   end
 
   def update
