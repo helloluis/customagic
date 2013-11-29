@@ -315,9 +315,10 @@ ul.asset_tools {
 }
 
 #editor.information {
+  .inner {
+    margin-top:50px;
+  }
   .viewer {
-    width:360px;
-    padding:20px;
     overflow:visible;
     .item {
       height:480px;
@@ -330,7 +331,9 @@ ul.asset_tools {
   }
   .info_form_container {
     float:left;
-    padding:20px;
+    form {
+      margin:20px;
+    }
     label, input {
       font-size:20px;
       display:block;
@@ -345,16 +348,16 @@ ul.asset_tools {
   }
   .totals_and_instructions {
     float:left;
-    width:250px;
   }
   .totals {
     background:#fff;
     padding:20px;
-    margin:20px 0px;
+    margin:0px 20px;
     dt { font-size:16px; }
     dd { font-size:24px; margin-bottom:10px; }
   }
   .help {
+    margin:20px;
     padding:10px;
     h3,p {
       margin-bottom:10px;
