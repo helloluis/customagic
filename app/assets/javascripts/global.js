@@ -16,10 +16,16 @@ $.ajaxSetup({
 });
 
 
+function isTouchDevice() {
+  var el = document.createElement("div");
+  el.setAttribute('ongesturestart',"return;");
+  return (typeof el.ongesturestart=="function");
+}
+
 /*******************************
 *
 * Flasher Notification Object,
-* wraps around jQuery.nottys
+* Dependent on Foundation Alerts
 *
 *******************************/
 
@@ -41,6 +47,7 @@ var Flasher = {
   initialize : function() {
 
     Flasher.is_mobile = isTouchDevice();
+    Flasher.container = $("#messages");
 
     if (self!==top) {
 
@@ -115,7 +122,7 @@ var Flasher = {
     }
     
     var timeout = Flasher.timeouts[message_arr[0]],
-      notty_options = {
+      _options = {
         title   : message_arr[0],
         content : message_arr[1],
         timeout : message_arr[3] ? message_arr[3] : timeout,
@@ -124,13 +131,29 @@ var Flasher = {
       };
 
     if (message_arr[0]=='notice') {
-      notty_options.click = undefined;
-      notty_options.hideCallback = message_arr[2];
+      _options.click = undefined;
+      _options.hideCallback = message_arr[2];
     }
     
     // should probably just write our own for this
-    // $("body").notty( notty_options );
+    var msg_dom = $("<div data-alert='true' class='alert-box " + css_class + "'>" + content + "<a class='close' href='#'>&times;</a></div>");
+
+    Flasher.container.append( msg_dom );
     
+    if (_options.timeout) {
+      setTimeout(function(){
+        msg_dom.animate({opacity:0},{duration:300, complete:function(){ 
+          $(this).remove(); 
+          if (typeof _options.hideCallback !== 'undefined') {
+            _options.hideCallback.call();
+          }
+        }});
+      }, _options.timeout);
+    }
+
+    if (_options.click) {
+      msg_dom.click(_options.click);
+    }
   },
   
   cleanup : function() {

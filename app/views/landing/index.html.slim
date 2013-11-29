@@ -1,3 +1,11 @@
+- content_for :page_scripts do
+  javascript:
+    $(function(){
+      $(".login_via_facebook").click(function(){
+        $(this).text("Logging in ...");
+      });
+    });
+
 div class='masthead'
   
   div class='inner'
@@ -7,17 +15,14 @@ div class='masthead'
       h2 class="small-12 columns medium-7" #{app_name} is a simple, easy, and free way to design and sell #{app_default_product_type}s online!
 
     div class='facebook_profile_container clearfix small-12 small-uncentered columns medium-5 medium-centered'
-      /fb:login-button width="200" max-rows="1"
-      - if current_user #user_signed_in?
+
+      - if user_signed_in?
         p = link_to "Start Designing!", "/#{current_user.shop.slug}/products/new" 
         p 
           | or 
           = link_to "check out your shop", "/#{current_user.shop.slug}"
       - else
         p = link_to "Login to Get Started", user_omniauth_authorize_path(:facebook), :class => "login_via_facebook"
-
-      / button class='login_via_facebook big'
-      /   | Login to get started ...
 
 div class='features'
 

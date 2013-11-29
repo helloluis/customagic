@@ -6,7 +6,11 @@ class Shop
 
   belongs_to :user
   has_many :albums
-  has_many :products
+  has_many :products do
+    def orderable
+      where(status: 2)
+    end
+  end
   has_many :orders
   has_many :assets
   has_many :images

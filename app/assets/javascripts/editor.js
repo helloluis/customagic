@@ -206,6 +206,8 @@ var Editor = {
     $(".content_buttons").
       find(".add_art").
       click(function(){
+        $(this).
+          toggleClass('toggled');
         $(".artwork_container").
           toggleClass('hidden');
       });

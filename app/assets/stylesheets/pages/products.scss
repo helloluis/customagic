@@ -95,6 +95,9 @@ header#main {
   border:1px solid #ccc;
   padding:20px;
   background:#fff;
+  .add_art.toggled {
+    background:#999;
+  }
 }
 
 .product_styles_container ul {
