@@ -104,7 +104,7 @@ var Cart = {
         
         }
 
-        $("#variant_price").find(".currency").formatCurrency({ symbol : SHOP_CURRENCY });
+        $("#variant_price").find(".currency").currency({ region: self.shop.currency_symbol});
       }
 
       c.show_variant_image();
@@ -570,7 +570,7 @@ var Cart = {
 
   recompute_totals : function(discount_success_message){
 
-    var total = 0, quantity = 0;
+    var self = this, total = 0, quantity = 0;
     
     $(".cart_item").each(function(){
       
@@ -580,7 +580,7 @@ var Cart = {
           sub = el.find(".subtotal"),
           new_sub = q*per;
       
-      sub.attr('data-subtotal',new_sub).text( new_sub ).formatCurrency({symbol:SHOP_CURRENCY});
+      sub.attr('data-subtotal',new_sub).text( new_sub ).currency({ region: self.shop.currency_symbol});
 
       total += new_sub;
 
@@ -592,7 +592,7 @@ var Cart = {
 
     $(".sub_total_price").
       text( Cart.total_without_discount_and_without_shipping ).
-      formatCurrency({ symbol : SHOP_CURRENCY });
+      currency({ region: self.shop.currency_symbol});
 
     var discount = Cart.apply_discount_code(total,quantity,discount_success_message);
 
@@ -611,7 +611,7 @@ var Cart = {
     
     Cart.total = total;
 
-    $(".total").text( total ).formatCurrency({ symbol : SHOP_CURRENCY });
+    $(".total").text( total ).currency({ region: self.shop.currency_symbol});
 
     $(".cart_quantities").text( quantity );
 
@@ -1015,7 +1015,7 @@ var Cart = {
       var num_val = _.isNull($(this).val()) ? 0.0 : $(this).val();
       $(".shipping_cost_display",".shopping_cart").
         text(num_val).
-        formatCurrency({symbol:self.shop.currency_symbol});
+        currency({ region: self.shop.currency_symbol});
       self.shipping = num_val;  
     }).change(); //.select2().change();
     //console.log(_.values(opts)[0] );
@@ -1334,26 +1334,26 @@ var Cart = {
         if ((percentage = parseInt(code.percentage)) && qualified) { 
           discount = total*(percentage/100);
           this.total_discount = discount;
-          $(".discount_code_value").text("-" + discount).formatCurrency({symbol:self.shop.currency_symbol});
+          $(".discount_code_value").text("-" + discount).currency({ region: self.shop.currency_symbol});
         }
 
       } else if (code.code_type=='absolute' && qualified) {
         
         discount = parseFloat(code.absolute);
         this.total_discount = discount;
-        $(".discount_code_value").text("-" + discount).formatCurrency({symbol:self.shop.currency_symbol});
+        $(".discount_code_value").text("-" + discount).currency({ region: self.shop.currency_symbol});
 
       } else if (code.code_type=='free_shipping' && qualified) {
         
         discount = this.shipping;
         this.total_discount = discount;
-        $(".discount_code_value").text("-" + this.shipping).formatCurrency({symbol:self.shop.currency_symbol});
+        $(".discount_code_value").text("-" + this.shipping).currency({ region: self.shop.currency_symbol});
 
       }
 
       
     } else {
-      $(".discount_code_value").text("-0.00").formatCurrency({symbol:self.shop.currency_symbol});
+      $(".discount_code_value").text("-0.00").currency({ region: self.shop.currency_symbol});
       this.total_discount = 0;
     }
     

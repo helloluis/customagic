@@ -114,7 +114,7 @@ var Editor = {
 
     $(".next_step").click(function(){
       
-      var el   = $(this).attr('disabled','disabled').text('Saving ...'),
+      var el   = $(this).attr('disabled','disabled').val('Saving ...'),
           href = el.is("a") ? el.attr('href') : el.attr('data-href');
       
       Flasher.add(['notice',"Please wait, we're saving your changes."], true);
@@ -597,11 +597,11 @@ var Editor = {
   },
 
   loading : function(){
-    $("body").addClass('loading');
+    $("body.shop").addClass('loading');
   },
 
   loading_stop: function(){
-    $("body").removeClass('loading');
+    $("body.shop").removeClass('loading');
   }
 
 };

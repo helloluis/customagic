@@ -432,8 +432,19 @@ body.loading .loading_indicator {
       width:128px;
       &.loading {
         opacity:0.5;
+        &:hover{
+          .instructions { 
+            display:none; 
+          }
+          .loading_indicator {
+            display:block;
+          }
+        }
+        .loading_indicator {
+          display:block;
+        }
       }
-      .instructions {
+      .instructions, .loading_indicator {
         position:absolute;
         top:0px;
         left:0px;

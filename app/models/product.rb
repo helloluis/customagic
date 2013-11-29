@@ -32,24 +32,27 @@ class Product
   slug  :name,  :scope => :shop, :reserve => [ 'tag', 'tags', 'shop', 'product' ]
 
   field :description
-  field :on_sale,       type: Boolean,  default: false
-  field :featured,      type: Boolean,  default: false
-  field :sku
-  field :category_slug, type: String,   default: ''
-  field :num_orders,    type: Integer,  default: 0
-  field :num_favorites, type: Integer,  default: 0
-  field :status,        type: Integer,  default: 0    # 0 = in progress, 1 = hidden, 2 = visible, 3 = out of stock, 4 = coming soon, 9 = demo
+  field :on_sale,               type: Boolean,  default: false
+  field :featured,              type: Boolean,  default: false
+  field :sku        
+  field :category_slug,         type: String,   default: ''
+  field :num_orders,            type: Integer,  default: 0
+  field :num_favorites,         type: Integer,  default: 0
+  field :status,                type: Integer,  default: 0    # 0 = in progress, 1 = hidden, 2 = visible, 3 = out of stock, 4 = coming soon, 9 = demo
   
-  field :campaign_length, type: Integer, default: 10  # days
+  field :campaign_length,       type: Integer,  default: 10  # days
 
-  field :buy_now_price, type: Float,    default: 350.0
-  field :base_price,    type: Float,    default: 0.0
-  field :group_price,   type: Float,    default: 0.0
-  field :lowest_price,  type: Float,    default: 0.0
-  field :sales_goal,    type: Integer,  default: 20
+  field :buy_now_price,         type: Float,    default: 350.0
+  field :charity_donation,      type: Float,    default: 10.0
+  field :base_price,            type: Float,    default: 0.0
+  field :group_price,           type: Float,    default: 0.0
+  field :lowest_price,          type: Float,    default: 0.0
+  field :sales_goal,            type: Integer,  default: 20
   
-  field :price_variant_classes, type: Hash,  default: { primary: "", secondary: "" }
-  field :price_variants,        type: Array, default: [ { :primary => '',  :secondary => '', :quantity => 10, :price => 100.00 } ]
+  field :charity_url
+
+  field :price_variant_classes, type: Hash,     default: { primary: "", secondary: "" }
+  field :price_variants,        type: Array,    default: [ { :primary => '',  :secondary => '', :quantity => 10, :price => 100.00 } ]
   # [ 
   #   { :primary => 'small',  :secondary => 'white', :quantity => 10, :price => 100.00 },
   #   { :primary => 'small',  :secondary => 'black', :quantity => 10, :price => 100.00 },
@@ -563,6 +566,12 @@ class Product
 
   def create_final_art!
     self.final_art.create(dpi_target: product_type.dpi_target)
+  end
+
+  def charity
+    unless charity_url.blank?
+      App.charities.find{|c| c.url==charity_url}
+    end
   end
 
 end

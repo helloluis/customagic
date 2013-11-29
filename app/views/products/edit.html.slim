@@ -131,9 +131,9 @@ div id='designer' class="small-12 small-uncentered medium-10 medium-centered row
 
       div class='price_container hint--left' data-hint="Prices decrease the more #{@product.product_type}s we produce!"
         p class='price_description'
-          | Base cost @ 20 #{@product.product_type}s
+          | Base cost per #{@product.product_type}
         h2 class='price currency'
-          == number_to_currency(base_price_for_units(@product.product_sub_style_object,20), unit: app_currency_symbol)
+          == number_to_currency(base_price_for_units(@product.product_sub_style_object,1), unit: app_currency_symbol)
 
       div class='submit_button'
         == f.submit "Next Step &raquo;".html_safe, "data-href".to_sym => "/#{@current_shop.slug}/products/#{@product.slug}/edit_info", class: "next_step button"

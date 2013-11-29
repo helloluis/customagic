@@ -47,6 +47,7 @@ App.product_types = [
           "mens_crew_666666.jpg", 
           "mens_crew_551100.jpg"
         ],
+        sizes: %(small medium large x-large xx-large),
         sub_styles: [
           { name: "Standard Tagless Tee",
             slug: "basic_standard", 
@@ -103,4 +104,8 @@ App.product_types = [
       # { name: "V-Neck Tees", slug: "v_neck_tees" }
     ],
   }
+]
+
+App.charities = [
+  { name: "Philippine Red Cross", url: "http://redcross.org.ph", email: 'prc@redcross.org.ph' }
 ]

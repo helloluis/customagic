@@ -12,28 +12,26 @@ div class='product standalone_product small-12 small-uncentered medium-12 medium
 
   div class='product_purchase medium-8'
     div class='product_prices'
-      / span class='label_unit_total' Total
-      / h2 class='total_price currency' = number_to_currency(@product.buy_now_price, unit: @current_shop.currency_symbol)
-      / span class='label_unit_price' Unit
+
       h3 class='unit_price currency' = number_to_currency(@product.buy_now_price, unit: @current_shop.currency_symbol)
     
-      = link_to "Add to Cart", add_product_shop_carts_path(@shop, product_id: @product.id), class: 'buy_now' 
-
-      / p class='toggle_volume_purchase' Want to buy more than five?
-      
-      / div class='volume_purchase hide'
-      /   h3 How many?
-      /   input type='number' min='1' maximum='1000' name='quantity' class='quantity' value='2'
-      /   a href="#!" class='toggle_volume_purchase' Cancel
+      = link_to "Add to Cart", add_product_shop_carts_path(@shop, product_id: @product.id), class: 'buy_now', "data-loading".to_sym => "Adding ..." 
 
     div class='product_variants'
       h4 Available Sizes
-      select name='product_variants'
+      select id='product_variant' name='product_variant'
         option value='small' Small
         option value='medium' Medium
         option value='large' Large
         option value='XL' X-Large
         option value='XXL' XX-Large
+
+    - if @product.charity_donation > 0 && @product.charity
+      div class='product_donation'
+        p
+          = number_to_currency(@product.charity_donation, unit: @current_shop.currency_symbol)
+          |  of each #{@product.product_type} sold will be donated to 
+          = link_to @product.charity.name, @product.charity.url
 
     div class='product_share_tools'
       div class='share_facebook'
@@ -54,7 +52,20 @@ div class='product standalone_product small-12 small-uncentered medium-12 medium
             img src="//assets.pinterest.com/images/pidgets/pin_it_button.png" 
 
   div class='product_description medium-12 small-12'
+
     == @product.description
+
+    div class='item_specifications'
+      h4 Specifications
+      dl
+        dt 
+          strong #{@product.product_type_object.name} Style
+        dd = "#{@product.product_style_object.name} (#{@product.product_sub_style_object.name})"
+        dt 
+          strong Color
+        dd 
+          = "#{@product.color}"
+          span class='color_swatch' style='background-color:#{@product.color}'
 
   - content_for :page_scripts do
     
@@ -73,15 +84,12 @@ div class='product standalone_product small-12 small-uncentered medium-12 medium
 
       $(function(){
 
-        $(".toggle_volume_purchase").click(function(){
-          $(".volume_purchase").toggleClass("hide");
-          $(".product_prices").toggleClass("volume_pricing");
+        $(".buy_now").click(function(){
+          var el  = $(this),
+              url = $(this).attr('href') + "&product_variant=" + $("#product_variant").val();
+          el.text( el.attr('data-loading') );
+          window.location.assign(url);
         });
-
-        $(".quantity",".volume_purchase").keyup(function(){
-          Calculator.find_base_price($(this).val());
-        });
-
         Calculator.initialize(SHOP, TYPES, PRODUCT);
 
       });
