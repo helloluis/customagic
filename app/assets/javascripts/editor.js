@@ -128,9 +128,8 @@ var Editor = {
         palette: [],
         localStorageKey: "spectrum.homepage",
         change : function(color){
-          console.log(color);
           Editor.selected_asset.dom.
-            css({ color: color });
+            css({ color: color.toHexString() });
           Editor.selected_asset.save();
         }
       });
