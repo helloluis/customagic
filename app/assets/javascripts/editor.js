@@ -128,9 +128,8 @@ var Editor = {
         palette: [],
         localStorageKey: "spectrum.homepage",
         change : function(color){
-          console.log(color);
           Editor.selected_asset.dom.
-            css({ color: color });
+            css({ color: color.toHexString() });
           Editor.selected_asset.save();
         }
       });
@@ -206,6 +205,8 @@ var Editor = {
     $(".content_buttons").
       find(".add_art").
       click(function(){
+        $(this).
+          toggleClass('toggled');
         $(".artwork_container").
           toggleClass('hidden');
       });

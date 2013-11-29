@@ -8,6 +8,9 @@ class ShopsController < ApplicationController
   def show
     @products = @current_shop.products.desc(:availability_start)
     @edit_mode = true if is_owner?(@current_shop)
+    if @products.length>@current_shop.products.orderable.length
+      flash.now[:notice] = "Not all of your products are ready for display."
+    end
   end
 
   def update

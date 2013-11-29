@@ -1,0 +1,13 @@
+
+div id='messages'
+  - [:notice, :alert, :error, :warning, :success].each do |key|
+    - unless flash[key].blank?
+      p data-alert="true" class="alert-box #{key}"
+        = flash[key] 
+        a href="#" class="close" 
+          | &times;
+  
+javascript:
+  $(function(){
+    Flasher.initialize();
+  });

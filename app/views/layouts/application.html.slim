@@ -44,16 +44,11 @@ body class=body_classes
   = render :partial => "shared/facebook_initialization"
 
   div class='viewport'
-
+    
     = render :partial => "shared/header"
 
-    - if flash[:alert]
-      div class='flash alert'
-        h3 = flash[:alert]
-    - elsif flash[:notice]
-      div class='flash notice'
-        h3 = flash[:notice]
-        
+    = render :partial => "shared/messages"
+
     = yield
 
     = javascript_include_tag "application", "data-turbolinks-track" => true
@@ -61,3 +56,4 @@ body class=body_classes
     = yield :page_scripts
 
     = render :partial => "shared/countdown"
+
