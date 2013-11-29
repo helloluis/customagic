@@ -1,8 +1,5 @@
 class OrdersController < ApplicationController
 
-  include SitesHelper
-  include StylesHelper
-  include ShopsHelper
   include ActionView::Helpers::NumberHelper
 
   before_filter :set_current_account_and_site
