@@ -40,12 +40,14 @@ div class='features'
     li class='feature'
       h2 Earn Like a Tycoon
       p 
-        | Increase your revenues by adjusting your profit margins, managing your sales channels, leveraging unicorn rainbows, and other important phrases that rich people like to say. Set your sales goals for each new design, and once you have enough preorders, #{app_name} will start producing and delivering your #{app_default_product_type}s to your buyers!
+        | Set your sales goals for each new design, and once you have enough preorders, #{app_name} will start producing and delivering your #{app_default_product_type}s to your buyers!
 
-div class='more_information'
-  h2 How Does It Work?
-  p
-    | I don't know yet, but I'm sure it'll be cool.
+div class='marketplace row medium-12 small-6'
+  h2 Featured #{app_default_product_type}s
+
+  ul class='products marketplace_products clearfix'
+    - @products.each do |p|
+      = render :partial => "/marketplaces/agnostic_product", :locals => { product: p }
 
 div class='footer' id="colophon"
   div class='inner'

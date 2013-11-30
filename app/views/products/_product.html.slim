@@ -20,7 +20,11 @@ li class='product'
             |  of each #{product.product_type} sold will be donated to 
             = link_to product.charity.name, product.charity.url
 
-
+  div class='product_hearts'
+    span class='icon heart' <3
+    - if product.num_favorites>0
+      span class='heart_counter' 0
+      
   - if is_owner?(@current_shop)
     p
       = link_to "Edit &raquo;".html_safe, edit_shop_product_path(@current_shop, product)
