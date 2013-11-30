@@ -90,9 +90,8 @@ class Product
 
   validates_presence_of :name, :minlength => 2, :maxlength => 150
   
-  validate :check_number_of_products
+  # validate :check_number_of_products
 
-  before_create  :check_marketplace_visibility
   before_save    :set_partner
   before_save    :check_remote_attachment_url
   after_create   :create_first_asset
@@ -385,13 +384,6 @@ class Product
     end
   end
 
-  def check_marketplace_visibility
-    # if self.shop && self.shop && self.shop.is_paid? && self.shop.list_products_in_marketplace?
-    #   write_attribute(:visible_in_marketplace, true)
-    #   write_attribute(:trusted, true) if self.shop.site.plan.trusted?
-    # end
-  end
-
   def lowest_price=(new_lowest_price)
     lowest_price.to_s.gsub(',','').to_i
   end
@@ -557,11 +549,7 @@ class Product
   end
 
   def create_first_asset
-    if a = self.assets.create(content: "Awesome Shirt", shop: self.shop)
-      #logger.info "!! #{a.inspect} !!"
-    else
-      #logger.info "!! #{a.errors.inspect} !!"
-    end
+    self.assets.create(content: "Awesome Shirt", shop: self.shop)
   end
 
   def create_final_art!

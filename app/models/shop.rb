@@ -39,6 +39,9 @@ class Shop
   field :gcash_name
   field :gcash_number
 
+  validates_presence_of :name
+  validates_uniqueness_of :name
+
   mount_uploader :attachment, LogoAttachment
 
   slug :name

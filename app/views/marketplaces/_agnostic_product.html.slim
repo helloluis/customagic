@@ -19,3 +19,8 @@ li class='product agnostic_product'
             = number_to_currency(product.charity_donation, unit: product.shop.currency_symbol)
             |  of each #{product.product_type} sold will be donated to 
             = link_to product.charity.name, product.charity.url
+
+  div class='product_hearts'
+    span class='icon heart toggle_heart' data-id=product.id <3
+    - if product.num_favorites>0
+      span class='heart_counter' 0

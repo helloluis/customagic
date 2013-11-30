@@ -21,7 +21,7 @@ li class='product'
             = link_to product.charity.name, product.charity.url
 
   div class='product_hearts'
-    span class='icon heart' <3
+    span class='icon heart toggle_heart' data-id=product.id <3
     - if product.num_favorites>0
       span class='heart_counter' 0
       
