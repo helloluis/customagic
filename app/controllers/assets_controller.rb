@@ -23,9 +23,30 @@ class AssetsController < ApplicationController
   def create_photo
     # logger.info "!! #{current_user.inspect} !!"
     if params[:attachments]
+      
       @image = @shop.images.new({ attachment: params[:attachments].first })
+
     elsif params[:image]
-      @image = @shop.images.new(params[:image])
+
+      if params[:image][:remote_attachment_url][0,4]=='http'   
+
+        @image = @shop.images.new(params[:image])
+
+      elsif canned_image = App.canned_images.find{|ci| ci.filename==params[:image][:remote_attachment_url]}
+        
+        @asset = @shop.assets.create({
+          asset_type:   "photo",
+          product:      Product.find(params[:product_id]),
+          canned_image: canned_image.to_hash,
+          width:        canned_image.width,
+          height:       canned_image.height
+          })
+        
+        respond_to do |format|
+          format.json { render :json => [@asset.to_json, nil] }
+        end and return
+
+      end
     end
     
     if @image.get_dimensions_and_filesize && @image.save
@@ -37,7 +58,7 @@ class AssetsController < ApplicationController
       
       respond_to do |format|
         format.html { render :inline => "<textarea>#{[@asset.to_json.html_safe, @image.to_json.html_safe]}</textarea>" }
-        format.json { render :json => [@asset.to_json.html_safe, @image.to_json.html_safe] }
+        format.json { render :json => [@asset.to_json, @image.to_json] }
       end
 
     else
@@ -67,7 +88,7 @@ class AssetsController < ApplicationController
 
   def update
     if @asset = @shop.assets.find(params[:id])
-      @asset.update_attributes(params[:asset])
+      @asset.update_attributes(params[:asset].except('image_id','shop_id','__id','_id','canned_image'))
       respond_to do |format|
         format.json { render :json => @asset }
       end

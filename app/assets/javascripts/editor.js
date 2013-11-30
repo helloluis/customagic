@@ -170,6 +170,11 @@ var Editor = {
         }
       });
 
+    $(".alignment_button").click(function(){
+      $(this).addClass('current').siblings().removeClass('current');
+      $(".alignment_control").val( $(this).attr('data-alignment') ).change();
+    });
+
     $(".increase_zindex, .decrease_zindex, .clone_asset").click(function(){
       alert("This doesn't work yet :P");
     });
@@ -403,14 +408,17 @@ var Editor = {
 
   initialize_asset_and_image : function( parsed_data ) {
 
-    var new_asset = new Asset();
-    new_asset.initialize( parsed_data[0] );
-
-    var new_image = new ImageObject();
-    new_image.initialize( parsed_data[1] );
-
-    Editor.asset_objects.push(new_asset);
-    Editor.image_objects.push(new_image);
+    if (parsed_data[0]) {
+      var new_asset = new Asset();
+      new_asset.initialize(parsed_data[0]);
+      Editor.asset_objects.push(new_asset);
+    }
+    
+    if (parsed_data[1]) {
+      var new_image = new ImageObject();
+      new_image.initialize(parsed_data[1]);
+      Editor.image_objects.push(new_image);
+    }
     
   },
 

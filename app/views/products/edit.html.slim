@@ -28,11 +28,11 @@ div id='designer' class="small-12 small-uncentered medium-10 medium-centered row
             option 120px
         li class='alignment asset_text_field asset_photo_field' data-css-name='text-align'
           label Alignment
-          input type='hidden' name='alignment' class='alignment_control' disabled='disabled'
+          input type='hidden' name='alignment' class='alignment_control' disabled='disabled' data-css-name='text-align'
           ul class='alignment_buttons nolist'
-            li class='alignment_button alignment_left'
-            li class='alignment_button alignment_center current'
-            li class='alignment_button alignment_right'
+            li data-alignment='left'   class='alignment_button alignment_left'
+            li data-alignment='center' class='alignment_button alignment_center current'
+            li data-alignment='right'  class='alignment_button alignment_right'
         li class='color asset_text_field'
           label Color
           input type='text' name='color' class='color_control input_field' data-css-name='color' disabled='disabled'
@@ -163,8 +163,8 @@ div id='designer' class="small-12 small-uncentered medium-10 medium-centered row
       div class='loading_indicator' Loading ...
 
   script id='external_image_object_tmpl' type='text/template'
-    li id="{{__id}}" class='image_object external_image_object' data-id="{{__id}}" data-url="{{large_url}}"
-      div class='image_object_thumbnail' style='background-image:url({{small_url}})'
+    li id="{{__id}}" class='image_object external_image_object' data-id="{{__id}}" data-url="{{filename}}" data-medium="{{medium}}"
+      div class='image_object_thumbnail' style='background-image:url({{thumbnail}})'
       div class='image_object_title' {{title}}
       div class='instructions' Add this to your #{@product.product_type} ...
       div class='loading_indicator' Loading ...

@@ -9,6 +9,9 @@ javascript:
     fjs.parentNode.insertBefore(js, fjs);
   }(document, 'script', 'facebook-jssdk'));
 
-  FACEBOOK_AUTH_URL="#{user_omniauth_authorize_path(:facebook)}";
+- content_for :page_scripts do
   
-  Hearts.initialize();
+  javascript:
+    
+    FACEBOOK_AUTH_URL="#{user_omniauth_authorize_path(:facebook)}";
+    Hearts.initialize();

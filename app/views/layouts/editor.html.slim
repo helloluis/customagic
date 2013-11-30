@@ -1,0 +1,58 @@
+
+doctype html
+
+/[if lt IE 7]
+  | <html lang="en" class="ie6">
+/[if IE 7]
+  | <html lang="en" class="ie7">
+/[if IE 8]
+  | <html lang="en" class="ie8">
+/[if IE 9]
+  | <html lang="en" class="ie9">
+| <!--[if (gte IE 9)|!(IE)]<!--> <html> <!--<![endif]-->
+
+head
+  meta charset="utf-8"
+
+  link rel="icon" type="image/png" href="/favicon.ico"  
+  
+  /[if IE]
+    | <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  title = document_title
+  = document_meta
+  
+  meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"
+
+  - if Rails.env.development?
+    = javascript_include_tag "modernizr.min","jquery.min"
+  - else
+    = javascript_include_tag "//cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js", "//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"
+
+  = stylesheet_link_tag "application", media: "all", "data-turbolinks-track" => true
+  
+  = yield :page_styles
+
+  = csrf_meta_tags
+
+  javascript:
+    SITE_URL = "#{app_url}";
+
+  - if user_signed_in?
+    javascript:
+      CURRENT_USER = "#{current_user.username}";
+    
+body class=body_classes
+
+  div class='viewport'
+    
+    = render :partial => "shared/header"
+
+    = render :partial => "shared/messages"
+
+    = yield
+
+    = javascript_include_tag "application", "data-turbolinks-track" => true
+
+    = yield :page_scripts
+

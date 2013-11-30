@@ -36,10 +36,11 @@ class ProductsController < ApplicationController
   def edit
     @assets = @product.assets
     @images = @shop.images
+    render :layout => "editor"
   end
 
   def edit_info
-    #@product.buy_now_price = @product.product_sub_style_object.buy_now_price
+    render :layout => "editor"
   end
 
   def update
@@ -61,7 +62,7 @@ class ProductsController < ApplicationController
       respond_to do |format|
         format.html do
           flash[:alert] = "Your product information couldn't be saved!"
-          render :action => :edit_info
+          render :layout => "editor", :action => :edit_info
         end
       end
     end

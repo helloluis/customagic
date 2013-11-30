@@ -39,14 +39,19 @@ function Asset(){
             scaled_w = w,
             scaled_h = h;
 
-        if (cont_w>w || cont_h>h){
-          if (cont_w>w) {
-            scaled_h = h*(w/cont_w);
+        if (cont_w<w || cont_h<h){
+          if (cont_w<w) {
+            scaled_h = h*(cont_w/w);
           }
-          if (cont_h>h) {
-            scaled_w = w*(h/cont_h);
+          if (cont_h<h) {
+            scaled_w = w*(cont_h/h);
+          }
+          if (scaled_h>cont_h) {
+            scaled_h = cont_h;
+            scaled_w = w*(cont_h/h);
           }
         }
+        //console.log(scaled_w, scaled_h);
         return [scaled_w, scaled_h];
       };
 
@@ -58,8 +63,8 @@ function Asset(){
         left        :  parseInt(this.hash.coordinates[0]), // x
         top         :  parseInt(this.hash.coordinates[1]), // y
         zIndex      :  parseInt(this.hash.coordinates[2]), // z
-        width       :  scale(this.hash.width, this.hash.height, true),
-        height      :  scale(this.hash.width, this.hash.height, false),
+        width       :  scale(this.hash.width, this.hash.height)[0],
+        height      :  scale(this.hash.width, this.hash.height)[1],
         fontSize    :  this.hash.font_size,
         fontFamily  :  this.hash.font_family,
         color       :  this.hash.color,
