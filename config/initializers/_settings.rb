@@ -187,3 +187,60 @@ App.shipping_costs = [
   { name: "Vietnam",            slug: "vietnam",           individual_cost: 1280,   group_cost: 194 },
   { name: "Yemen",              slug: "yemen",             individual_cost: 2701,   group_cost: 840 }
 ]
+
+App.mobile_devices = %w(
+  palm
+  blackberry
+  nokia
+  phone
+  midp
+  mobi
+  symbian
+  chtml
+  ericsson
+  minimo
+  audiovox
+  motorola
+  samsung
+  telit
+  upg1
+  windows\ ce
+  ucweb
+  astel
+  plucker
+  x320
+  x240
+  j2me
+  sgh
+  portable
+  sprint
+  docomo
+  kddi
+  softbank
+  android
+  mmp
+  pdxgw
+  netfront
+  xiino
+  vodafone
+  portalmmm
+  sagem
+  mot-
+  sie-
+  ipod
+  up.b
+  webos
+  amoi
+  novarra
+  cdm
+  alcatel
+  pocket
+  ipad
+  iphone
+  mobileexplorer
+  mobile
+  maemo
+  fennec
+  silk
+  playbook
+)

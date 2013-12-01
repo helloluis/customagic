@@ -28,4 +28,10 @@ class ApplicationController < ActionController::Base
   end
   alias :require_account_user :authorize_account_user!
 
+  def mobile_browser?
+    return true if params[:mobile_site]
+    @app_mobile_devices ||= Regexp.union(App.mobile_devices)
+    request.user_agent && request.user_agent.downcase[@app_mobile_devices]
+  end
+  helper_method :mobile_browser?
 end
