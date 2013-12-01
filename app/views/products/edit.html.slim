@@ -146,11 +146,13 @@ div id='designer' class="small-12 small-uncentered medium-10 medium-centered row
 
   script id='asset_text_tmpl' type='text/template'
     div id="{{__id}}" class='asset asset_{{asset_type}}' data-id="{{__id}}" contenteditable="true" title="Double-click to edit!"
-      span style='position:relative; padding: 10px 0px 0px 0px'
+      /div class='custom_resize_handle ui-resizable-handle ui-resizable-se' <>
+      div style='position:relative; padding: 10px 0px 0px 0px'
         | {{{content}}}
 
   script id='asset_photo_tmpl' type='text/template'
     div id="{{__id}}" class='asset asset_{{asset_type}}' data-id="{{__id}}"
+      /div class='custom_resize_handle ui-resizable-handle ui-resizable-se' <>
       img src="{{attachment_medium_url}}" data-original="{{attachment_url}}" style='width:100%'
       
   script id='image_object_tmpl' type='text/template'

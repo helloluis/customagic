@@ -2,8 +2,8 @@ div id='editor' class='information small-12 small-uncentered medium-12 medium-ce
   
   = render :partial => "products/steps"
 
-  div class='inner clearfix medium-12'
-    div class='viewer medium-4 small-12'
+  div class='inner clearfix'
+    div class='viewer columns medium-4 small-12'
 
       div class='item' style='background-image:url(#{@product.final_art.attachment.medium.url}?#{Time.now.to_i})'
 
@@ -22,7 +22,7 @@ div id='editor' class='information small-12 small-uncentered medium-12 medium-ce
             strong Download Print-Ready Image
           dd
             = link_to truncate(@product.final_art.attachment.url, length:50), @product.final_art.attachment.url, target: "_blank"
-    div class='info_form_container medium-4 small-12'
+    div class='info_form_container columns medium-4 small-12'
 
       = simple_form_for @product, :url => update_info_shop_product_path(@current_shop, @product), :method => :post do |f|
 
@@ -47,7 +47,7 @@ div id='editor' class='information small-12 small-uncentered medium-12 medium-ce
         
         = f.submit "Save and Proceed", { 'data-hint'.to_sym => "Next step: Check this item out on your shop" } 
 
-    div class='totals_and_instructions medium-4 small-12'
+    div class='totals_and_instructions columns medium-4 small-12'
 
       dl class='totals'
         dt Your Profit per Unit

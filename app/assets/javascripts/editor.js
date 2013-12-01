@@ -166,23 +166,7 @@ var Editor = {
           Editor.selected_asset.save();
         }
       });
-
-    // $(".bg_color_control").
-    //   spectrum({
-    //     showPalette: true,
-    //     showInitial: true,
-    //     showInput:   true,
-    //     showSelectionPalette: true,
-    //     palette: [],
-    //     allowEmpty: true,
-    //     localStorageKey: "spectrum.homepage",
-    //     change: function(color){
-    //       Editor.selected_asset.dom.
-    //         css({ backgroundColor: color.toHexString() });
-    //       Editor.selected_asset.save();
-    //     }
-    //   });
-
+      
     $(".alignment_button").click(function(){
       $(this).addClass('current').siblings().removeClass('current');
       $(".alignment_control").val( $(this).attr('data-alignment') ).change();
@@ -581,8 +565,6 @@ var Editor = {
       }
       
     });
-
-
 
     return "<html><body>" + main.append(content.outerHTML()).outerHTML() + "</body></html>";
 

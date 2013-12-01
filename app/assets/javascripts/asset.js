@@ -75,7 +75,9 @@ function Asset(){
         color           : this.hash.color,
         backgroundColor : this.hash.bg_color,
         textAlign       : this.hash.alignment
-      });
+      }).
+      find(".ui-resizable-handle").
+      remove();
 
     // if (this.asset_type=='text') {
     //   $("#" + this.hash.__id).css({ padding : that.text_padding });
@@ -87,14 +89,11 @@ function Asset(){
 
   this.initialize_controls = function(){
     
-    var that = this,
-        pad  = (this.asset_type=='text' ? that.text_padding : 0);
+    var that = this;
     
     $("#" + that.hash.__id).
       mousedown(function(){
-        $(this).addClass('selected').
-          siblings(".asset").removeClass('selected');
-        that.initialize_settings();
+        that.select_asset();
       }).
       draggable({
         containment: Editor.product_editable_area,
@@ -108,7 +107,7 @@ function Asset(){
         minHeight   : 40,
         containment : Editor.product_editable_area,
         autoHide    : false,
-        handles     : "all",
+        handles     : 'se', //$("#" + that.hash.__id).find(".custom_resize_handle"),
         grid        : [ 5, 5 ],
         maxWidth    : $(this).parent().width(),
         maxHeight   : $(this).parent().height(),
@@ -126,6 +125,13 @@ function Asset(){
         }
       });
 
+    //$("#" + that.hash.__id).resizable('disable').draggable('disable');
+
+  };
+
+  this.select_asset = function(){
+    this.dom.addClass('selected').siblings(".asset").removeClass('selected');
+    this.initialize_settings();
   };
 
   this.initialize_settings = function(){
