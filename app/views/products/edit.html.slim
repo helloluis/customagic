@@ -7,7 +7,7 @@ div id='designer' class="small-12 small-uncentered medium-10 medium-centered row
   div class='asset_tools_container medium-8 small-12'
     fieldset
       input type='hidden' name='asset_id' value='' class='asset_id_field input_field'
-      ul class='asset_tools nolist disabled show_asset_text_fields'
+      ul class='asset_tools nolist disabled show_asset_text_fields clearfix'
         li class='font_family asset_text_field'
           label Font
           select name='font_family' class='font_family_control select_field' data-css-name='font-family' disabled='disabled'
@@ -29,10 +29,10 @@ div id='designer' class="small-12 small-uncentered medium-10 medium-centered row
         li class='alignment asset_text_field asset_photo_field' data-css-name='text-align'
           label Alignment
           input type='hidden' name='alignment' class='alignment_control' disabled='disabled' data-css-name='text-align'
-          ul class='alignment_buttons nolist'
-            li data-alignment='left'   class='alignment_button alignment_left'
-            li data-alignment='center' class='alignment_button alignment_center current'
-            li data-alignment='right'  class='alignment_button alignment_right'
+          ul class='alignment_buttons nolist clearfix'
+            li data-alignment='left'   data-hint="Align to left"   class='hint--bottom alignment_button alignment_left' < 
+            li data-alignment='center' data-hint="Align to center" class='hint--bottom alignment_button alignment_center current' -
+            li data-alignment='right'  data-hint="Align to right"  class='hint--bottom alignment_button alignment_right' >
         li class='color asset_text_field'
           label Color
           input type='text' name='color' class='color_control input_field' data-css-name='color' disabled='disabled'
@@ -40,11 +40,11 @@ div id='designer' class="small-12 small-uncentered medium-10 medium-centered row
           label Fill
           input type='text' name='background-color' class='bg_color_control input_field' data-css-name='background-color' value='transparent' disabled='disabled'
         li class='zindexes asset_text_field asset_photo_field' data-css-name='z-index'
-          button class='increase_zindex' Forwards
-          button class='decrease_zindex' Backwards
+          button data-hint="Move this asset forwards" class='increase_zindex hint--bottom' ^
+          button data-hint="Move this asset backwards" class='decrease_zindex hint--bottom' v
         li class='clone_and_delete asset_text_field asset_photo_field'
-          button class='clone_asset' Clone
-          button class='delete_asset' Delete
+          / button class='clone_asset' Clone
+          button data-hint="Delete this asset" class='delete_asset hint--bottom' x
 
   div class='viewer medium-8 small-12'
 
@@ -129,7 +129,7 @@ div id='designer' class="small-12 small-uncentered medium-10 medium-centered row
                   h4 = sub_style.name
                   p = sub_style.description
 
-      div class='price_container hint--left' data-hint="Prices decrease the more #{@product.product_type}s we produce!"
+      div class='price_container'
         p class='price_description'
           | Base cost per #{@product.product_type}
         h2 class='price currency'
@@ -148,7 +148,7 @@ div id='designer' class="small-12 small-uncentered medium-10 medium-centered row
 
   script id='asset_text_tmpl' type='text/template'
     div id="{{__id}}" class='asset asset_{{asset_type}}' data-id="{{__id}}" contenteditable="true" title="Double-click to edit!"
-      span
+      span style='position:relative; padding: 10px 0px 0px 0px'
         | {{{content}}}
 
   script id='asset_photo_tmpl' type='text/template'

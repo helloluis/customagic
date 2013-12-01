@@ -23,6 +23,7 @@
 //= require foundation
 //= require foundation/foundation.alert
 //= require inflection
+//= require hammer
 //= require_tree .
 
 $(function(){ $(document).foundation(); });

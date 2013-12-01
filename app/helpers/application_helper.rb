@@ -46,11 +46,13 @@ module ApplicationHelper
   end
 
   def body_classes
+    classes = "#{mobile_browser? ? 'mobile_browser' : ''}"
     if @current_shop
-      "shop shop_#{@current_shop.color_scheme}"
+      classes += "shop shop_#{@current_shop.color_scheme}"
     else
-      ""
+      classes += ""
     end
+    classes
   end
     
 end

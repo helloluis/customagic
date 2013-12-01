@@ -6,19 +6,21 @@ var Editor = {
 
   initialize : function(shop, types, product, assets, images) {
     
-    this.shop    = shop;
-    this.product_types = types;
-    this.product = product;
-    this.assets  = assets;
-    this.images  = images;
+    this.mobile         = $("body").hasClass("mobile_browser");
+    this.shop           = shop;
+    this.product_types  = types;
+    this.product        = product;
+    this.assets         = assets;
+    this.images         = images;
     
-    this.current_side  = 0; // which side of the item are we viewing? (front/back/etc)
+    this.current_side   = 0; // which side of the item are we viewing? (front/back/etc)
 
     this.initialize_product();
     this.initialize_viewer();
     this.initialize_controls();
     this.initialize_asset_settings();
     this.initialize_meme_generator();
+    this.initialize_window();
 
   },
 
@@ -104,6 +106,16 @@ var Editor = {
 
   },
 
+  initialize_window : function(){
+
+    var init_scale = function(){
+      Editor.initialize_scale();
+    };
+    
+    $(window).resize(_.throttle(init_scale,500));
+
+  },
+
   initialize_controls : function() {
 
     var that = this;
@@ -139,7 +151,7 @@ var Editor = {
         Editor.selected_asset.save();
       });
 
-    $(".color_control").
+    $(".color_control, .bg_color_control").
       spectrum({
         showPalette: true,
         showInitial: true,
@@ -148,27 +160,28 @@ var Editor = {
         palette: [],
         localStorageKey: "spectrum.homepage",
         change : function(color){
+          var css_name = $(this).attr('data-css-name');
           Editor.selected_asset.dom.
-            css({ color: color.toHexString() });
+            css(css_name, color.toHexString());
           Editor.selected_asset.save();
         }
       });
 
-    $(".bg_color_control").
-      spectrum({
-        showPalette: true,
-        showInitial: true,
-        showInput:   true,
-        showSelectionPalette: true,
-        palette: [],
-        allowEmpty: true,
-        localStorageKey: "spectrum.homepage",
-        change: function(color){
-          Editor.selected_asset.dom.
-            css({ backgroundColor: color });
-          Editor.selected_asset.save();
-        }
-      });
+    // $(".bg_color_control").
+    //   spectrum({
+    //     showPalette: true,
+    //     showInitial: true,
+    //     showInput:   true,
+    //     showSelectionPalette: true,
+    //     palette: [],
+    //     allowEmpty: true,
+    //     localStorageKey: "spectrum.homepage",
+    //     change: function(color){
+    //       Editor.selected_asset.dom.
+    //         css({ backgroundColor: color.toHexString() });
+    //       Editor.selected_asset.save();
+    //     }
+    //   });
 
     $(".alignment_button").click(function(){
       $(this).addClass('current').siblings().removeClass('current');
