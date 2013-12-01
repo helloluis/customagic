@@ -216,7 +216,7 @@ function Asset(){
     
     this.dom.attr('contenteditable','true');
 
-    this.select_text( this.dom.find("span")[0] );
+    this.select_text( this.dom.find("p")[0] );
 
   };
 
