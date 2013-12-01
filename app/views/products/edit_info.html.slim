@@ -43,7 +43,7 @@ div id='editor' class='information small-12 small-uncentered medium-12 medium-ce
         
         = f.input :charity_url, collection: App.charities.map{|c| [c.name, c.url]}, label: "Charity", include_blank: false
 
-        = f.input :status, label: "Item Status", collection: [['hidden',1],['visible',2]], include_blank: false
+        = f.input :status, label: "Item Status", collection: [['Hidden',1],['Ready to Sell',2]], include_blank: false
         
         = f.submit "Save and Proceed", { 'data-hint'.to_sym => "Next step: Check this item out on your shop" } 
 

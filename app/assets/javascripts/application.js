@@ -23,7 +23,7 @@
 //= require foundation
 //= require foundation/foundation.alert
 //= require inflection
-//= require hammer
+//= require jquery.ui.touch-punch
 //= require_tree .
 
 $(function(){ $(document).foundation(); });

@@ -28,8 +28,8 @@ class AssetsController < ApplicationController
 
     elsif params[:image]
 
-      if params[:image][:remote_attachment_url][0,4]=='http'   
-
+      if !params[:image][:remote_attachment_url].include?(App.url)
+        
         @image = @shop.images.new(params[:image])
 
       elsif canned_image = App.canned_images.find{|ci| ci.filename==params[:image][:remote_attachment_url]}
@@ -46,9 +46,14 @@ class AssetsController < ApplicationController
           format.json { render :json => [@asset.to_json, nil] }
         end and return
 
+      else
+        respond_to do |format|
+          format.html { render :inline => "<textarea>#{{:error => 'We couldn\'t find that image.'}.to_json.html_safe}</textarea>" }
+          format.json { render :json => { :error => "We couldn't find that image." }, :status => :unprocessable_entity }
+        end and return
       end
     end
-    
+
     if @image.get_dimensions_and_filesize && @image.save
 
       @asset = @shop.assets.create({ 

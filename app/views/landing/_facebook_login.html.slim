@@ -1,4 +1,4 @@
-div class='facebook_profile_container small-12 columns medium-7'
+div class='facebook_profile_container'
   - if user_signed_in?
     p 
       = link_to "Start designing now", "/#{current_user.shop.slug}/products/new" 

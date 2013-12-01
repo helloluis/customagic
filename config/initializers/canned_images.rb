@@ -158,7 +158,7 @@ App.canned_images = [
 ]
 
 App.canned_images.each do |ci|
-  ci.filename  = "/assets/library/#{ci.filename}"
-  ci.medium    = "/assets/library/#{ci.medium}"
-  ci.thumbnail = "/assets/library/#{ci.thumbnail}"
+  ci.filename  = "http://#{App.url}/assets/library/#{ci.filename}"
+  ci.medium    = "http://#{App.url}/assets/library/#{ci.medium}"
+  ci.thumbnail = "http://#{App.url}/assets/library/#{ci.thumbnail}"
 end
