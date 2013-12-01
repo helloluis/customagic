@@ -15,14 +15,26 @@
                           } else {
                             current_panel=0;
                           }
-                          $(".header_panels").animate({ left: left });
+                          $(".header_panels").
+                            delay(5000).
+                            animate({ left: left }, 
+                              { duration : 500, 
+                                complete : function(){
+                                  slide_panels(); 
+                                }
+                              });
                         },
         slider_timer;
     
     $(function(){
-      
-      slide_timer   = $.timer(slide_panels);
-      slide_timer.set({ time : 5000, autostart: true });
+
+      $(".header_panels").delay(5000).
+        animate({ left: -$("header").width() }, 
+          { duration : 500, 
+            complete : function(){
+              slide_panels(); 
+            }
+          });
 
       $(".login_via_facebook").click(function(){
         $(this).text("Logging in ...");
