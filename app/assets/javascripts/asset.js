@@ -291,7 +291,7 @@ function Asset(){
       font_family:    this.dom.css('font-family'),        // type: String,   default: "Helvetica"
       font_size:      this.dom.css('font-size'),          // type: String,   default: "36px"
       alignment:      this.dom.css('text-align'),         // type: String,   default: "center"
-      content:        this.dom.text()                     // type: String,   default: "Text"
+      content:        this.dom.html()                     // type: String,   default: "Text"
     });
 
   };
