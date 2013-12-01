@@ -1,0 +1,29 @@
+
+Hello!
+
+<% if @order.rejection_message %>
+<%= @order.rejection_message %>
+<% else %>
+Your order has been rejected.
+<% end %>
+============================================
+
+ORDER No. <%= @order._id %>
+
+<% @order.contents_with_product_names.each do |slug, content| %>
+(<%= content['quantity'] %>) <%= content['name'] %> <%= content['variant_name'] %> - <%= content['currency'] %><%= content['price'] %> 
+<% end %>
+
+============================================
+
+First Name : <%= @order.first_name %>
+Last Name : <%= @order.last_name %>
+Email : <%= @order.email %>
+Phone No. : <%= @order.phone %>
+Address : <%= @order.full_address %>
+Ordered On : <%= @order.created_at.strftime("%d %B %Y, %H:%M") %>
+
+Please contact us at <%= @order.shop.site.account.creator.email %> for more information.
+
+
+<%= @order.shop.site.owner_name.blank? ? @order.shop.site.title : @order.shop.site.owner_name %>

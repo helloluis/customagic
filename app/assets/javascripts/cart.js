@@ -1107,7 +1107,7 @@ var Cart = {
     var f = $(".order_form form");
     if (!f.length) { return false; }
     
-    f.data('validator').settings.submitHandler=false;
+    //f.data('validator').settings.submitHandler=false;
 
     $("input[type=submit]",f).click(function(){ Cart.update_payment_fields('offline'); });
 
@@ -1118,43 +1118,45 @@ var Cart = {
     var self = this,
         f    = $(".order_form form");
 
-    f.data('validator').settings.submitHandler=function(form){
+    f.submit(function(form){
 
       $(".place_order",f).val("Sending ...").attr('disabled','disabled');
 
-        Cart.update_payment_fields('paypal');
+      Cart.update_payment_fields('paypal');
 
-        // Paypal won't let us send them a shopping cart with a discount greater than the total
-        if (Cart.total_discount>=Cart.total_without_discount) {
-          $("#discount_amount_cart").val(Cart.total_without_discount-0.01);  
-        }
+      // Paypal won't let us send them a shopping cart with a discount greater than the total
+      if (Cart.total_discount>=Cart.total_without_discount) {
+        $("#discount_amount_cart").val(Cart.total_without_discount-0.01);  
+      }
 
-        $.ajax({
-          url      : "/orders",
-          type     : "POST",
-          data     : f.serializeArray(),
-          dataType : "JSON",
-          success  : function(data){
-            if (data.order) {
-              
-              // if (self.in_iframe) {
-              //   window.parent.parent.scrollTo(0,0);
-              // }
+      $.ajax({
+        url      : "/orders",
+        type     : "POST",
+        data     : f.serializeArray(),
+        dataType : "JSON",
+        success  : function(data){
+          if (data.order) {
+            
+            // if (self.in_iframe) {
+            //   window.parent.parent.scrollTo(0,0);
+            // }
 
-              $("#invoice").val(data.order._id);
-              $("#paypal_form").submit();  
-              Flasher.add(['notice',"Your order has been placed! You are now being redirected to Paypal ..."],true);
-              f.find(".place_order").val("Sending to Paypal ...");
+            $("#invoice").val(data.order._id);
+            $("#paypal_form").submit();  
+            Flasher.add(['notice',"Your order has been placed! You are now being redirected to Paypal ..."],true);
+            f.find(".place_order").val("Sending to Paypal ...");
 
-            } else if (data.errors) {
+          } else if (data.errors) {
 
-              Flasher.add(['error',data.errors],true);
-              f.find(".place_order").val("Send Order").removeAttr('disabled');
-            }
+            Flasher.add(['error',data.errors],true);
+            f.find(".place_order").val("Send Order").removeAttr('disabled');
           }
-        });
-        return false;
-    };
+        }
+      });
+      
+      return false;
+
+    });
 
   },
 

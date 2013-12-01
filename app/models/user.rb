@@ -9,7 +9,7 @@ class User
   #devise :database_authenticatable, :registerable, :recoverable, :rememberable, :trackable, :validatable, :omniauthable, :omniauth_providers => [ :facebook ]
   devise :trackable, :validatable, :omniauthable, :omniauth_providers => [ :facebook ]
   
-  attr_accessible :urls, :name, :username, :first_name, :last_name, :avatar, :location, :hometown, :extras, :email, :password, :password_confirmation, :remember_me, :provider, :uid, :oauth_token, :oauth_expires_at
+  attr_accessible :urls, :name, :username, :first_name, :last_name, :avatar, :location, :address, :hometown, :city, :country, :state, :extras, :email, :password, :password_confirmation, :remember_me, :provider, :uid, :oauth_token, :oauth_expires_at
 
   field :urls
   field :name
@@ -19,10 +19,13 @@ class User
   field :avatar
   field :email
   field :mobile
+  field :address
   field :location
   field :hometown
   field :city
+  field :state
   field :country
+  field :postcode
   field :extras
   field :partner, default: "customagic"
 
@@ -41,7 +44,7 @@ class User
   has_many :orders
   has_many :carts do
     def active
-      where(checked_out: false).desc(:created_at)
+      where(checked_out: false).desc(:created_at).first
     end
   end
 

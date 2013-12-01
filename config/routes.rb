@@ -19,7 +19,7 @@ Customagic::Application.routes.draw do
       post :update_info,  on: :member
     end
   end
-  
+
   resources :products
   
   resources :carts do
@@ -38,6 +38,7 @@ Customagic::Application.routes.draw do
   end
   resources :users
 
+  match '/orders' => "orders#create", :method => :post
   match '/shop/successful_purchase' => 'shops#successful_purchase', :method => :get
   match '/shop/cancelled_purchase'  => 'shops#cancelled_purchase',  :method => :get
   match "/payment_notifications/paypal" => "payment_notifications#paypal", :as => :paypal_payment_notifications

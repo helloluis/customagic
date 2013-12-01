@@ -60,7 +60,7 @@ div class='offline_form' style="display:none"
       | order form: paying offline
   hr  
       
-div class='order_form' style="display:none"
+div class='order_form row medium-12 small-12' style="display:none"
 
   div class='payment_instructions' 
 
@@ -69,7 +69,7 @@ div class='order_form' style="display:none"
       strong
         | All fields are required.
     
-  = simple_form_for @order, :url => "/shop/orders", :method => :post  do |f|
+  = simple_form_for @order, :url => "/orders", :method => :post  do |f|
 
     = f.input :cart_id,             :as => :hidden
     = f.input :contents,            :as => :hidden
@@ -82,19 +82,19 @@ div class='order_form' style="display:none"
 
     = hidden_field_tag :return_to, "/shop/successful_purchase?cart_id=#{@cart.id}"
 
-    div class='order_form_column'
+    div class='columns medium-6 order_form_column'
       = f.input :first_name, :input_html => {:class => "text"}
       = f.input :last_name, :input_html => {:class => "text"}
       = f.input :email, :input_html => {:class => "text"}
       = f.input :phone, :input_html => {:class => "text"}
       = f.input :instructions, :label => "Special Instructions or Requests", :as => :text, :required => false, :input_html => {:class => "text"}
 
-    div class='order_form_column'
+    div class='columns medium-6 order_form_column'
       = f.input :address, :input_html => {:class => "text"}
       = f.input :city, :input_html => {:class => "text"}
       = f.input :state, :wrapper_html => { :class => "parallel" }, :input_html => {:class => "text"}
       = f.input :postcode, :wrapper_html => { :class => "parallel" }, :input_html => {:class => "text"}
-      = f.input :country, :as => :country, :input_html => {:class => "text"}
+      = f.input :country, :as => :country, :priority => ["Philippines"], :include_blank => false, :input_html => {:class => "text"}
       div class='btn'
         = f.button :submit, :value => "Send Order", :class => "place_order orange40"
         a href="#!" class='cancel_order_form' Cancel

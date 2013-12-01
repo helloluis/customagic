@@ -13,6 +13,8 @@ App.partner_name = "inkify"
 App.url = Rails.env.development? ? "inkify.xxx" : "inkify.me"
 App.default_product_type = "shirt"
 
+App.support_email = "departmentofink@gmail.com"
+
 App.fonts = {
   helvetica: "Helvetica",
   lucida_sans: "Lucida Sans",

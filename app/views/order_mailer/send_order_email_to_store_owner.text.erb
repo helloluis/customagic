@@ -1,0 +1,22 @@
+
+Hello!
+
+The following order has just been placed on your <%= app_name %> store.
+
+============================================
+
+<%= @order['quantity' %> <%= @product.name %> - <%= @order['currency']%><%= @order['price'] %> 
+<% end %>
+
+TOTAL 
+<%= @order.shop.currency %><%= number_with_precision(@order['quantity'].to_i*@order['price'].to_f, :precision => 2) %>
+
+============================================
+
+
+Thanks!
+
+Your Friends at <%= app_name %>
+
+
+

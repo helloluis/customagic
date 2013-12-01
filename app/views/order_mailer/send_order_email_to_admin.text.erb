@@ -1,0 +1,45 @@
+
+Hello!
+
+The following order has just been placed on your <%= app_name %> store.
+
+============================================
+
+<% @order.contents_with_product_names.each do |slug, content| %>
+(<%= content['quantity'] %>) <%= content['item_name'].blank? ? content['name'] : content['item_name'] %> <%= content['variant_name'] %> - <%= content['currency']%><%= content['price'] %> 
+<% end %>
+
+<% if @order.discount %>
+DISCOUNT (<%= @order.discount_code_type.gsub('_',' ').titleize %>)
+<%= app_currency_label %><%= number_with_precision(@order.discount, :precision => 2) %>
+<% end %>
+
+SHIPPING 
+<%= app_currency_label %> <%= number_with_precision(@order.shipping_cost, :precision => 2) %>
+
+TOTAL 
+<%= app_currency_label %><%= number_with_precision(@order.total_with_shipping_and_with_discount, :precision => 2) %>
+
+============================================
+
+First Name : <%= @order.first_name %>
+Last Name : <%= @order.last_name %>
+Email : <%= @order.email %>
+Phone No. : <%= @order.phone %>
+Address : <%= @order.full_address %>
+Ordered On : <%= @order.created_at.strftime("%d %B %Y, %H:%M") %>
+Payment Method: <%= @order.payment_method %>
+
+Special Instructions or Requests: 
+<%= @order.instructions %>
+
+
+You may contact <%= @order.first_name %> directly by replying to this message.
+
+
+Thanks!
+
+Your Friends at <%= app_name %>
+
+
+

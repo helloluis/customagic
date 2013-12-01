@@ -2,13 +2,10 @@ class OrdersController < ApplicationController
 
   include ActionView::Helpers::NumberHelper
 
-  before_filter :set_current_account_and_site
-  before_filter :check_activation
-  before_filter :authenticate_user!, :except => [ :create, :login_via_facebook ]
-  before_filter :authorize_account_user!, :except => [ :create, :login_via_facebook ]
-  before_filter :get_or_set_guest_session
-  before_filter :set_shop
-  before_filter :get_or_set_cart, :except => [ :index ]
+  before_filter :authenticate_user!, :except => [ :create ]
+  before_filter :authorize_account_user!, :except => [ :create ]
+  before_filter :set_shop, except: [ :create ]
+  before_filter :set_cart, :except => [ :index ]
   before_filter :set_order, :only => [ :show, :process, :fulfill, :unfulfill, :reject, :cancel ]
 
   layout "shops"
@@ -61,8 +58,8 @@ class OrdersController < ApplicationController
   end
 
   def create
-    @order = @shop.orders.build(params[:order])
-    @cart = @shop.carts.find(@order.cart_id)
+    @order = Order.new(params[:order])
+    @cart = Cart.find(@order.cart_id)
 
     respond_to do |format|
       format.html do
@@ -158,15 +155,8 @@ class OrdersController < ApplicationController
 
   protected
 
-    def set_shop
-      @shop = current_site.shop if current_site
-      @no_sidebar = true
-    end
-
-    def check_activation
-      if current_site.deactivated_by_admin?
-        redirect_to current_site.url and return
-      end
+    def set_cart
+      @cart = current_user.find_or_create_cart
     end
 
     def set_order
