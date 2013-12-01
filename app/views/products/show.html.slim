@@ -22,8 +22,8 @@ div class='product standalone_product small-12 small-uncentered medium-12 medium
         = link_to "Add to Cart", add_product_shop_carts_path(@shop, product_id: @product.id), class: 'buy_now', "data-loading".to_sym => "Adding ..." 
 
       div class='product_hearts'
-        span class='icon heart toggle_heart' data-id=product.id <3
-        - if product.num_favorites>0
+        span class='icon heart toggle_heart' data-id=@product.id <3
+        - if @product.num_favorites>0
           span class='heart_counter' 0
           
       div class='product_variants'

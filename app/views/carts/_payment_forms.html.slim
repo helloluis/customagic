@@ -10,13 +10,12 @@ div class='payment_options'
       input id="cmd" type='hidden' name='cmd' value='_cart'
       input id="business" type='hidden' name='business' value=App.paypal.email
       input id="upload" type='hidden' name='upload' value='1'
-      input id="currency_code" type='hidden' name='currency_code' value=@current_shop.currency_symbol
+      input id="currency_code" type='hidden' name='currency_code' value=app_currency_symbol
       input id="notify_url" type='hidden' name='notify_url' value="/payment_notifications/paypal"
-      input id="shopping_url" type="hidden" name="shopping_url" value=@current_shop.slug
+      input id="shopping_url" type="hidden" name="shopping_url" value=app_url
       input id="return" type="hidden" name="return" value="/shop/successful_purchase?cart_id=#{@cart.id}"
       input id="cancel_return" type="hidden" name="cancel_return" value="/shop/cancelled_purchase?cart_id=#{@cart.id}"
-      input id="cbt" type="hidden" name="cbt" value="Return to #{@current_shop.name}"
-      input id="custom" type='hidden' name='custom' value=@guest
+      input id="cbt" type="hidden" name="cbt" value="Return to #{app_name}"
       input id="invoice" type='hidden' name='invoice' value=@cart.id
       input id="discount_amount_cart" type="hidden" name="discount_amount_cart"
 
@@ -46,7 +45,7 @@ div class='payment_options'
         p class='hint'
           | You will be asked to enter your delivery address and contact info, and provided with our payment details.
 
-div class='online_form' style="#{@current_shop.can_transact? ? 'display:none' : ''}"
+div class='online_form' style="display:none"
   h3 Pay via Paypal
 
   h3 class='divider'
@@ -54,14 +53,14 @@ div class='online_form' style="#{@current_shop.can_transact? ? 'display:none' : 
       | order form: paying with paypal
   hr  
 
-div class='offline_form' style="#{@current_shop.can_transact? ? 'display:none' : ''}"
+div class='offline_form' style="display:none"
   h3 Pay Offline
   h3 class='divider'
     span
       | order form: paying offline
   hr  
       
-div class='order_form' style="#{@current_shop.can_transact? ? 'display:none' : ''}"
+div class='order_form' style="display:none"
 
   div class='payment_instructions' 
 
@@ -70,14 +69,6 @@ div class='order_form' style="#{@current_shop.can_transact? ? 'display:none' : '
       strong
         | All fields are required.
     
-    p class='gcash_details vcard'
-      label Globe GCash 
-      em Name 
-      strong class='fn' = @shop.gcash_name
-      |  | 
-      em Mobile 
-      strong class='tel' = @shop.gcash_number
-
   = simple_form_for @order, :url => "/shop/orders", :method => :post  do |f|
 
     = f.input :cart_id,             :as => :hidden
@@ -106,5 +97,4 @@ div class='order_form' style="#{@current_shop.can_transact? ? 'display:none' : '
       = f.input :country, :as => :country, :input_html => {:class => "text"}
       div class='btn'
         = f.button :submit, :value => "Send Order", :class => "place_order orange40"
-        - if @shop.can_transact?
-          a href="#!" class='cancel_order_form' Cancel
+        a href="#!" class='cancel_order_form' Cancel

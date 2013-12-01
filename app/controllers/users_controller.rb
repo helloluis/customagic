@@ -25,4 +25,12 @@ class UsersController < ApplicationController
     end
   end
 
+  def hearts
+    if user_signed_in?
+      respond_to do |format|
+        format.json { render :json => current_user.favorite_product_ids, :callback => params[:callback] }
+      end
+    end
+  end
+  
 end

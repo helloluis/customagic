@@ -28,6 +28,20 @@ class ProductTest < ActiveSupport::TestCase
     assert !@unavailable_product.is_orderable?
   end
 
+  test "updating sales_info should create price_variants array" do
+    @shop = Shop.create(name: "New Shop #{rand(1000)}")
+    @product = @shop.products.create(name: "Awesome Shirt #{rand(1000)}", :buy_now_price => 300.0)
+    @product.update_sales_information!
+    assert @product.price_variants.map{|pv|pv[:primary]} == @product.product_style_object.sizes, @product.price_variants.map{|pv|pv[:primary]}.inspect
+  end
+
+  test "updating sales_info should initialize base_price" do
+    @shop = Shop.create(name: "New Shop #{rand(1000)}")
+    @product = @shop.products.create(name: "Awesome Shirt #{rand(1000)}", :buy_now_price => 300.0)
+    @product.update_sales_information!
+    assert @product.base_price == @product.product_sub_style_object.prices.first.last, @product.base_price.to_s
+  end
+
   # test "should have an availability_end after availability_start" do
   #   assert @product.availability_end>@product.availability_start
   # end

@@ -36,7 +36,9 @@ head
   = csrf_meta_tags
 
   javascript:
-    SITE_URL = "#{app_url}";
+    SITE_URL        = "#{app_url}";
+    CURRENCY_SYMBOL = "#{app_currency_symbol}";
+    CURRENCY_LABEL  = "#{app_currency_label}";
 
   - if user_signed_in?
     javascript:

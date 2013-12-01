@@ -74,15 +74,17 @@ class ProductsController < ApplicationController
 
   protected
     def set_shop
-      @current_shop = @shop = Shop.find(params[:shop_id])
+      @current_shop = Shop.find(params[:shop_id]) if params[:shop_id]
     end
 
     def set_product
-      unless @product = @current_shop.products.find(params[:id])
+      unless @product = Product.find(params[:id])
         flash[:alert] = "We couldn't find that item."
         redirect_to "/#{@current_shop.slug}"
       end
       @current_product = @product
+      @current_shop ||= @product.shop
+      @shop = @current_shop
     end
 
     def check_product_visibility

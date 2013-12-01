@@ -62,7 +62,7 @@ class Product
 
   field :raw_html
 
-  field :dont_track_quantities,   type: Boolean,  default: false
+  field :dont_track_quantities,   type: Boolean,  default: true
   field :hide_prices,             type: Boolean,  default: false
   field :images,                  type: Array,    default: []
   field :embedded_video 

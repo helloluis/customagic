@@ -22,7 +22,7 @@ App.fonts = {
 
 App.currency = {
   symbol: "&#8369;",
-  label: "PhP"
+  label: "PHP"
 }
 
 App.product_types = [
@@ -47,7 +47,7 @@ App.product_types = [
           "mens_crew_666666.jpg", 
           "mens_crew_551100.jpg"
         ],
-        sizes: %(small medium large x-large xx-large),
+        sizes: %w(small medium large x-large xx-large),
         sub_styles: [
           { name: "Standard Tagless Tee",
             slug: "basic_standard", 

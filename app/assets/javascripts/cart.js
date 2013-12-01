@@ -104,7 +104,7 @@ var Cart = {
         
         }
 
-        $("#variant_price").find(".currency").currency({ region: self.shop.currency_symbol});
+        $("#variant_price").find(".currency").currency({ region: CURRENCY_LABEL});
       }
 
       c.show_variant_image();
@@ -580,7 +580,7 @@ var Cart = {
           sub = el.find(".subtotal"),
           new_sub = q*per;
       
-      sub.attr('data-subtotal',new_sub).text( new_sub ).currency({ region: self.shop.currency_symbol});
+      sub.attr('data-subtotal',new_sub).text( new_sub ).currency({ region: CURRENCY_LABEL});
 
       total += new_sub;
 
@@ -592,7 +592,7 @@ var Cart = {
 
     $(".sub_total_price").
       text( Cart.total_without_discount_and_without_shipping ).
-      currency({ region: self.shop.currency_symbol});
+      currency({ region: CURRENCY_LABEL});
 
     var discount = Cart.apply_discount_code(total,quantity,discount_success_message);
 
@@ -611,7 +611,7 @@ var Cart = {
     
     Cart.total = total;
 
-    $(".total").text( total ).currency({ region: self.shop.currency_symbol});
+    $(".total").text( total ).currency({ region: CURRENCY_LABEL});
 
     $(".cart_quantities").text( quantity );
 
@@ -655,7 +655,9 @@ var Cart = {
                           'partner','on_sale','dont_track_quantities','visible_in_marketplace',
                           'name','item_name','slug','description','price_variants','_keywords',
                           'price_variant_classes', 'num_views','num_favorites','num_orders',
-                          'featured','hide_prices','trusted','availability','status' ];
+                          'featured','hide_prices','trusted','availability','status','raw_html',
+                          'shipping_costs', 'sales_goal', 'campaign_length', 'product_type',
+                          'product_style', 'product_sub_style' ];
 
     for (item_id in cart_contents) {
       _.each(unneeded_keys, function(key){
@@ -675,7 +677,7 @@ var Cart = {
     
     //self.update_cart_contents();
 
-    var url = "/shops/" + self.shop.slug + "/carts/update_cart.json?callback=?";
+    var url = "/carts/update_cart.json?callback=?";
    
     $.jsonp({
       url      : url,
@@ -714,7 +716,7 @@ var Cart = {
     
     self.update_cart_contents();
 
-    var url = "/shops/" + self.shop.slug + "/carts/check_out.json?callback=?";
+    var url = "/carts/check_out.json?callback=?";
     
     $.jsonp({
       url      : url,
@@ -789,7 +791,7 @@ var Cart = {
           }
           return false;
         },
-        url = "/shops/" + self.shop.slug + "/carts.json?callback=?";
+        url = "/carts/view.json?callback=?";
     
     $(".shopping_cart table").addClass('loading');
     
@@ -884,7 +886,7 @@ var Cart = {
     var self = this;
     self.contents = {};
     $.jsonp({
-      url : "/shops/" + self.shop.slug + "/carts/empty",
+      url : "/carts/empty",
       dataType : "json",
       complete : function(data) {
         Flasher.add(['notice',"Your cart has been emptied."],true);
@@ -909,8 +911,7 @@ var Cart = {
     var self   = this,
         sc     = $("select.shipping_cost", ".shopping_cart").empty().unbind('change'),
         opts   = [],
-        html   = "",
-        shipping_costs = [], 
+        html   = "", 
         base_prices = {}, 
         base_price_indexes = {}; 
 
@@ -919,39 +920,38 @@ var Cart = {
     }
     // console.log(this.contents);
     // compile all of the items' shipping costs into a single temporary array
-    _.map(this.contents, function(item){
-      if (parseInt(item.quantity)>0) {
-        for (var i=0; i<parseInt(item.quantity); i++) {
-          shipping_costs.push(item.shipping_costs);  
-        }  
-      }
-    });
+    // _.map(this.contents, function(item){
+    //   if (parseInt(item.quantity)>0) {
+    //     for (var i=0; i<parseInt(item.quantity); i++) {
+    //       shipping_costs.push(item.shipping_costs);  
+    //     }  
+    //   }
+    // });
 
-    for (var i=0; i<shipping_costs.length; i++){
-      if (shipping_costs[i]) {
-        for (var j=0; j<shipping_costs[i].length;j++) {
-          shipping_costs[i][j][0]=shipping_costs[i][j][0].trim().toLowerCase();  
-        }  
-      }
-    } 
+    // for (var i=0; i<shipping_costs.length; i++){
+    //   if (shipping_costs[i]) {
+    //     for (var j=0; j<shipping_costs[i].length;j++) {
+    //       shipping_costs[i][j][0]=shipping_costs[i][j][0].trim().toLowerCase();  
+    //     }  
+    //   }
+    // } 
 
-    var common_locations = self.find_common_locations();
+    // var common_locations = self.find_common_locations();
 
     // find the highest "alone" price for each delivery location and use that as the base_price
     // we store the index of the item that has the highest base price in base_price_index
-    _.each(shipping_costs, function(cost,i){
-      _.each(cost, function(location,j){
-        var loc_name = location[0].trim().toLowerCase();
-        if (_.include(_.keys(base_prices), loc_name)) {
-          if (parseFloat(location[1]) > base_prices[loc_name]) {
-            base_prices[loc_name] = parseFloat(location[1]);
-            base_price_indexes[loc_name] = i;  
-          }
-        } else {
-          base_prices[loc_name] = parseFloat(location[1]);
-          base_price_indexes[loc_name] = i;
-        } 
-      });
+    _.each(SHIPPING, function(location,i){
+      //base_prices[location.slug] = parseFloat(location.individual_cost);
+      //base_price_indexes[location.slug] = i;
+      if (_.include(_.keys(base_prices), location.slug)) {
+        if (parseFloat(location.individual_cost) > base_prices[location.slug]) {
+          base_prices[location.slug] = parseFloat(location.individual_cost);
+          base_price_indexes[loc_name] = i;  
+        }
+      } else {
+        base_prices[location.slug] = parseFloat(location.individual_cost);
+        base_price_indexes[location.slug] = i;
+      } 
     });
     
     // finally, generate the dropdown menu, taking care to ignore the costs in the item at the base_price_index,
@@ -962,65 +962,47 @@ var Cart = {
     // -> [ [ 'Location', 10.0, 5.0], [ 'Location 2', 15.0, 7 ] ]
     // -> [ [ 'Location', 10.0, 5.0], [ 'Location 2', 15.0, 7 ] ]
 
-    if (!common_locations.length) {
-      common_locations = _.map(self.contents,function(item){ 
-        return _.map(item.shipping_costs, function(sc){ return sc[0].trim().toLowerCase(); }); 
-      });
-      common_locations = _.flatten(common_locations);
-    }
     
-    //console.log('base prices', base_prices, 'base indexes', base_price_indexes, 'common', common_locations, 'shipping', shipping_costs);
-
     if (!self.contents || !_.keys(self.contents).length) {
       Flasher.add(['error',"Your shopping cart is empty"], true);
-    } else if (!common_locations.length) {
-      Flasher.add(['error',"Some items in your shopping cart can not be shipped to the same location. You may need to order them separately."], true);
-    }
+    } 
+
     //console.log('new');
-    _.each(shipping_costs, function(cost, i){
-      _.each(cost, function(location,j){
-        var loc_name = location[0].trim().toLowerCase();
-        if (_.include(common_locations, loc_name)) {
-          if (i!=base_price_indexes[loc_name]) {
-            if (_.include(_.keys(opts), loc_name)) {
-              opts[""+loc_name] += parseFloat(location[2]);
-            } else {
-              opts[""+loc_name] = parseFloat(location[2]);
-            }  
-          } else {
-            if (_.include(_.keys(opts), loc_name)) {
-              opts[""+loc_name] += parseFloat(base_prices[loc_name]);
-            } else {
-              opts[""+loc_name] = parseFloat(base_prices[loc_name]);
-            }
-          }
+    _.each(SHIPPING, function(location, i){
+      var loc_name = location.slug;
+      if (i!=base_price_indexes[loc_name]) {
+        if (_.include(_.keys(opts), loc_name)) {
+          opts[""+loc_name] += parseFloat(location.group_cost);
+        } else {
+          opts[""+loc_name] = parseFloat(location.group_cost);
+        }  
+      } else {
+        if (_.include(_.keys(opts), loc_name)) {
+          opts[""+loc_name] += parseFloat(base_prices[loc_name]);
+        } else {
+          opts[""+loc_name] = parseFloat(base_prices[loc_name]);
         }
-      });  
-      
+      }
     });
 
     //console.log(opts);
 
     for (var prop in opts) {
       var shipping_price = _.isNaN(opts[prop]) ? '0.0' : opts[prop];
-      $("<option class='" + prop.underscore() + "' value='" + shipping_price + "'>" + prop.titleize() + " (" + self.shop.currency_symbol + shipping_price + ")</option>").appendTo(sc);
+      $("<option class='" + prop.underscore() + "' value='" + shipping_price + "'>" + prop.titleize() + " (" + CURRENCY_LABEL + shipping_price + ")</option>").appendTo(sc);
     }
-
-    // move the "everywheres" to the bottom of the stack
-    sc.find(".everywhere").appendTo(sc);
-    sc.find(".everywhere-else").appendTo(sc);
 
     sc.change(function(){
       self.recompute_totals();
       var num_val = _.isNull($(this).val()) ? 0.0 : $(this).val();
       $(".shipping_cost_display",".shopping_cart").
         text(num_val).
-        currency({ region: self.shop.currency_symbol});
+        currency({ region: CURRENCY_LABEL});
       self.shipping = num_val;  
-    }).change(); //.select2().change();
-    //console.log(_.values(opts)[0] );
+    }).change(); 
+
     if (_.values(opts).length) {
-      sc.val( _.values(opts)[0] ).change(); //trigger('change');
+      sc.val( _.values(opts)[0] ).change();
     }
 
   },
@@ -1321,7 +1303,7 @@ var Cart = {
         
         } else if ( threshold_type=='price' && threshold_price>total ) {
         
-          Flasher.add(['alert', "Your shopping cart total must reach at least " + self.shop.currency_symbol + threshold_price + " to be eligible for this discount code."],true);
+          Flasher.add(['alert', "Your shopping cart total must reach at least " + CURRENCY_LABEL + threshold_price + " to be eligible for this discount code."],true);
         
         } else if ( threshold_type=='items' && threshold_items>quantity ) {
         
@@ -1334,26 +1316,26 @@ var Cart = {
         if ((percentage = parseInt(code.percentage)) && qualified) { 
           discount = total*(percentage/100);
           this.total_discount = discount;
-          $(".discount_code_value").text("-" + discount).currency({ region: self.shop.currency_symbol});
+          $(".discount_code_value").text("-" + discount).currency({ region: CURRENCY_LABEL});
         }
 
       } else if (code.code_type=='absolute' && qualified) {
         
         discount = parseFloat(code.absolute);
         this.total_discount = discount;
-        $(".discount_code_value").text("-" + discount).currency({ region: self.shop.currency_symbol});
+        $(".discount_code_value").text("-" + discount).currency({ region: CURRENCY_LABEL});
 
       } else if (code.code_type=='free_shipping' && qualified) {
         
         discount = this.shipping;
         this.total_discount = discount;
-        $(".discount_code_value").text("-" + this.shipping).currency({ region: self.shop.currency_symbol});
+        $(".discount_code_value").text("-" + this.shipping).currency({ region: CURRENCY_LABEL});
 
       }
 
       
     } else {
-      $(".discount_code_value").text("-0.00").currency({ region: self.shop.currency_symbol});
+      $(".discount_code_value").text("-0.00").currency({ region: CURRENCY_LABEL});
       this.total_discount = 0;
     }
     

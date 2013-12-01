@@ -30,26 +30,26 @@ module ShopsHelper
 
   def humanize_cart_item(cart_item)
     if (cart_item[:availability]==false) 
-      cart_item['formatted_subtotal'] = @current_shop.currency_symbol + number_with_precision(0,:precision =>2)
+      cart_item['formatted_subtotal'] = app_currency_symbol + number_with_precision(0,:precision =>2)
       cart_item['subtotal'] = number_with_precision(0,:precision =>2)
       cart_item['quantity'] = 0
       cart_item['variant_stock'] = 0
     else
-      cart_item['formatted_subtotal'] = @current_shop.currency_symbol + number_with_precision(cart_item['price'].to_s.gsub(',','').to_f * cart_item['quantity'].to_i, :precision => 2, :delimiter => ',')
+      cart_item['formatted_subtotal'] = app_currency_symbol + number_with_precision(cart_item['price'].to_s.gsub(',','').to_f * cart_item['quantity'].to_i, :precision => 2, :delimiter => ',')
       cart_item['subtotal'] = number_with_precision(cart_item['price'].to_s.gsub(',','').to_f * cart_item['quantity'].to_i, :precision => 2)
     end
-    cart_item['formatted_price'] = @current_shop.currency_symbol + number_with_precision(cart_item['price'].to_s.gsub(',','').to_f, :precision => 2, :delimiter => ',')
-    cart_item['currency'] = @current_shop.currency_symbol
+    cart_item['formatted_price'] = app_currency_symbol + number_with_precision(cart_item['price'].to_s.gsub(',','').to_f, :precision => 2, :delimiter => ',')
+    cart_item['currency'] = app_currency_symbol
     cart_item['price'] = number_with_precision(cart_item['price'].to_s.gsub(',','').to_f, :precision => 2)
     cart_item
   end
 
-  def cart_with_info(shop,cart)
+  def cart_with_info(cart)
     return {} unless cart
     nice_cart = {discount_code: cart.discount_code, contents: {}}
     if cart.contents && cart.contents.keys.any?
       cart.contents.each do |k,hash|
-        if hash['item_id'] && (product = shop.products.find(hash['item_id']))
+        if hash['item_id'] && (product = Product.find(hash['item_id']))
           nice_cart[:contents][k] = humanize_cart_item(hash.merge(product.attributes_for_cart).merge(:availability => product.has_available_variant?(hash['variant_name'],cart,0)))
         end
       end
@@ -276,7 +276,7 @@ module ShopsHelper
   end
 
   def formatted_earnings_threshold
-    "#{@current_shop.currency_symbol}#{number_with_precision(current_site.plan.earnings_threshold_php,:precision=>2,:delimiter=>",")}"
+    "#{app_currency_symbol}#{number_with_precision(current_site.plan.earnings_threshold_php,:precision=>2,:delimiter=>",")}"
   end
 
   def earnings_threshold_dashboard_message(site)
