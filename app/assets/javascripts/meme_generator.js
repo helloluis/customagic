@@ -1,7 +1,7 @@
 var MemeGenerator = {
   
-  url    : "/images/memes",
-  page   : 0,
+  url    : "/canned_images/memes",
+  page   : 1,
   images : [],
 
   initialize: function(){
@@ -13,7 +13,7 @@ var MemeGenerator = {
 
     $.ajax({
       url : that.url,
-      data: { pageIndex: that.page },
+      data: { page: that.page },
       success : function(data) {
         that.images = that.images.concat(data.result);
         that.append_images(data.result);
@@ -24,13 +24,14 @@ var MemeGenerator = {
 
   append_images: function(raw_data){
     var that = this;
-    _.each(raw_data, function(rd){
+    _.each(_.values(raw_data), function(rd,id){
       
       var el = Mustache.to_html(that.tmpl,{
-        __id      : rd.generatorID,
-        large_url : rd.imageUrl.replace("400x","1000x"),
-        small_url : rd.imageUrl.replace("400x","100x"),
-        title     : rd.displayName
+        __id      : id,
+        filename  : rd.filename,
+        medium    : rd.filename,
+        thumbnail : rd.thumbnail,
+        title     : rd.name
       });
       
       el = $(el);
