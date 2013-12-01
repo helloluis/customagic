@@ -31,18 +31,21 @@ div id='editor' class='information small-12 small-uncentered medium-12 medium-ce
         = f.input :description, :as => :text
 
         dl class='base_and_buy_now_prices'
-          dt data-hint="This is our production cost per shirt" class="hint--right" Base Price
-          dd class='base_price currency' = @product.base_price
+          dt data-hint="This is our production cost per shirt" class="hint--right" 
+            label Base Price
+          dd 
+            h3 class='base_price currency' = @product.base_price
         
         = f.input :buy_now_price, label: "Retail Price (#{@current_shop.currency_symbol})", input_html: { class: 'currency' }
 
-        = f.input :charity_donation, label: "Donate to Charity (#{@current_shop.currency_symbol})", input_html: { class: 'currency' }
+        = f.input :charity_donation, label: "Donation (#{@current_shop.currency_symbol})", \
+          input_html: { class: 'currency hint--bottom', "data-hint".to_sym => "You may optionally donate a portion of your profit to charity"  }
         
-        = f.input :charity_url, collection: App.charities.map{|c| [c.name, c.url]}, include_blank: false
+        = f.input :charity_url, collection: App.charities.map{|c| [c.name, c.url]}, label: "Charity", include_blank: false
 
         = f.input :status, label: "Item Status", collection: [['hidden',1],['visible',2]], include_blank: false
         
-        = f.submit "Save and Proceed", input_html: { 'data-hint'.to_sym => "Next step: Check this item out on your shop" } 
+        = f.submit "Save and Proceed", { 'data-hint'.to_sym => "Next step: Check this item out on your shop" } 
 
     div class='totals_and_instructions medium-4 small-12'
 
@@ -67,7 +70,7 @@ div id='editor' class='information small-12 small-uncentered medium-12 medium-ce
             h3 Am I required to give a portion of my profit to a charity?
           dd
             p 
-              | No, but it's a nice thing to do. Note that your product's page will indicate which charity you are supporting.
+              | No, but it's a nice thing to do. Note that your product's page will indicate which charity you have chosen to support.
           dt
             h3 How will I get paid?
           dd

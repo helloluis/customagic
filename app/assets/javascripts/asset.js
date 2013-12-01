@@ -6,6 +6,7 @@ function Asset(){
   this.is_selected    = false;
   this.is_editing     = false;
   this.saving_timer   = false;
+  this.text_padding   = 10;
 
   this.initialize = function(asset_hash) {
 
@@ -29,47 +30,56 @@ function Asset(){
 
   this.render = function(){
 
-    var tmpl  = $("#asset_" + this.hash.asset_type + "_tmpl").html(),
-      scale   = function(w, h){
-        var cont     = Editor.product_editable_area,
-            cont_w   = cont.width(),
-            cont_h   = cont.height(),
-            width    = parseInt(w),
-            height   = parseInt(h),
-            scaled_w = w,
-            scaled_h = h;
+    var that  = this,
+        tmpl  = $("#asset_" + this.hash.asset_type + "_tmpl").html(),
+        scale = function(w, h){
+                  var cont     = Editor.product_editable_area,
+                      cont_w   = cont.width(),
+                      cont_h   = cont.height(),
+                      width    = parseInt(w),
+                      height   = parseInt(h),
+                      scaled_w = w,
+                      scaled_h = h;
 
-        if (cont_w<w || cont_h<h){
-          if (cont_w<w) {
-            scaled_h = h*(cont_w/w);
-          }
-          if (cont_h<h) {
-            scaled_w = w*(cont_h/h);
-          }
-          if (scaled_h>cont_h) {
-            scaled_h = cont_h;
-            scaled_w = w*(cont_h/h);
-          }
-        }
-        //console.log(scaled_w, scaled_h);
-        return [scaled_w, scaled_h];
-      };
+                  if (cont_w<w || cont_h<h){
+                    if (cont_w<w) {
+                      scaled_h = h*(cont_w/w);
+                    }
+                    if (cont_h<h) {
+                      scaled_w = w*(cont_h/h);
+                    }
+                    if (scaled_h>cont_h) {
+                      scaled_h = cont_h;
+                      scaled_w = w*(cont_h/h);
+                    }
+                    if (scaled_w>cont_w) {
+                      scaled_w = cont_w;
+                      scaled_h = h*(cont_w/w); 
+                    }
+                  }
+                  return [scaled_w, scaled_h];
+                };
 
     Editor.product_editable_area.append( Mustache.to_html( tmpl, this.hash ) );
     
     $("#" + this.hash.__id).
       removeAttr('contenteditable').
       css({
-        left        :  parseInt(this.hash.coordinates[0]), // x
-        top         :  parseInt(this.hash.coordinates[1]), // y
-        zIndex      :  parseInt(this.hash.coordinates[2]), // z
-        width       :  scale(this.hash.width, this.hash.height)[0],
-        height      :  scale(this.hash.width, this.hash.height)[1],
-        fontSize    :  this.hash.font_size,
-        fontFamily  :  this.hash.font_family,
-        color       :  this.hash.color,
-        textAlign   :  this.hash.alignment
+        left            : parseInt(this.hash.coordinates[0]), // x
+        top             : parseInt(this.hash.coordinates[1]), // y
+        zIndex          : parseInt(this.hash.coordinates[2]), // z
+        width           : scale(this.hash.width, this.hash.height)[0],
+        height          : scale(this.hash.width, this.hash.height)[1],
+        fontSize        : this.hash.font_size,
+        fontFamily      : this.hash.font_family,
+        color           : this.hash.color,
+        backgroundColor : this.hash.bg_color,
+        textAlign       : this.hash.alignment
       });
+
+    // if (this.asset_type=='text') {
+    //   $("#" + this.hash.__id).css({ padding : that.text_padding });
+    // }
 
     return $("#" + this.hash.__id);
 
@@ -77,8 +87,9 @@ function Asset(){
 
   this.initialize_controls = function(){
     
-    var that = this;
-
+    var that = this,
+        pad  = (this.asset_type=='text' ? that.text_padding : 0);
+    
     $("#" + that.hash.__id).
       mousedown(function(){
         $(this).addClass('selected').
@@ -93,8 +104,8 @@ function Asset(){
         }
       }).
       resizable({
-        minWidth    : 50,
-        minHeight   : 50,
+        minWidth    : 40,
+        minHeight   : 40,
         containment : Editor.product_editable_area,
         autoHide    : false,
         handles     : "all",

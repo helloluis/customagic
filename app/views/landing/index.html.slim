@@ -1,9 +1,36 @@
 - content_for :page_scripts do
   javascript:
+    var resize_panels = function(){
+                          var win_w = $("header").width(),
+                              h     = $(".header_panel").length;
+                          $(".header_panels").width(win_w*h);
+                          $(".header_panel").width(win_w);
+                        },
+        current_panel = 0,
+        slide_panels  = function(){
+                          var left = 0;
+                          if (current_panel<$(".header_panel").length-1) {
+                            current_panel+=1;
+                            left = -($("header").width()*current_panel);
+                          } else {
+                            current_panel=0;
+                          }
+                          $(".header_panels").animate({ left: left });
+                        },
+        slider_timer;
+    
     $(function(){
+      
+      slide_timer   = $.timer(slide_panels);
+      slide_timer.set({ time : 5000, autostart: true });
+
       $(".login_via_facebook").click(function(){
         $(this).text("Logging in ...");
       });
+      
+      $(window).resize(_.throttle(resize_panels),300);
+      resize_panels();
+
     });
 
 div class='masthead'
@@ -11,18 +38,25 @@ div class='masthead'
   div class='inner'
 
     header class="row"
-      h1 class="small-12 medium-4 columns" class='logo' Inkify
-      h2 class="small-12 columns medium-7" #{app_name} is a simple, easy, and free way to design and sell #{app_default_product_type}s online!
+      div class='small-12 medium-12'
+        ul class='header_panels nolist clearfix'
+          li class='header_panel'
+            h1 class="small-12 medium-4 columns logo" Inkify
+            h2 class="small-12 columns medium-7" 
+              | #{app_name} is the simplest way to design and sell #{app_default_product_type}s online!
+            = render :partial => "landing/facebook_login"
+          li class='header_panel'
+            h2 class="small-12 columns medium-7 smaller" 
+              | Raising funds for charity has never been easier! Set your sale price, then set the amount you want to automatically donate after every purchase.
+            = render :partial => "landing/facebook_login"
+            h1 class="small-12 medium-4 columns logo" Inkify
+            
+          li class='header_panel'
+            h1 class="small-12 medium-4 columns logo" Inkify
+            h2 class="small-12 columns medium-7" 
+              | You design, we deliver. Your #{app_default_product_type} will show up at your customers' doors within 5 working days of their order.
+            = render :partial => "landing/facebook_login"
 
-    div class='facebook_profile_container clearfix small-12 small-uncentered columns medium-5 medium-centered'
-
-      - if user_signed_in?
-        p = link_to "Start Designing!", "/#{current_user.shop.slug}/products/new" 
-        p 
-          | or 
-          = link_to "check out your shop", "/#{current_user.shop.slug}"
-      - else
-        p = link_to "Login to Get Started", user_omniauth_authorize_path(:facebook), :class => "login_via_facebook"
 
 div class='features'
 
@@ -40,7 +74,7 @@ div class='features'
     li class='feature'
       h2 Earn Like a Tycoon
       p 
-        | Set your sales goals for each new design, and once you have enough preorders, #{app_name} will start producing and delivering your #{app_default_product_type}s to your buyers!
+        | Set your sales goals for each new design, and optionally set an amount to automatically donate to charity! We accept and fulfill orders on your behalf, and deposit your profits to your Paypal or local bank account.
 
 div class='marketplace row medium-12 small-6'
   h2 Featured #{app_default_product_type}s

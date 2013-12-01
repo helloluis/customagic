@@ -54,6 +54,37 @@ App.product_types = [
             description: "Budget friendly", 
             image: "shirt_thumb.png",
             min_order: 20,
+            buy_now_price: 250,
+            prices: [
+              [ 1..5,   200 ],
+              [ 6..20,  190 ],
+              [ 21..50, 170 ],
+              [ 51..100, 150 ],
+              [ 101..300, 130 ],
+              [ 301..1000, 110 ],
+              [ 1001..5000, 100 ]
+            ] 
+          },
+          { name: "Canvas Ringspun Tee",  
+            slug: "basic_canvas",
+            description: "Premium materials", 
+            image: "shirt_thumb.png",
+            min_order: 20,
+            buy_now_price: 300,
+            prices: [
+              [ 1..5,   250 ],
+              [ 6..20,  240 ],
+              [ 21..50, 210 ],
+              [ 51..100, 200 ],
+              [ 101..300, 170 ],
+              [ 301..1000, 150 ],
+              [ 1001..5000, 115 ]
+            ]  },
+          { name: "American Apparel Crew",  
+            slug: "basic_american",
+            description: "Brand quality", 
+            image: "shirt_thumb.png",
+            min_order: 20,
             buy_now_price: 350,
             prices: [
               [ 1..5,   300 ],
@@ -63,37 +94,6 @@ App.product_types = [
               [ 101..300, 220 ],
               [ 301..1000, 200 ],
               [ 1001..5000, 165 ]
-            ] 
-          },
-          { name: "Canvas Ringspun Tee",  
-            slug: "basic_canvas",
-            description: "Premium materials", 
-            image: "shirt_thumb.png",
-            min_order: 20,
-            buy_now_price: 400,
-            prices: [
-              [ 1..5,   350 ],
-              [ 6..20,  340 ],
-              [ 21..50, 310 ],
-              [ 51..100, 300 ],
-              [ 101..300, 270 ],
-              [ 301..1000, 250 ],
-              [ 1001..5000, 215 ]
-            ]  },
-          { name: "American Apparel Crew",  
-            slug: "basic_american",
-            description: "Brand quality", 
-            image: "shirt_thumb.png",
-            min_order: 20,
-            buy_now_price: 450,
-            prices: [
-              [ 1..5,   400 ],
-              [ 6..20,  390 ],
-              [ 21..50, 370 ],
-              [ 51..100, 350 ],
-              [ 101..300, 320 ],
-              [ 301..1000, 300 ],
-              [ 1001..5000, 265 ]
             ]  }
         ]
       },

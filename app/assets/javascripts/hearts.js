@@ -10,7 +10,7 @@ var Hearts = {
     if (typeof CURRENT_USER=='undefined') {
       $(".toggle_heart").
         attr('data-hint','Login via FB to <3 this').
-        addClass('hint__right').
+        addClass('hint--right').
         click(function(){
           Flasher.add(['notice',"Logging you via Facebook ..."],true);
           window.location.assign(FACEBOOK_AUTH_URL + "&return_to" + window.location.path);
