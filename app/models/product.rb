@@ -10,7 +10,7 @@ class Product
   belongs_to :album
 
   has_one :final_art
-  has_one :mockup
+  #has_one :mockup
   has_many :assets
 
   has_many :tags, :class_name => "ProductTag"
