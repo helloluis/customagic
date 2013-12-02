@@ -1,4 +1,5 @@
-App.canned_images = [
+App.canned_images = {
+  memes: [
   { name:       "Challenge Accepted",
     filename:   "challenge-accepted.png",
     medium:     "medium_challenge-accepted.png",
@@ -167,7 +168,7 @@ App.canned_images = [
     thumbnail:  "thumbnail_yao-ming.jpg",
     width:      1295,
     height:     1500 }
-]
+]}
 
 App.canned_images.each do |category, arr|
   arr.each do |ci|

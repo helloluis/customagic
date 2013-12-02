@@ -34,8 +34,6 @@ Customagic::Application.routes.draw do
     match "sites-validate" => "sites#validate"
     match "users-validate" => "user#validate"
 
-    mount Sidekiq::Web => '/sidekiq'
-
     root to: "admin/dashboard#index"
 
   end

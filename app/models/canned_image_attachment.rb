@@ -1,8 +1,8 @@
-class CannedImageAttachment
+class CannedImageAttachment < CarrierWave::Uploader::Base
 
   include CarrierWave::MiniMagick
 
-  storage :fog
+  storage Rails.env.production? ? :fog : :file
   
   version :thumb, :if => :image? do
     process :resize_to_fit => [100, 100]

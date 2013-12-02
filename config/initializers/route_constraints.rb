@@ -1,4 +1,4 @@
-Rails.application.config.action_dispatch.tld_length = App.tld_length
+Rails.application.config.action_dispatch.tld_length = 1
 
 module RouteConstraints
 
@@ -17,7 +17,7 @@ module RouteConstraints
   module Subdomain
     class Base
       def self.subdomain(request)
-        request.subdomain(App.tld_length)
+        request.subdomain(Rails.application.config.action_dispatch.tld_length )
       end
     end
 
