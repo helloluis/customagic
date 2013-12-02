@@ -19,7 +19,7 @@ div class='product standalone_product small-12 small-uncentered medium-12 medium
 
         h3 class='unit_price currency' = number_to_currency(@product.buy_now_price, unit: @current_shop.currency_symbol)
       
-        = link_to "Add to Cart", add_product_shop_carts_path(@shop, product_id: @product.id), class: 'buy_now', "data-loading".to_sym => "Adding ..." 
+        = link_to "Add to Cart", add_product_carts_path(product_id: @product.id), class: 'buy_now', "data-loading".to_sym => "Adding ..." 
 
       div class='product_hearts'
         span class='icon heart toggle_heart' data-id=@product.id <3

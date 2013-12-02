@@ -22,7 +22,7 @@ class CartsController < ApplicationController
     if @product.is_orderable?
       @cart.add_to_cart(@product, params[:name], @product.buy_now_price, app_currency_symbol, params[:quantity])
       @cart.save
-      @order = @cart.build_order unless @cart.order
+      @order = @cart.build_order #unless @cart.order
     else
       flash.now[:alert] = "That product is not available."
     end
