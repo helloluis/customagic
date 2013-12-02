@@ -1,4 +1,5 @@
-class ImageAttachment < CarrierWave::Uploader::Base
+class CannedImageAttachment
+
   include CarrierWave::MiniMagick
 
   storage :fog
@@ -12,9 +13,9 @@ class ImageAttachment < CarrierWave::Uploader::Base
   end  
 
   def store_dir
-    "uploads/images/attachment/#{model.id}"
+    "uploads/canned_images/attachment/#{model.id}"
   end
-  
+
   def asset
     model
   end
@@ -28,5 +29,5 @@ class ImageAttachment < CarrierWave::Uploader::Base
   def image?(new_file)
     new_file.content_type=~/png|jpg|jpeg|gif/i
   end
-  
+
 end

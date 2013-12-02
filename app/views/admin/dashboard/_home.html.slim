@@ -1,0 +1,81 @@
+div class="well span8"
+  h3 
+    = @total_sites
+    | &nbsp;Latest Sites
+  table class="table table-striped"
+    thead
+      tr
+        th Partner
+        th Title
+        th Subdomain
+        th Plan Type
+        th Date Created
+    tbody id="latest-sites"
+      = render :partial => "admin/dashboard/latest_sites"
+
+div class='span4'
+  
+  div class="well"
+    - if infinitely_admin?
+      = link_to "Replicate a Site", new_site_path, :class => 'btn btn-primary btn-large'
+      | &nbsp;
+    = link_to "Batch Create Accounts", new_multiple_accounts_path, :class => 'btn btn-primary btn-large'
+
+  div class='well'
+    h2 class="well-header"
+      = number_with_delimiter(@total_accounts,:delimiter=>',')
+      |  Total Sites
+    h3
+      = @new_accounts_today
+      | <small> New Sites Today</small>
+    h3
+      = @new_accounts_week
+      | <small> New Sites This Week</small>
+    h3
+      = @new_accounts_month
+      | <small> New Sites This Month</small>
+    h3
+      = @new_accounts_last_month
+      | <small> New Sites Last Month</small>
+    h3
+      = @new_accounts_this_year
+      | <small> New Sites This Year</small>
+
+  div class='well'
+    h2 class="well-header" Accounts breakdown
+    ul class="unstyled accounts-list"
+      - @all_accounts.each do |k,v|
+        li
+          = link_to "#{number_with_delimiter(v[:count])} #{v[:name]} accounts", sites_url(plan: k)
+
+  - if @total_orders
+
+    div class='well'
+      h2 class="well-header" Orders breakdown
+      
+      h3
+        = number_with_precision(@total_orders,:delimiter=>",",:precision=>2)
+        small  total
+      
+      h3
+        = number_with_precision(@today_order_totals,:delimiter=>",",:precision=>2)
+        small  order totals today
+      
+      h3
+        = number_with_precision(@week_order_totals,:delimiter=>",",:precision=>2)
+        small  order totals this week
+
+      hr
+
+      h3 
+        span title='Total Number of Orders' = @num_orders
+        small  orders
+      
+      h3
+        span title='Orders today' = @today_orders
+        small  orders today
+      
+      h3
+        span title='Orders this week' = @week_orders
+        small  orders this week
+

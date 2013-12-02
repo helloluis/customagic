@@ -1,0 +1,2 @@
+' $("tbody#products").html('#{escape_javascript(render @products)}');
+  $("div.pagination>ul").replaceWith('#{escape_javascript(render 'pagination', search: @products)}')

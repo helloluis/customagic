@@ -84,6 +84,8 @@ class Product
   # field :availability_end,        type: DateTime
   field :remote_attachment_url
 
+  field :copyright_infringement,  type: Boolean,  default: false
+
   # search_in :name, :tags_array, {:match => :any}
 
   RATING_RANGE = (1..5)

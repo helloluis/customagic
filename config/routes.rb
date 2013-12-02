@@ -1,5 +1,45 @@
 Customagic::Application.routes.draw do
 
+  # Admin Routes
+  constraints RouteConstraints::Subdomain::Admin do
+    devise_for :admin, path: "", module: "admin",
+      path_names: { sign_in: :login, sign_out: :logout },
+      only: [:sessions, :passwords, :unlock]
+
+    as :admin do
+      get   "login"   => "admin/sessions#new",     as: :admin_login
+      post  "login"   => "admin/sessions#create",  as: :admin_session
+      get   "logout"  => "admin/sessions#destroy", as: :admin_logout
+
+      resource :password, controller: "admin/passwords"
+    end
+
+    scope module: "admin" do
+      resources :mastheads
+      resources :shops
+      resources :orders
+      resources :users
+      resources :products do
+        get :toggle_feature
+        get :toggle_visibility
+        get :update_category
+      end
+      resources :themes
+      resources :admins
+    end
+
+    match 'login_as/:user_id' => 'admin/user_sessions#create', as: :login_as
+    match 'search' => 'admin/search#index'
+
+    match "sites-validate" => "sites#validate"
+    match "users-validate" => "user#validate"
+
+    mount Sidekiq::Web => '/sidekiq'
+
+    root to: "admin/dashboard#index"
+
+  end
+
   resource :marketplace do
     get :featured
   end

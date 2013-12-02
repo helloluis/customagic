@@ -1,0 +1,23 @@
+- page_title = "Products"
+= render partial: "shared/admin_alert"
+
+.page-header
+  | Total: #{@products_count}, Featured: #{@featured_products_count}
+
+table class="table table-striped"
+  thead
+    tr
+      th = sort_header :name
+      th = sort_header :price
+      th class='category_column' = sort_header :category, label: "Category"
+      th = sort_header :created_at, label: "Created"
+      th = sort_header :show_in_marketplace, label: "Show in Marketplace"
+      th = sort_header :featured_in_marketplace, label: "Featured in Marketplace"
+
+  tbody id="products"
+    = render @products
+
+div class='pagination'
+  = render 'pagination', search: @products
+
+= render :partial => "/admin/products/manage"

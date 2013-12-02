@@ -1,0 +1,9 @@
+- @unclaimed_accounts.each do |account|
+  tr id="latest-site-#{account.id}"
+    td
+      = link_to account.name, account
+    td
+      = account.ip_address.nil? ? "" : link_to(account.ip_address, account)
+    td
+      #{time_ago_in_words account.created_at} ago
+    td

@@ -1,0 +1,17 @@
+- @latest_sites.each do |site|
+
+  tr id="latest-site-#{site.id}"
+    td 
+      small = site.partner.upcase rescue ""
+    td
+      = link_to site.title, site
+    td
+      = link_to site.subdomain, site
+      | &nbsp;(
+      = link_to "Visit ...", site.url, :class => "small", :target => :blank
+      | )
+    td
+      = link_to site.plan_type, sites_url(plan: site.plan_type), :class => "plan_#{site.plan_type}"
+    td
+      small
+        #{time_ago_in_words site.created_at} ago

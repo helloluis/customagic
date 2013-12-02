@@ -1,0 +1,2 @@
+' $("tbody#users").html('#{escape_javascript(render @users)}');
+  $("div.pagination>ul").replaceWith('#{escape_javascript(render 'pagination', search: @users)}')

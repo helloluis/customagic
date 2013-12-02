@@ -1,0 +1,14 @@
+- if params[:controller] == 'admin/coupons'
+  / h6 Search Admin
+
+  / div class="pull-left"
+  /   = render :partial => "shared/admin_search"
+
+  / div class="pull-right"
+  = render :partial => "admin/coupons/search_coupons"
+- else
+  /= render :partial => "shared/admin_search"
+  - if params[:controller]=='admin/sites'
+    div class="well sidebar-nav"
+      a href=sites_url(:sort_by => @sort_by, :sort_dir => @sort_dir, :plan => @plan, :format => :csv)
+        | Download as CSV ...
