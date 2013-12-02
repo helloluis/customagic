@@ -5,7 +5,7 @@ class Admin::UsersController < Admin::BaseController
   before_filter :authorize_infinitely_admin!, only: [:new, :create]
   before_filter :set_title, only: [:show, :edit]
 
-  add_crumb("Users") { |instance| instance.send :users_path }
+  #add_crumb("Users") { |instance| instance.send :users_path }
 
   respond_to :js, :html, :json
 

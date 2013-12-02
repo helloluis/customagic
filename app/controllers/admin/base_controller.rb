@@ -5,7 +5,7 @@ class Admin::BaseController < ApplicationController
   before_filter :partner_specifics_counts
   layout 'admin'
 
-  include PartnersHelper
+  #include PartnersHelper
 
   def set_partner
   	@current_partner_name ||= (current_admin.partner||"infinitely")

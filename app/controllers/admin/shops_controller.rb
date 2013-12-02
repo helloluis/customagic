@@ -1,10 +1,10 @@
 class Admin::ShopsController < Admin::BaseController
 
   include ApplicationHelper
-  include SitesHelper
+  # include SitesHelper
   # before_filter :set_product, :only => [ :toggle_feature, :toggle_visibility, :update_category ]
 
-  add_crumb("Shop Earnings") { |instance| instance.send :shops_path }
+  #add_crumb("Shop Earnings") { |instance| instance.send :shops_path }
 
   respond_to :js, :html, :json
 
