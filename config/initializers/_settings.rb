@@ -13,6 +13,8 @@ App.partner_name = "inkify"
 App.url = Rails.env.development? ? "inkify.xxx" : "inkify.me"
 App.default_product_type = "shirt"
 
+App.support_email = "departmentofink@gmail.com"
+
 App.fonts = {
   helvetica: "Helvetica",
   lucida_sans: "Lucida Sans",
@@ -22,7 +24,7 @@ App.fonts = {
 
 App.currency = {
   symbol: "&#8369;",
-  label: "PhP"
+  label: "PHP"
 }
 
 App.product_types = [
@@ -47,10 +49,42 @@ App.product_types = [
           "mens_crew_666666.jpg", 
           "mens_crew_551100.jpg"
         ],
+        sizes: %w(small medium large x-large xx-large),
         sub_styles: [
           { name: "Standard Tagless Tee",
             slug: "basic_standard", 
             description: "Budget friendly", 
+            image: "shirt_thumb.png",
+            min_order: 20,
+            buy_now_price: 250,
+            prices: [
+              [ 1..5,   200 ],
+              [ 6..20,  190 ],
+              [ 21..50, 170 ],
+              [ 51..100, 150 ],
+              [ 101..300, 130 ],
+              [ 301..1000, 110 ],
+              [ 1001..5000, 100 ]
+            ] 
+          },
+          { name: "Canvas Ringspun Tee",  
+            slug: "basic_canvas",
+            description: "Premium materials", 
+            image: "shirt_thumb.png",
+            min_order: 20,
+            buy_now_price: 300,
+            prices: [
+              [ 1..5,   250 ],
+              [ 6..20,  240 ],
+              [ 21..50, 210 ],
+              [ 51..100, 200 ],
+              [ 101..300, 170 ],
+              [ 301..1000, 150 ],
+              [ 1001..5000, 115 ]
+            ]  },
+          { name: "American Apparel Crew",  
+            slug: "basic_american",
+            description: "Brand quality", 
             image: "shirt_thumb.png",
             min_order: 20,
             buy_now_price: 350,
@@ -62,37 +96,6 @@ App.product_types = [
               [ 101..300, 220 ],
               [ 301..1000, 200 ],
               [ 1001..5000, 165 ]
-            ] 
-          },
-          { name: "Canvas Ringspun Tee",  
-            slug: "basic_canvas",
-            description: "Premium materials", 
-            image: "shirt_thumb.png",
-            min_order: 20,
-            buy_now_price: 400,
-            prices: [
-              [ 1..5,   350 ],
-              [ 6..20,  340 ],
-              [ 21..50, 310 ],
-              [ 51..100, 300 ],
-              [ 101..300, 270 ],
-              [ 301..1000, 250 ],
-              [ 1001..5000, 215 ]
-            ]  },
-          { name: "American Apparel Crew",  
-            slug: "basic_american",
-            description: "Brand quality", 
-            image: "shirt_thumb.png",
-            min_order: 20,
-            buy_now_price: 450,
-            prices: [
-              [ 1..5,   400 ],
-              [ 6..20,  390 ],
-              [ 21..50, 370 ],
-              [ 51..100, 350 ],
-              [ 101..300, 320 ],
-              [ 301..1000, 300 ],
-              [ 1001..5000, 265 ]
             ]  }
         ]
       },
@@ -104,3 +107,142 @@ App.product_types = [
     ],
   }
 ]
+
+App.charities = [
+  { name: "Philippine Red Cross", url: "http://redcross.org.ph", email: 'prc@redcross.org.ph' }
+]
+
+App.shipping_costs = [
+  { name: "Metro Manila",       slug: "metro-manila",      individual_cost: 80,     group_cost: 10  },
+  { name: "Luzon",              slug: "luzon",             individual_cost: 140,    group_cost: 10  },
+  { name: "Visayas",            slug: "visayas",           individual_cost: 140,    group_cost: 10  },
+  { name: "Mindanao",           slug: "mindanao",          individual_cost: 140,    group_cost: 10  },
+  { name: "Australia",          slug: "australia",         individual_cost: 1210,   group_cost: 336 },
+  { name: "Austria",            slug: "austria",           individual_cost: 1498,   group_cost: 405 },
+  { name: "Bahrain",            slug: "bahrain",           individual_cost: 1668,   group_cost: 350 },
+  { name: "Bangladesh",         slug: "bangladesh",        individual_cost: 1280,   group_cost: 321 },
+  { name: "Belarus",            slug: "belarus",           individual_cost: 2701,   group_cost: 840 },
+  { name: "Belgium",            slug: "belgium",           individual_cost: 1668,   group_cost: 350 },
+  { name: "Bhutan",             slug: "bhutan",            individual_cost: 2701,   group_cost: 840 },
+  { name: "Brazil",             slug: "brazil",            individual_cost: 1882,   group_cost: 825 },
+  { name: "Brunei",             slug: "brunei",            individual_cost: 800,    group_cost: 173 },
+  { name: "Bulgaria",           slug: "bulgaria",          individual_cost: 2701,   group_cost: 840 },
+  { name: "Cambodia",           slug: "cambodia",          individual_cost: 1432,   group_cost: 381 },
+  { name: "Canada",             slug: "canada",            individual_cost: 1432,   group_cost: 378 },
+  { name: "China",              slug: "china",             individual_cost: 1210,   group_cost: 202 },
+  { name: "Cyprus",             slug: "cyprus",            individual_cost: 1626,   group_cost: 379 },
+  { name: "Denmark",            slug: "denmark",           individual_cost: 1432,   group_cost: 398 },
+  { name: "Egypt",              slug: "egypt",             individual_cost: 1717,   group_cost: 350 },
+  { name: "Fiji",               slug: "fiji",              individual_cost: 1668,   group_cost: 350 },
+  { name: "Finland",            slug: "finland",           individual_cost: 1498,   group_cost: 406 },
+  { name: "France",             slug: "france",            individual_cost: 1641,   group_cost: 397 },
+  { name: "Germany",            slug: "germany",           individual_cost: 1514,   group_cost: 467 },
+  { name: "Great Britain",      slug: "great-britian",     individual_cost: 1341,   group_cost: 496 },
+  { name: "Greece",             slug: "greece",            individual_cost: 1687,   group_cost: 353 },
+  { name: "HongKong",           slug: "hongkong",          individual_cost: 800,    group_cost: 179 },
+  { name: "Hungary",            slug: "hungary",           individual_cost: 1668,   group_cost: 350 },
+  { name: "Iceland",            slug: "iceland",           individual_cost: 2701,   group_cost: 840 },
+  { name: "India",              slug: "india",             individual_cost: 1280,   group_cost: 242 },
+  { name: "Indonesia",          slug: "indonesia",         individual_cost: 800,    group_cost: 229 },
+  { name: "Iran",               slug: "iran",              individual_cost: 2701,   group_cost: 840 },
+  { name: "Ireland",            slug: "ireland",           individual_cost: 1280,   group_cost: 442 },
+  { name: "Israel",             slug: "israel",            individual_cost: 1722,   group_cost: 518 },
+  { name: "Italy",              slug: "italy",             individual_cost: 1568,   group_cost: 377 },
+  { name: "Japan",              slug: "japan",             individual_cost: 1008,   group_cost: 238 },
+  { name: "Jordan",             slug: "jordan",            individual_cost: 2701,   group_cost: 840 },
+  { name: "Korea, South",       slug: "korea-south",       individual_cost: 1280,   group_cost: 321 },
+  { name: "Kuwait",             slug: "kuwait",            individual_cost: 2701,   group_cost: 840 },
+  { name: "Laos",               slug: "laos",              individual_cost: 1432,   group_cost: 381 },
+  { name: "Luxembourg",         slug: "luxembourg",        individual_cost: 1668,   group_cost: 350 },
+  { name: "Macau",              slug: "macau",             individual_cost: 1280,   group_cost: 321 },
+  { name: "Malaysia",           slug: "malaysia",          individual_cost: 787,    group_cost: 216 },
+  { name: "Maldives",           slug: "maldives",          individual_cost: 1280,   group_cost: 321 },
+  { name: "Mongolia",           slug: "mongolia",          individual_cost: 2701,   group_cost: 840 },
+  { name: "Myanmar",            slug: "myanmar",           individual_cost: 1280,   group_cost: 321 },
+  { name: "Nepal",              slug: "nepal",             individual_cost: 2701,   group_cost: 840 },
+  { name: "Netherlands",        slug: "netherlands",       individual_cost: 1499,   group_cost: 425 },
+  { name: "New Zealand",        slug: "new-zealand",       individual_cost: 1136,   group_cost: 345 },
+  { name: "Norway",             slug: "norway",            individual_cost: 1882,   group_cost: 401 },
+  { name: "Oman",               slug: "oman",              individual_cost: 2701,   group_cost: 840 },
+  { name: "Pakistan",           slug: "pakistan",          individual_cost: 1280,   group_cost: 321 },
+  { name: "Papua New Guinea",   slug: "papua-new-guinea",  individual_cost: 1432,   group_cost: 381 },
+  { name: "Poland",             slug: "poland",            individual_cost: 2701,   group_cost: 840 },
+  { name: "Portugal",           slug: "portugal",          individual_cost: 2701,   group_cost: 840 },
+  { name: "Qatar",              slug: "qatar",             individual_cost: 1468,   group_cost: 323 },
+  { name: "Romania",            slug: "romania",           individual_cost: 2701,   group_cost: 840 },
+  { name: "Russian Federation", slug: "russian-federation",individual_cost: 2701,   group_cost: 840 },
+  { name: "Saudi Arabia",       slug: "saudi-arabia",      individual_cost: 1882,   group_cost: 364 },
+  { name: "Singapore",          slug: "singapore",         individual_cost: 754,    group_cost: 195 },
+  { name: "Slovenia",           slug: "slovenia",          individual_cost: 2701,   group_cost: 840 },
+  { name: "Solomon Islands",    slug: "solomon-islands",   individual_cost: 2701,   group_cost: 840 },
+  { name: "South Africa",       slug: "south-africa",      individual_cost: 2701,   group_cost: 840 },
+  { name: "Spain",              slug: "spain",             individual_cost: 1354,   group_cost: 410 },
+  { name: "Sri Lanka",          slug: "sri-lanka",         individual_cost: 1280,   group_cost: 321 },
+  { name: "Sweden",             slug: "sweden",            individual_cost: 1789,   group_cost: 389 },
+  { name: "Switzerland",        slug: "switzerland",       individual_cost: 1789,   group_cost: 420 },
+  { name: "Taiwan",             slug: "taiwan",            individual_cost: 800,    group_cost: 179 },
+  { name: "Thailand",           slug: "thailand",          individual_cost: 800,    group_cost: 204 },
+  { name: "Turkey",             slug: "turkey",            individual_cost: 2701,   group_cost: 840 },
+  { name: "Ukraine",            slug: "ukraine",           individual_cost: 2701,   group_cost: 840 },
+  { name: "U.S.A.",             slug: "usa",               individual_cost: 1580,   group_cost: 537 },
+  { name: "U.A.E.",             slug: "uae",               individual_cost: 1882,   group_cost: 358 },
+  { name: "Vietnam",            slug: "vietnam",           individual_cost: 1280,   group_cost: 194 },
+  { name: "Yemen",              slug: "yemen",             individual_cost: 2701,   group_cost: 840 }
+]
+
+App.mobile_devices = %w(
+  palm
+  blackberry
+  nokia
+  phone
+  midp
+  mobi
+  symbian
+  chtml
+  ericsson
+  minimo
+  audiovox
+  motorola
+  samsung
+  telit
+  upg1
+  windows\ ce
+  ucweb
+  astel
+  plucker
+  x320
+  x240
+  j2me
+  sgh
+  portable
+  sprint
+  docomo
+  kddi
+  softbank
+  android
+  mmp
+  pdxgw
+  netfront
+  xiino
+  vodafone
+  portalmmm
+  sagem
+  mot-
+  sie-
+  ipod
+  up.b
+  webos
+  amoi
+  novarra
+  cdm
+  alcatel
+  pocket
+  ipad
+  iphone
+  mobileexplorer
+  mobile
+  maemo
+  fennec
+  silk
+  playbook
+)

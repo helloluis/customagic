@@ -1,0 +1,39 @@
+
+Hello!
+
+The following order has just been cancelled by <%= @order.first_name %> <%= @order.last_name %> on your <%= app_name %> store.
+
+============================================
+
+Order No. <%= @order._id %>
+
+<% @order.contents_with_product_names.each do |slug, content| %>
+(<%= content['quantity'] %>) <%= content['name'] %> <%= content['variant_name'] %> - <%= content['currency'] %><%= content['price'] %> 
+<% end %>
+
+============================================
+
+First Name : <%= @order.first_name %>
+Last Name : <%= @order.last_name %>
+Email : <%= @order.email %>
+Phone No. : <%= @order.phone %>
+Address : <%= @order.address %>
+City : <%= @order.city %>
+State : <%= @order.state %>
+Post Code : <%= @order.postcode %>
+Country : <%= @order.country %>
+Ordered On : <%= @order.created_at.strftime("%d %B %Y, %H:%M") %>
+
+Special Instructions or Requests: 
+<%= @order.instructions %>
+
+
+You may contact <%= @order.first_name %> directly by replying to this message.
+
+
+Thanks!
+
+Your Friends at <%= app_name %>
+
+
+

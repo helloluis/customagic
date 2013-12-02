@@ -10,28 +10,21 @@ li class='product'
 
   div class='product_prices'
     ul 
-      li class='group_price' 
-        p class='preorder_label' Preorder at
-        h4 = link_to number_to_currency(product.group_price, unit: @current_shop.currency_symbol), shop_product_path(@current_shop, product)
-        p class='remaining'
-          | Only 
-          = product.remaining
-          |  left!
       li class='buy_now_price'
         p 
-          | (Or #{link_to('buy it now', shop_product_path(@current_shop, product))} for #{number_to_currency(product.buy_now_price, unit: @current_shop.currency_symbol)})
+          | #{link_to(number_to_currency(product.buy_now_price, unit: @current_shop.currency_symbol), shop_product_path(@current_shop, product))}
+      li class='donation'
+        - if product.charity_donation > 0 && product.charity
+          p
+            = number_to_currency(product.charity_donation, unit: @current_shop.currency_symbol)
+            |  of each #{product.product_type} sold will be donated to 
+            = link_to product.charity.name, product.charity.url
 
+  div class='product_hearts'
+    span class='icon heart toggle_heart' data-id=product.id <3
+    - if product.num_favorites>0
+      span class='heart_counter' 0
+      
   - if is_owner?(@current_shop)
     p
       = link_to "Edit &raquo;".html_safe, edit_shop_product_path(@current_shop, product)
-
-  - if is_owner?(@current_shop) && (product.availability_start.nil? || Time.now<product.availability_start)
-    div class='product_countdown'
-      p 
-        | <strong>This product hasn't launched yet.</strong>
-        - unless product.availability_start.nil? 
-          | It is scheduled to launch on  
-          = product.availability_start.strftime("%m/%d/%Y %H:%M")
-
-  - else
-    div class='product_countdown' data-campaign-length=product.campaign_length data-campaign-start=product.availability_end.strftime("%m/%d/%Y %H:%M:%S") == countdown(product)

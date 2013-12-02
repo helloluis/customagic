@@ -6,8 +6,13 @@ function Asset(){
   this.is_selected    = false;
   this.is_editing     = false;
   this.saving_timer   = false;
+  this.text_padding   = 10;
 
   this.initialize = function(asset_hash) {
+
+    if (typeof asset_hash=='string') {
+      asset_hash = $.parseJSON(asset_hash);
+    }
 
     this.id           = asset_hash.__id;
     this.coordinates  = asset_hash.coordinates;
@@ -25,42 +30,58 @@ function Asset(){
 
   this.render = function(){
 
-    var tmpl  = $("#asset_" + this.hash.asset_type + "_tmpl").html(),
-      scale   = function(w, h){
-        var cont     = Editor.product_editable_area,
-            cont_w   = cont.width(),
-            cont_h   = cont.height(),
-            width    = parseInt(w),
-            height   = parseInt(h),
-            scaled_w = w,
-            scaled_h = h;
+    var that  = this,
+        tmpl  = $("#asset_" + this.hash.asset_type + "_tmpl").html(),
+        scale = function(w, h){
+                  var cont     = Editor.product_editable_area,
+                      cont_w   = cont.width(),
+                      cont_h   = cont.height(),
+                      width    = parseInt(w),
+                      height   = parseInt(h),
+                      scaled_w = w,
+                      scaled_h = h;
 
-        if (cont_w>w || cont_h>h){
-          if (cont_w>w) {
-            scaled_h = h*(w/cont_w);
-          }
-          if (cont_h>h) {
-            scaled_w = w*(h/cont_h);
-          }
-        }
-        return [scaled_w, scaled_h];
-      };
+                  if (cont_w<w || cont_h<h){
+                    if (cont_w<w) {
+                      scaled_h = h*(cont_w/w);
+                    }
+                    if (cont_h<h) {
+                      scaled_w = w*(cont_h/h);
+                    }
+                    if (scaled_h>cont_h) {
+                      scaled_h = cont_h;
+                      scaled_w = w*(cont_h/h);
+                    }
+                    if (scaled_w>cont_w) {
+                      scaled_w = cont_w;
+                      scaled_h = h*(cont_w/w); 
+                    }
+                  }
+                  return [scaled_w, scaled_h];
+                };
 
     Editor.product_editable_area.append( Mustache.to_html( tmpl, this.hash ) );
     
     $("#" + this.hash.__id).
       removeAttr('contenteditable').
       css({
-        left        :  parseInt(this.hash.coordinates[0]), // x
-        top         :  parseInt(this.hash.coordinates[1]), // y
-        zIndex      :  parseInt(this.hash.coordinates[2]), // z
-        width       :  scale(this.hash.width, this.hash.height, true),
-        height      :  scale(this.hash.width, this.hash.height, false),
-        fontSize    :  this.hash.font_size,
-        fontFamily  :  this.hash.font_family,
-        color       :  this.hash.color,
-        textAlign   :  this.hash.alignment
-      });
+        left            : parseInt(this.hash.coordinates[0]), // x
+        top             : parseInt(this.hash.coordinates[1]), // y
+        zIndex          : parseInt(this.hash.coordinates[2]), // z
+        width           : scale(this.hash.width, this.hash.height)[0],
+        height          : scale(this.hash.width, this.hash.height)[1],
+        fontSize        : this.hash.font_size,
+        fontFamily      : this.hash.font_family,
+        color           : this.hash.color,
+        backgroundColor : this.hash.bg_color,
+        textAlign       : this.hash.alignment
+      }).
+      find(".ui-resizable-handle").
+      remove();
+
+    // if (this.asset_type=='text') {
+    //   $("#" + this.hash.__id).css({ padding : that.text_padding });
+    // }
 
     return $("#" + this.hash.__id);
 
@@ -69,12 +90,10 @@ function Asset(){
   this.initialize_controls = function(){
     
     var that = this;
-
+    
     $("#" + that.hash.__id).
       mousedown(function(){
-        $(this).addClass('selected').
-          siblings(".asset").removeClass('selected');
-        that.initialize_settings();
+        that.select_asset();
       }).
       draggable({
         containment: Editor.product_editable_area,
@@ -84,11 +103,11 @@ function Asset(){
         }
       }).
       resizable({
-        minWidth    : 50,
-        minHeight   : 50,
+        minWidth    : 40,
+        minHeight   : 40,
         containment : Editor.product_editable_area,
         autoHide    : false,
-        handles     : "all",
+        handles     : 'se', //$("#" + that.hash.__id).find(".custom_resize_handle"),
         grid        : [ 5, 5 ],
         maxWidth    : $(this).parent().width(),
         maxHeight   : $(this).parent().height(),
@@ -106,6 +125,13 @@ function Asset(){
         }
       });
 
+    //$("#" + that.hash.__id).resizable('disable').draggable('disable');
+
+  };
+
+  this.select_asset = function(){
+    this.dom.addClass('selected').siblings(".asset").removeClass('selected');
+    this.initialize_settings();
   };
 
   this.initialize_settings = function(){
@@ -190,7 +216,7 @@ function Asset(){
     
     this.dom.attr('contenteditable','true');
 
-    this.select_text( this.dom.find("span")[0] );
+    this.select_text( this.dom.find("p")[0] );
 
   };
 
@@ -282,7 +308,7 @@ function Asset(){
       font_family:    this.dom.css('font-family'),        // type: String,   default: "Helvetica"
       font_size:      this.dom.css('font-size'),          // type: String,   default: "36px"
       alignment:      this.dom.css('text-align'),         // type: String,   default: "center"
-      content:        this.dom.text()                     // type: String,   default: "Text"
+      content:        this.dom.html()                     // type: String,   default: "Text"
     });
 
   };

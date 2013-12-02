@@ -7,7 +7,7 @@ div id='designer' class="small-12 small-uncentered medium-10 medium-centered row
   div class='asset_tools_container medium-8 small-12'
     fieldset
       input type='hidden' name='asset_id' value='' class='asset_id_field input_field'
-      ul class='asset_tools nolist disabled show_asset_text_fields'
+      ul class='asset_tools nolist disabled show_asset_text_fields clearfix'
         li class='font_family asset_text_field'
           label Font
           select name='font_family' class='font_family_control select_field' data-css-name='font-family' disabled='disabled'
@@ -28,11 +28,11 @@ div id='designer' class="small-12 small-uncentered medium-10 medium-centered row
             option 120px
         li class='alignment asset_text_field asset_photo_field' data-css-name='text-align'
           label Alignment
-          input type='hidden' name='alignment' class='alignment_control' disabled='disabled'
-          ul class='alignment_buttons nolist'
-            li class='alignment_button alignment_left'
-            li class='alignment_button alignment_center current'
-            li class='alignment_button alignment_right'
+          input type='hidden' name='alignment' class='alignment_control' disabled='disabled' data-css-name='text-align'
+          ul class='alignment_buttons nolist clearfix'
+            li data-alignment='left'   data-hint="Align to left"   class='hint--bottom alignment_button alignment_left' < 
+            li data-alignment='center' data-hint="Align to center" class='hint--bottom alignment_button alignment_center current' -
+            li data-alignment='right'  data-hint="Align to right"  class='hint--bottom alignment_button alignment_right' >
         li class='color asset_text_field'
           label Color
           input type='text' name='color' class='color_control input_field' data-css-name='color' disabled='disabled'
@@ -40,11 +40,11 @@ div id='designer' class="small-12 small-uncentered medium-10 medium-centered row
           label Fill
           input type='text' name='background-color' class='bg_color_control input_field' data-css-name='background-color' value='transparent' disabled='disabled'
         li class='zindexes asset_text_field asset_photo_field' data-css-name='z-index'
-          button class='increase_zindex' Forwards
-          button class='decrease_zindex' Backwards
+          button data-hint="Move this asset forwards" class='increase_zindex hint--bottom' ^
+          button data-hint="Move this asset backwards" class='decrease_zindex hint--bottom' v
         li class='clone_and_delete asset_text_field asset_photo_field'
-          button class='clone_asset' Clone
-          button class='delete_asset' Delete
+          / button class='clone_asset' Clone
+          button data-hint="Delete this asset" class='delete_asset hint--bottom' x
 
   div class='viewer medium-8 small-12'
 
@@ -59,7 +59,7 @@ div id='designer' class="small-12 small-uncentered medium-10 medium-centered row
       li 
         button class='add_text button' Add Text
       li
-        button class='add_art button' Add Artwork ...
+        button class='add_art button' Add Art ...
   
     div class='artwork_container hidden'
       
@@ -97,25 +97,28 @@ div id='designer' class="small-12 small-uncentered medium-10 medium-centered row
               li 
                 input type='submit' class='restricted submit orange34 button submit_photo' value='Upload' data-loading="Uploading..."
               li
-                a href='#!' class='cancel' Cancel
+                a href='#!' class='cancel add_art' Cancel
       
-      div class='artwork_viewer'
-        / we can connect to meme generator's api and pull images from here
-        / http://version1.api.memegenerator.net/Generators_Select_ByPopular?pageIndex=0&pageSize=12&days=7
-        ul class='artwork'
+    div class='artwork_viewer compact'
+      ul class='artwork'
+
+    div class='toggle_artwork_viewer' View more art ...
 
     = simple_form_for :product do |f|
       div class='colors'
+        h3 Choose a #{@product.product_type.titleize} Color
         = f.input :color, as: :hidden
         ul class='swatches' data-target=''
           
       div class='product_styles_container'
         - App.product_types.each do |product_type|
           
-          = f.input :product_style, collection: product_type.product_styles.map{|ps|[ps.name,ps.slug]}
+          = f.input :product_style, as: :hidden 
+          /collection: product_type.product_styles.map{|ps|[ps.name,ps.slug]}
           
           = f.input :product_sub_style, as: :hidden
           
+          h3 Choose a Style
           - product_type.product_styles.each do |product_style|
             ul class='product_sub_styles'
               - product_style.sub_styles.each_with_index do |sub_style,i|
@@ -124,17 +127,15 @@ div id='designer' class="small-12 small-uncentered medium-10 medium-centered row
                   h4 = sub_style.name
                   p = sub_style.description
 
-      div class='price_container hint--left' data-hint="Prices decrease the more #{@product.product_type}s we produce!"
+      div class='price_container'
         p class='price_description'
-          | Base cost @ 20 #{@product.product_type}s
+          | Base cost per #{@product.product_type}
         h2 class='price currency'
-          == number_to_currency(base_price_for_units(@product.product_sub_style_object,20), unit: app_currency_symbol)
+          == number_to_currency(base_price_for_units(@product.product_sub_style_object,1), unit: app_currency_symbol)
 
       div class='submit_button'
         == f.submit "Next Step &raquo;".html_safe, "data-href".to_sym => "/#{@current_shop.slug}/products/#{@product.slug}/edit_info", class: "next_step button"
-        / button class='next_step' 
-        /   | Next Step &raquo;  
-
+        
 - content_for :page_scripts do
 
   script id='color_swatch_tmpl' type='text/template'
@@ -143,20 +144,34 @@ div id='designer' class="small-12 small-uncentered medium-10 medium-centered row
 
   script id='asset_text_tmpl' type='text/template'
     div id="{{__id}}" class='asset asset_{{asset_type}}' data-id="{{__id}}" contenteditable="true" title="Double-click to edit!"
-      span
+      p style='position:relative; padding: 10px 0px 0px 0px'
         | {{{content}}}
 
   script id='asset_photo_tmpl' type='text/template'
     div id="{{__id}}" class='asset asset_{{asset_type}}' data-id="{{__id}}"
       img src="{{attachment_medium_url}}" data-original="{{attachment_url}}" style='width:100%'
       
+  script id='image_object_tmpl' type='text/template'
+    li id="{{__id}}" class='image_object' data-id="{{__id}}"
+      div class='image_object_thumbnail' style='background-image:url({{attachment_thumb_url}})'
+      div class='image_object_title' {{attachment_filename}}
+      div class='instructions' Add this to your #{@product.product_type} ...
+      div class='loading_indicator' Loading ...
+
+  script id='external_image_object_tmpl' type='text/template'
+    li id="{{__id}}" class='image_object external_image_object' data-id="{{__id}}" data-url="{{filename}}" data-medium="{{medium}}"
+      div class='image_object_thumbnail' style='background-image:url({{thumbnail}})'
+      div class='image_object_title' {{title}}
+      div class='instructions' Add this to your #{@product.product_type} ...
+      div class='loading_indicator' Loading ...
 
   javascript:
-    var SHOP = #{@current_shop.to_json.html_safe},
-        PRODUCT_STYLES = #{App.product_types.to_json.html_safe},
+    var SHOP    = #{@current_shop.to_json.html_safe},
+        TYPES   = #{App.product_types.to_json.html_safe},
         PRODUCT = #{@product.to_json(methods: [:slug]).html_safe},
-        ASSETS  = #{@assets.to_json(methods: [:__id, :attachment_url, :attachment_medium_url, :attachment_thumb_url]).html_safe};
+        ASSETS  = #{@assets.to_json.html_safe},
+        IMAGES  = #{@images.to_json.html_safe};
 
     $(function(){
-      Editor.initialize(SHOP, PRODUCT_STYLES, PRODUCT, ASSETS);
+      Editor.initialize(SHOP, TYPES, PRODUCT, ASSETS, IMAGES);
     });

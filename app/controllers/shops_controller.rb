@@ -6,10 +6,14 @@ class ShopsController < ApplicationController
   def index;end
 
   def show
-    @products = @current_shop.products.desc(:availability_start)
-    @edit_mode = true if is_owner?(@current_shop)
-    if @products.length>@current_shop.products.orderable.length
-      flash.now[:notice] = "Not all of your products are ready for display."
+    if is_owner?(@current_shop)
+      @products = @current_shop.products.desc(:created_at)
+      @edit_mode = true if is_owner?(@current_shop)
+      if @products.length>@current_shop.products.orderable.length
+        flash.now[:notice] = "Not all of your products are ready for display."
+      end
+    else
+      @products = @current_shop.products.orderable.desc(:created_at)
     end
   end
 

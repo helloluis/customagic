@@ -9,7 +9,7 @@ class Product
       field :product_sub_style,   default: "basic_standard"
       field :color,               type: String,   default: "#ffffff"
 
-      before_save :set_buy_now_pricing
+      #before_save :set_pricing
     end
 
     def remaining
@@ -28,23 +28,20 @@ class Product
       product_style_object.sub_styles.find{|pss| pss.slug==product_sub_style}
     end
 
-    # def base_price
-    #   product_sub_style_object.prices.first.last
-    # end
-    def set_pricing
-      write_attributes(buy_now_price: group_price*2)
+    def base_price
+      product_sub_style_object.prices.first.last
     end
-
+    
     def update_sales_information!
-      
-      # self.buy_now_price = product_sub_style_object.buy_now_price
-
       if pp = product_sub_style_object.prices.find{|p| (p.first).to_a.include?(sales_goal)} 
         self.base_price = pp.last
+        hash = []
+        product_style_object.sizes.each do |psize|
+          hash << { primary: psize, secondary: "", quantity: 1000000, price: buy_now_price }
+        end
+        self.price_variants = hash
       end
-
       self.save
-
     end
 
   end

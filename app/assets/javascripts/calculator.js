@@ -30,15 +30,14 @@ var Calculator = {
           that.refresh_indicators();
         };
 
-    this.sales_goal   = $("#product_sales_goal");
-    this.base_price   = $("#product_base_price");
-    this.retail_price = $("#product_group_price");
-    this.profit       = $(".profit_margin");
-    this.sales_goal_indicator = $(".sales_goal");
-    this.total_sales  = $(".total_sales");
-    this.total_earn   = $(".total_earnings");
+    this.base_price        = $("#product_base_price");
+    this.retail_price      = $("#product_buy_now_price");
+    this.charity_donation  = $("#product_charity_donation");
+    this.profit            = $(".profit_margin");
+    this.total_earn_20     = $(".total_earnings_10");
+    this.total_earn_100    = $(".total_earnings_100");
 
-    this.sales_goal.keyup(refresh_indicators);
+    //this.retail_price.keyup(refresh_indicators);
 
     this.refresh_indicators(true);
 
@@ -60,7 +59,8 @@ var Calculator = {
   find_base_price : function(int) {
     
     var that = this,
-          bp = _.find(that.prices, function(p){
+        int  = parseInt(int),
+        bp   = _.find(that.prices, function(p){
                   var range = [p[0][0], p[0][p[0].length-1]];
                   if (int>=parseInt(range[0]) && int<=parseInt(range[1])) {
                     return true;
@@ -70,7 +70,7 @@ var Calculator = {
     if (bp){
       return bp[1];  
     } else {
-      return 0;
+      return that.prices[0][1];
     }
     
   },
@@ -78,20 +78,23 @@ var Calculator = {
   refresh_indicators : function(with_default_retail_price){
 
     var that = this,
-        bp   = that.find_base_price(that.sales_goal.val()),
-        rp   = with_default_retail_price ? bp+(bp*0.2) : parseFloat(that.retail_price.val());
+        bp   = that.prices[0][1],
+        cp   = parseFloat(that.charity_donation.val()),
+        rp   = parseFloat(that.retail_price.val());
           
     that.base_price.val(bp);
-
-    if (with_default_retail_price) {
-      that.retail_price.val(rp);  
+    
+    if (rp<bp+cp) {
+      that.retail_price.val( bp+cp );
+      var profit = 0;
+    } else {
+      var profit = Math.max(0,rp-(bp+cp));  
     }
+
+    that.profit.text(profit);
     
-    that.profit.text(rp-bp);
-    
-    that.sales_goal_indicator.text(that.sales_goal.val());
-    that.total_sales.text(rp*parseInt(that.sales_goal.val()));
-    that.total_earn.text((rp-bp)*parseInt(that.sales_goal.val()));
+    that.total_earn_20.text(profit*20);
+    that.total_earn_100.text(profit*100);
 
     $(".currency").not("input").currency({ region: SHOP.currency_symbol });
     $("input.currency").currency({ region : 'NA' });

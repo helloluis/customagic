@@ -1,24 +1,6 @@
 h3 class='divider'
   span
     | review your items
-hr
-
-div class='empty_cart_message' 
-  h3 class='divider'
-    span
-      | your shopping cart is empty
-
-  p class='aligncenter'
-    a href="/shop" class='show_shopping_cart_panel gray34' 
-      span class='icon arrow_left'
-      | Back
-
-div class='cart_buttons review'
-  a href="/shop" class='show_shopping_cart_panel gray34' 
-    span class='icon arrow_left'
-    | Edit your cart
-  p class='hint'
-    | Click here to make changes to your orders.
 
 table id="items" class='loading'
   tbody
@@ -27,7 +9,7 @@ table id="items" class='loading'
       td class='sub_total number_labels' colspan='3'
         label Subtotal
       td class='sub_total_price number'
-        == @shop.currency_symbol
+        == app_currency_symbol
         | 0.00
       td
     tr
@@ -35,7 +17,7 @@ table id="items" class='loading'
         label Select your delivery location
         select class='shipping_cost'
       td class='shipping_cost_display number'
-        == @shop.currency_symbol 
+        == app_currency_symbol
         | 0.00
       td class="cart_controls"
     tr class='discount_code_row_and_value'
@@ -60,17 +42,17 @@ script id="cart_item_tmpl" type="text/template"
         | {{variant_name}}
     td class='quantity_cell'
       span href="#!" class='decrease_quantity'
-        i class="icon-minus-sign"
+        i class="icon-minus-sign" (-)
       input type='text' name='quantity' value='{{quantity}}' data-maximum="{{variant_stock}}" disabled='disabled'
       span href="#!" class='increase_quantity'
-        i class="icon-plus-sign"
+        i class="icon-plus-sign" (+)
     td class='price' data-price="{{price}}"
       | {{{formatted_price}}}
     td class='subtotal' data-subtotal="{{subtotal}}"
       | {{{formatted_subtotal}}}
     td class='cart_controls'
       a href='#!' class='remove_from_cart gray34' 
-        span class='icon trash'
+        span class='icon trash' (x)
 
 script id="paypal_hidden_field_tmpl" type='text/template'
   input type="hidden" name="item_name_{{i}}" value="{{name}} {{variant}}"

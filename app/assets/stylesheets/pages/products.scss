@@ -133,6 +133,7 @@ header#main {
     position:absolute;
     width:100%;
     height:100%;
+    margin-top:40px;
   } 
   .editable_area .asset {
     position:absolute;
@@ -192,7 +193,7 @@ header#main {
   z-index:3;
   position:absolute;
   border:1px dashed #999;
-  top:170px;
+  top:200px;
   left:180px;
   height:450px;
 }
@@ -213,7 +214,6 @@ header#main {
 }
 
 ul.asset_tools {
-  overflow:hidden;
   list-style-type:none;
 
   &.disabled {
@@ -230,36 +230,29 @@ ul.asset_tools {
       text-transform:uppercase;
     }
   }
-  
-  //  .font_family {
-  //    width:150px;
-  //  }
-    
-  //  .font_size {
-  //    width:70px;
-  //  }
-  
   .alignment {
-//    width:80px;
-
     ul {
       list-style-type:none;
-      overflow:hidden;
+    }
+    .alignment_button {
+      cursor:pointer;
+      text-align:center;
+      color:#fff;
+      line-height:36px;
+      &.current {
+        background-color:#333;
+      }
+      &.alignment_left {
+
+      }
+      &.alignment_center {
+        
+      }
+      &.alignment_right {
+        
+      }
     }
   }
-  
-  //  .color {
-  //    width:60px;
-  //  }
-    
-  //  .fill {
-  //    width:60px;
-  //  }
-
-  //  .zindexes,
-  //  .clone_and_delete {
-  //    width:80px;
-  //  }
 
   & > li {
     display:none;
@@ -314,9 +307,10 @@ ul.asset_tools {
 }
 
 #editor.information {
+  .inner {
+    margin-top:50px;
+  }
   .viewer {
-    width:360px;
-    padding:20px;
     overflow:visible;
     .item {
       height:480px;
@@ -329,7 +323,9 @@ ul.asset_tools {
   }
   .info_form_container {
     float:left;
-    padding:20px;
+    form {
+      margin:20px;
+    }
     label, input {
       font-size:20px;
       display:block;
@@ -338,22 +334,22 @@ ul.asset_tools {
       width:100%;
       height:150px;
     }
-    input, textarea {
+    input, textarea, select {
       margin-bottom:20px;
     }
   }
   .totals_and_instructions {
     float:left;
-    width:250px;
   }
   .totals {
     background:#fff;
     padding:20px;
-    margin:20px 0px;
+    margin:0px 20px;
     dt { font-size:16px; }
     dd { font-size:24px; margin-bottom:10px; }
   }
   .help {
+    margin:20px;
     padding:10px;
     h3,p {
       margin-bottom:10px;
@@ -401,4 +397,133 @@ body.loading .loading_indicator {
   .product_prices ul {
     list-style-type:none;
   }
+  .product_prices {
+    .label_unit_total, .label_unit_price, .total_price {
+      display:none;
+
+    }
+    &.volume_pricing {
+      .label_unit_total, .label_unit_price, .total_price {
+        display:block;
+      }
+    }
+  }
+}
+
+.artwork_viewer {
+  width: 275px;
+  height: 220px;
+  overflow-y: auto;
+  .artwork {
+    clear:both;
+    .image_object {
+      position:relative;
+      list-style-type:none;
+      float:left;
+      margin:0px 2px 2px 0px;
+      border:1px solid #ddd;
+      width:128px;
+      &.loading {
+        opacity:0.5;
+        &:hover{
+          .instructions { 
+            display:none; 
+          }
+          .loading_indicator {
+            display:block;
+          }
+        }
+        .loading_indicator {
+          display:block;
+        }
+      }
+      .instructions, .loading_indicator {
+        position:absolute;
+        top:0px;
+        left:0px;
+        right:0px;
+        bottom:0px;
+        background-color:rgba(0,0,0,0.5);
+        color:#fff;
+        text-align:center;
+        display:none;
+        padding:30% 10%;
+        font-size:16px;
+        cursor:pointer;
+      }
+      &:hover {
+        .instructions {
+          display:block;
+        }
+      };
+    }
+
+    .image_object_thumbnail {
+      width:126px;
+      height:128px;
+      background-size:cover;
+      background-repeat:no-repeat;
+      background-position:top center;
+    }
+    .image_object_title {
+      font-size:11px;
+      text-align:center;
+      background:rgba(0,0,0,0.5);
+      color:#fff;
+      padding:3px;
+      text-overflow:ellipsis;
+      //width:126px;
+      height:20px;
+      display:block;
+    }
+  }  
+}
+
+.toggle_artwork_viewer {
+  padding:3px 6px;
+  text-align:center;
+  background:#ccc;
+  margin-bottom:20px;
+}
+.styles.expanded_artwork {
+  .artwork_viewer {
+    height: 700px;
+  }
+  .simple_form.product {
+    display: none;
+  }
+}
+
+.standalone_product {
+  .product_image_container, .product_purchase {
+    float:left;
+  }
+}
+
+.product_image_container_shirt {
+  background:transparent image-url('mens_crew_ffffff.jpg') top center no-repeat;
+  position:relative;
+  height:750px;
+  .product_image {
+    position:absolute;
+    top:170px;
+    left:97px;
+    border:0px;
+  }
+  &.shirt_000000 {
+    background-image:image-url('mens_crew_000000.jpg');
+  }
+  &.shirt_003366 {
+    background-image:image-url('mens_crew_003366.jpg'); 
+  }
+  &.shirt_666666 {
+    background-image:image-url('mens_crew_666666.jpg'); 
+  }
+  &.shirt_551100 {
+    background-image:image-url('mens_crew_551100.jpg'); 
+  }
+}
+
+.inner {
+  padding:20px;
 }

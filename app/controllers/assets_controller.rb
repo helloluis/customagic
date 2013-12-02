@@ -22,8 +22,38 @@ class AssetsController < ApplicationController
 
   def create_photo
     # logger.info "!! #{current_user.inspect} !!"
-    @image = @shop.images.new({ attachment: params[:attachments].first })
-    
+    if params[:attachments]
+      
+      @image = @shop.images.new({ attachment: params[:attachments].first })
+
+    elsif params[:image]
+
+      if !params[:image][:remote_attachment_url].include?(App.url)
+        
+        @image = @shop.images.new(params[:image])
+
+      elsif canned_image = App.canned_images.find{|ci| ci.filename==params[:image][:remote_attachment_url]}
+        
+        @asset = @shop.assets.create({
+          asset_type:   "photo",
+          product:      Product.find(params[:product_id]),
+          canned_image: canned_image.to_hash,
+          width:        canned_image.width,
+          height:       canned_image.height
+          })
+        
+        respond_to do |format|
+          format.json { render :json => [@asset.to_json, nil] }
+        end and return
+
+      else
+        respond_to do |format|
+          format.html { render :inline => "<textarea>#{{:error => 'We couldn\'t find that image.'}.to_json.html_safe}</textarea>" }
+          format.json { render :json => { :error => "We couldn't find that image." }, :status => :unprocessable_entity }
+        end and return
+      end
+    end
+
     if @image.get_dimensions_and_filesize && @image.save
 
       @asset = @shop.assets.create({ 
@@ -32,8 +62,8 @@ class AssetsController < ApplicationController
         image: @image })
       
       respond_to do |format|
-        format.html { render :inline => "<textarea>#{@asset.to_json(:methods => [:__id, :attachment_filename, :attachment_medium_url, :attachment_url, :attachment_thumb_url]).html_safe}</textarea>" }
-        format.json { render :json => @asset }
+        format.html { render :inline => "<textarea>#{[@asset.to_json.html_safe, @image.to_json.html_safe]}</textarea>" }
+        format.json { render :json => [@asset.to_json, @image.to_json] }
       end
 
     else
@@ -63,7 +93,7 @@ class AssetsController < ApplicationController
 
   def update
     if @asset = @shop.assets.find(params[:id])
-      @asset.update_attributes(params[:asset])
+      @asset.update_attributes(params[:asset].except('image_id','shop_id','__id','_id','canned_image'))
       respond_to do |format|
         format.json { render :json => @asset }
       end

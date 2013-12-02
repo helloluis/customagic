@@ -4,19 +4,23 @@ var Editor = {
 
   scale : 0.12,
 
-  initialize : function(shop, types, product, assets) {
+  initialize : function(shop, types, product, assets, images) {
     
-    this.shop    = shop;
-    this.product_types = types;
-    this.product = product;
-    this.assets  = assets;
+    this.mobile         = $("body").hasClass("mobile_browser");
+    this.shop           = shop;
+    this.product_types  = types;
+    this.product        = product;
+    this.assets         = assets;
+    this.images         = images;
     
-    this.current_side  = 0; // which side of the item are we viewing? (front/back/etc)
+    this.current_side   = 0; // which side of the item are we viewing? (front/back/etc)
 
     this.initialize_product();
     this.initialize_viewer();
     this.initialize_controls();
     this.initialize_asset_settings();
+    this.initialize_meme_generator();
+    this.initialize_window();
 
   },
 
@@ -50,6 +54,7 @@ var Editor = {
     that.initialize_scale();
 
     that.asset_objects = [];
+    that.image_objects = [];
 
     _.each(that.assets, function(asset){
       
@@ -57,6 +62,23 @@ var Editor = {
       a.initialize(asset);
       that.asset_objects.push(a);
 
+    });
+
+    _.each(that.images, function(img){
+      
+      var i = new ImageObject();
+      i.initialize(img);
+      that.image_objects.push(i);
+
+    });
+
+    $(".toggle_artwork_viewer").click(function(){
+      $(".styles").toggleClass('expanded_artwork');
+      if ($(".styles").hasClass('expanded_artwork')) {
+        $(this).text("View less art ...");
+      } else {
+        $(this).text("View more art ...");
+      }
     });
 
     that.product_preview.click(function(){
@@ -84,6 +106,16 @@ var Editor = {
 
   },
 
+  initialize_window : function(){
+
+    var init_scale = function(){
+      Editor.initialize_scale();
+    };
+    
+    $(window).resize(_.throttle(init_scale,500));
+
+  },
+
   initialize_controls : function() {
 
     var that = this;
@@ -94,7 +126,7 @@ var Editor = {
 
     $(".next_step").click(function(){
       
-      var el   = $(this).attr('disabled','disabled').text('Saving ...'),
+      var el   = $(this).attr('disabled','disabled').val('Saving ...'),
           href = el.is("a") ? el.attr('href') : el.attr('data-href');
       
       Flasher.add(['notice',"Please wait, we're saving your changes."], true);
@@ -119,7 +151,7 @@ var Editor = {
         Editor.selected_asset.save();
       });
 
-    $(".color_control").
+    $(".color_control, .bg_color_control").
       spectrum({
         showPalette: true,
         showInitial: true,
@@ -128,27 +160,17 @@ var Editor = {
         palette: [],
         localStorageKey: "spectrum.homepage",
         change : function(color){
+          var css_name = $(this).attr('data-css-name');
           Editor.selected_asset.dom.
-            css({ color: color.toHexString() });
+            css(css_name, color.toHexString());
           Editor.selected_asset.save();
         }
       });
-
-    $(".bg_color_control").
-      spectrum({
-        showPalette: true,
-        showInitial: true,
-        showInput:   true,
-        showSelectionPalette: true,
-        palette: [],
-        allowEmpty: true,
-        localStorageKey: "spectrum.homepage",
-        change: function(color){
-          Editor.selected_asset.dom.
-            css({ backgroundColor: color });
-          Editor.selected_asset.save();
-        }
-      });
+      
+    $(".alignment_button").click(function(){
+      $(this).addClass('current').siblings().removeClass('current');
+      $(".alignment_control").val( $(this).attr('data-alignment') ).change();
+    });
 
     $(".increase_zindex, .decrease_zindex, .clone_asset").click(function(){
       alert("This doesn't work yet :P");
@@ -166,6 +188,12 @@ var Editor = {
         }
       });
     });
+  },
+
+  initialize_meme_generator : function(){
+
+    MemeGenerator.initialize();
+
   },
 
   initialize_sub_styles : function(){
@@ -202,8 +230,7 @@ var Editor = {
         that.create_text_asset();
       });
 
-    $(".content_buttons").
-      find(".add_art").
+    $(".add_art").
       click(function(){
         $(this).
           toggleClass('toggled');
@@ -213,6 +240,25 @@ var Editor = {
 
     var asset_browser = $(".artwork_viewer");
 
+    //////////////////////////////////
+    // local or remote file toggler //
+    //////////////////////////////////
+    $("input[name='photo_source']").click(function(){
+      
+      $("#"+$(this).val()).show().siblings('.photo_source_input').hide().find("input").attr('disabled');
+      
+      $("#"+$(this).val()).find("input").removeAttr('disabled','disabled');
+
+      if ($(this).val()=='remote_file') {
+        $("#photo_uploader .buttons").removeClass('hidden');
+      } else {
+        $("#photo_uploader .buttons").addClass('hidden');
+      }
+    });
+
+    /////////////////////////
+    // local file uploader //
+    /////////////////////////
     var jqXHR = $("#attachments").fileupload({
       acceptFileTypes : /(\.|\/)(gif|jpe?g|png)$/i,
       maxFileSize: 5000000,
@@ -233,10 +279,8 @@ var Editor = {
           data.jqXHR.abort();
 
         } else {
-          // console.log('success');
-          var new_asset = new Asset();
-          new_asset.initialize( parsed_data );
-          Editor.asset_objects.push(new_asset);
+          
+          Editor.initialize_asset_and_image( parsed_data );
           
           if (typeof callback!=='undefined') {
             callback.call(this, new_asset);
@@ -294,6 +338,85 @@ var Editor = {
 
     });
 
+    //////////////////////////
+    // remote file uploader //
+    //////////////////////////
+    var cont = $("#photo_uploader"),
+      photo_submit      = $("input.submit_photo",cont).
+                            attr('disabled','disabled').
+                            addClass("disabled gray34"),
+      remote_file_field = $("#asset_attachment_url",cont),
+      http_regex        = new RegExp(/^http[s]?:\/\/[\w\.-]+\/[^\s\<\>\{\}\~]+$/i);
+
+    
+    $("#asset_attachment_url",cont).
+      bind("input propertychange change paste", function(){
+        var val = $(this).val();
+        if (val.length>0 && http_regex.test(val)) {
+          photo_submit.removeAttr("disabled").removeClass("disabled gray34").addClass("orange34");
+        } else {
+          photo_submit.attr("disabled","disabled").removeClass("orange34").addClass("disabled gray34");
+        }    
+      });
+
+    $("#photo_uploader").
+      submit(function(){
+
+        var f = $(this),
+            d = { product_id : that.product._id, 
+                  image : { remote_attachment_url : $("#asset_attachment_url").val() } };
+
+        photo_submit.val(photo_submit.attr('data-loading'));
+
+        $.ajax({
+          url : f.attr('action'),
+          type : "POST",
+          data : d,
+          dataType : "JSON",
+          success : function(data) {
+            
+            var parsed_data = data;
+          
+            if (parsed_data.error) {
+              
+              Flasher.add(['error',parsed_data.error],true);
+              
+              $("#progress .bar").css({ width : "0%" });
+              $("#progress label").text("");
+
+            } else {
+              
+              Editor.initialize_asset_and_image( parsed_data );
+
+            }
+
+          },
+          complete : function(x) {
+            
+            photo_submit.val("Upload");
+
+          }
+        });
+
+      return false;
+    });
+
+  },
+
+  initialize_asset_and_image : function( parsed_data ) {
+
+    if (parsed_data[0]) {
+      var new_asset = new Asset();
+      new_asset.initialize(parsed_data[0]);
+      Editor.asset_objects.push(new_asset);
+    }
+    
+    if (parsed_data[1]) {
+      var new_image = new ImageObject();
+      new_image.initialize(parsed_data[1]);
+      Editor.image_objects.push(new_image);
+    }
+    
   },
 
   initialize_color_swatches : function() {
@@ -443,8 +566,6 @@ var Editor = {
       
     });
 
-
-
     return "<html><body>" + main.append(content.outerHTML()).outerHTML() + "</body></html>";
 
   },
@@ -479,11 +600,11 @@ var Editor = {
   },
 
   loading : function(){
-    $("body").addClass('loading');
+    $("body.shop").addClass('loading');
   },
 
   loading_stop: function(){
-    $("body").removeClass('loading');
+    $("body.shop").removeClass('loading');
   }
 
 };

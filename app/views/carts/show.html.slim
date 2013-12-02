@@ -1,10 +1,11 @@
-- content_for :js do
-  = javascript_include_tag "pages", "cart"
 
-- content_for :js_bottom do
+- content_for :page_scripts do
+  = javascript_include_tag "cart"
   javascript:
+    var SHOP = #{@current_shop.to_json.html_safe},
+        SHIPPING = #{App.shipping_costs.to_json.html_safe};
     $(function(){
-      Cart.initialize('#{@guest}',#{(@cart && @cart.contents ? @cart.contents.to_json : '{}').html_safe},false,true);
+      Cart.initialize(SHOP,#{(@cart && @cart.contents ? @cart.contents.to_json : '{}').html_safe},false,true);
       Cart.checkout();
     });
 
@@ -12,20 +13,12 @@ div class="shop widget_addon"
   div class="background clearfix standalone_shopping_cart"
 
     div class='main_widget shop_widget'
-      div class='shopping_cart #{@shop.can_transact? ? 'has_paypal' : 'no_paypal'}' 
+      div class='shopping_cart has_paypal' 
         div class="shopping_cart_inner"
 
           = render :partial => "carts/cart_contents"
+          = render :partial => "carts/payment_forms"
           
-          - if @buy_now
-            = render :partial => "carts/payment_forms"
-          - else
-            = render :partial => "carts/preorder_form"
-
       div class='empty_shopping_cart'
-        h2
-          a href="/#{@current_shop.slug}" target="_parent" 
-            == "Go back to #{@current_shop.name}"
-
-
-/== render :partial => "products/facebook_integration"
+        h2 = link_to "Back to Marketplace", "/marketplace"
+          

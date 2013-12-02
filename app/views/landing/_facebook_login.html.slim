@@ -1,0 +1,8 @@
+div class='facebook_profile_container'
+  - if user_signed_in?
+    p 
+      = link_to "Start designing now", "/#{current_user.shop.slug}/products/new" 
+      |  or 
+      = link_to "check out your shop", "/#{current_user.shop.slug}"
+  - else
+    p = link_to "Login to Get Started", user_omniauth_authorize_path(:facebook), :class => "login_via_facebook"

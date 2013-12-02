@@ -33,11 +33,13 @@ class Cart
     quantity = 1 if quantity.blank?
 
     key = make_content_hash_key(item._id, variant_name)
-
+    logger.info "!! KEY #{key} !!"
     if self.contents.keys.any? && 
       self.contents.keys.include?(key) &&
       self.contents[key]['variant_name'] == variant_name
+
       self.contents[key]['quantity'] = self.contents[key]['quantity'].to_i+quantity.to_i
+
     else
       old_items = self.contents
       new_item = { key => { key: key, 
@@ -126,9 +128,13 @@ class Cart
 
     contents.each do |key, hash|
       item_id = hash['item_id']
-      if product = shop.products.find(item_id)
+      if product = Product.find(item_id)
 
-        if product.status==3
+        if product.dont_track_quantities?
+
+          # do nothing
+
+        elsif product.status==3
           
           not_available << [item_id,hash]
 

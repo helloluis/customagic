@@ -125,6 +125,9 @@ GEM
     hashie (2.0.5)
     highline (1.6.20)
     hike (1.2.3)
+    httparty (0.12.0)
+      json (~> 1.8)
+      multi_xml (>= 0.5.2)
     httpauth (0.2.0)
     httpclient (2.3.4.1)
     i18n (0.6.5)
@@ -172,6 +175,7 @@ GEM
       rake
     moped (1.5.1)
     multi_json (1.8.2)
+    multi_xml (0.5.5)
     multipart-post (1.2.0)
     net-scp (1.1.2)
       net-ssh (>= 2.6.5)
@@ -307,6 +311,7 @@ DEPENDENCIES
   fog
   foundation-rails
   hashie
+  httparty
   imgkit
   jbuilder (~> 1.2)
   jquery-rails

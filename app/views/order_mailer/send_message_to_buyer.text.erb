@@ -1,0 +1,7 @@
+
+<%= @message %>
+
+<%= @order.shop.site.owner_name.blank? ? @order.shop.site.title : @order.shop.site.owner_name %>
+<%= @order.shop.site.url %>
+
+<%= render :partial => "order_mailer/infinite_footer" %>

@@ -1,4 +1,5 @@
 div id="fb-root"
+
 javascript:
   (function(d, s, id) {
     var js, fjs = d.getElementsByTagName(s)[0];
@@ -7,3 +8,10 @@ javascript:
     js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=#{app_facebook_id}";
     fjs.parentNode.insertBefore(js, fjs);
   }(document, 'script', 'facebook-jssdk'));
+
+- content_for :page_scripts do
+  
+  javascript:
+    
+    FACEBOOK_AUTH_URL="#{user_omniauth_authorize_path(:facebook)}";
+    Hearts.initialize();

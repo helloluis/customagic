@@ -1,0 +1,22 @@
+
+Order failure on <%= @shop.site.name %>
+
+====
+
+CART CONTENTS:
+<%== @cart.inspect %>
+
+====
+
+ORDER DETAILS:
+<%== @order.inspect %>
+
+ORDER ERRORS:
+<%== @errors.inspect %>
+
+====
+
+PAYPAL DATA:
+<%== @paypal_opts.inspect %>
+
+====

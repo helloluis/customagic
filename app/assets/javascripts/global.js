@@ -136,7 +136,7 @@ var Flasher = {
     }
     
     // should probably just write our own for this
-    var msg_dom = $("<div data-alert='true' class='alert-box " + css_class + "'>" + content + "<a class='close' href='#'>&times;</a></div>");
+    var msg_dom = $("<div data-alert='true' class='alert-box " + _options.css_class + "'>" + _options.content + "<a class='close' href='#'>&times;</a></div>");
 
     Flasher.container.append( msg_dom );
     

@@ -6,28 +6,42 @@
   background-color:#fff;
   box-shadow:0 0 10px #999;
   margin-bottom:30px;
-
+  header {
+    overflow:hidden;
+    height:400px;
+  }
   .inner {
+    padding:0px;
+  }
+  .header_panels { 
+    overflow:hidden;
+    height:380px;
+    position:absolute;
+  }
+  .header_panels .header_panel {
     margin:0px auto 0px auto;
-    padding-top:100px;
-    max-width:980px;
-  
-    .logo {
+    padding:80px 0px 40px 0px;
+    float:left;
+    
+    .columns, .logo {
       float:left;
-      margin-right:20px;
     }
   
     h2 {
       font-size:40px;
       font-weight:normal;
       margin:30px 0px;
+      &.smaller {
+        margin-top:15px;
+        font-size:30px;
+      }
     }
   
     .facebook_profile_container {
-
+      float:left;
       p {
           font-size:24px;
-          text-align:center;
+          text-align:left;
         }
       }
   }

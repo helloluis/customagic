@@ -63,9 +63,9 @@ class Order
   validate :check_email_in_banned_list
 
   before_save   :attach_to_customer
-  before_save   :attach_to_partner
+  #before_save   :attach_to_partner
   
-  before_create :initialize_billing_field
+  # before_create :initialize_billing_field
   before_create :generate_cancellation_token
   before_create :compute_total
   before_create :compute_total_without_shipping
@@ -267,7 +267,7 @@ class Order
   def has_available_stock
     contents.each do |id,content|
       id = content["_id"] || content["item_id"]
-      if product = self.shop.products.find(id)
+      if product = Product.find(id)
         if !product.dont_track_quantities? && product.available_stock < content['quantity'].to_i
           self.errors.add(:base, "There aren't enough available units of the product #{content["name"]} in stock.")
         end
@@ -278,9 +278,16 @@ class Order
   end
 
   def send_order_emails
-    logger.info "!! ORDER TOTAL: #{self.total_with_shipping_and_with_discount} !!"
-    OrderMailer.send_order_email_to_store_owner(shop.owner.email, self, shop.site).deliver
-    OrderMailer.send_order_email_to_buyer(email, self, shop.site).deliver
+    OrderMailer.send_order_email_to_admin(self).deliver
+    OrderMailer.send_order_email_to_buyer(email, self).deliver
+
+    contents.each do |k,v|
+      if p = Product.find(v['id'])
+        email = p.shop.user.email
+        OrderMailer.send_order_email_to_store_owner(email, p, v).deliver
+      end
+    end
+    
   end
 
   def send_processing_notice
@@ -414,8 +421,8 @@ class Order
   end
 
   def attach_to_customer
-    if self.shop && self.shop.site && self.email && customer = self.shop.site.customers.find_or_create_by(email: self.email.trim)
-      write_attribute(:customer_id, customer._id)
+    if self.email && customer = User.find_or_create_by(email: self.email)
+      write_attribute(:user_id, customer._id)
       #logger.info "!! CUSTOMER: #{customer.inspect} !!"
       customer.write_attribute(:name, self.name) if customer.name.blank?
       customer.write_attribute(:first_name, self.first_name)
@@ -434,12 +441,6 @@ class Order
   def attach_to_customer!
     attach_to_customer
     save
-  end
-
-  def attach_to_partner
-    if self.shop && self.shop.site
-      write_attribute(:partner, self.shop.site.partner)
-    end
   end
 
   def full_address
@@ -524,7 +525,7 @@ class Order
   end
 
   def check_email_in_banned_list
-    errors.add(:email, "That email is blacklisted.") if self.email && App.banned_emails.include?(self.email.trim.downcase)
+    errors.add(:email, "That email is blacklisted.") if self.email && App.banned_emails.include?(self.email.downcase)
   end
 
   def recalculate_shop_total_orders

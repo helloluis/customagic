@@ -32,24 +32,27 @@ class Product
   slug  :name,  :scope => :shop, :reserve => [ 'tag', 'tags', 'shop', 'product' ]
 
   field :description
-  field :on_sale,       type: Boolean,  default: false
-  field :featured,      type: Boolean,  default: false
-  field :sku
-  field :category_slug, type: String,   default: ''
-  field :num_orders,    type: Integer,  default: 0
-  field :num_favorites, type: Integer,  default: 0
-  field :status,        type: Integer,  default: 0    # 0 = in progress, 1 = hidden, 2 = visible, 3 = out of stock, 4 = coming soon, 9 = demo
+  field :on_sale,               type: Boolean,  default: false
+  field :featured,              type: Boolean,  default: false
+  field :sku        
+  field :category_slug,         type: String,   default: ''
+  field :num_orders,            type: Integer,  default: 0
+  field :num_favorites,         type: Integer,  default: 0
+  field :status,                type: Integer,  default: 0    # 0 = in progress, 1 = hidden, 2 = visible, 3 = out of stock, 4 = coming soon, 9 = demo
   
-  field :campaign_length, type: Integer, default: 10  # days
+  field :campaign_length,       type: Integer,  default: 10  # days
 
-  field :buy_now_price, type: Float,    default: 0.0
-  field :base_price,    type: Float,    default: 0.0
-  field :group_price,   type: Float,    default: 0.0
-  field :lowest_price,  type: Float,    default: 0.0
-  field :sales_goal,    type: Integer,  default: 20
+  field :buy_now_price,         type: Float,    default: 350.0
+  field :charity_donation,      type: Float,    default: 10.0
+  field :base_price,            type: Float,    default: 0.0
+  field :group_price,           type: Float,    default: 0.0
+  field :lowest_price,          type: Float,    default: 0.0
+  field :sales_goal,            type: Integer,  default: 20
   
-  field :price_variant_classes, type: Hash,  default: { primary: "", secondary: "" }
-  field :price_variants,        type: Array, default: [ { :primary => '',  :secondary => '', :quantity => 10, :price => 100.00 } ]
+  field :charity_url
+
+  field :price_variant_classes, type: Hash,     default: { primary: "", secondary: "" }
+  field :price_variants,        type: Array,    default: [ { :primary => '',  :secondary => '', :quantity => 10, :price => 100.00 } ]
   # [ 
   #   { :primary => 'small',  :secondary => 'white', :quantity => 10, :price => 100.00 },
   #   { :primary => 'small',  :secondary => 'black', :quantity => 10, :price => 100.00 },
@@ -59,7 +62,7 @@ class Product
 
   field :raw_html
 
-  field :dont_track_quantities,   type: Boolean,  default: false
+  field :dont_track_quantities,   type: Boolean,  default: true
   field :hide_prices,             type: Boolean,  default: false
   field :images,                  type: Array,    default: []
   field :embedded_video 
@@ -87,9 +90,8 @@ class Product
 
   validates_presence_of :name, :minlength => 2, :maxlength => 150
   
-  validate :check_number_of_products
+  # validate :check_number_of_products
 
-  before_create  :check_marketplace_visibility
   before_save    :set_partner
   before_save    :check_remote_attachment_url
   after_create   :create_first_asset
@@ -382,13 +384,6 @@ class Product
     end
   end
 
-  def check_marketplace_visibility
-    # if self.shop && self.shop && self.shop.is_paid? && self.shop.list_products_in_marketplace?
-    #   write_attribute(:visible_in_marketplace, true)
-    #   write_attribute(:trusted, true) if self.shop.site.plan.trusted?
-    # end
-  end
-
   def lowest_price=(new_lowest_price)
     lowest_price.to_s.gsub(',','').to_i
   end
@@ -405,7 +400,7 @@ class Product
 
   def has_available_variant?(name, cart=false, desired_quantity=0)
 
-    return true if dont_track_quantities?
+    return true if dont_track_quantities? || name.blank?
     
     if price_variants.length==1
       matched_variant = price_variants.first 
@@ -554,15 +549,17 @@ class Product
   end
 
   def create_first_asset
-    if a = self.assets.create(content: "Awesome Shirt", shop: self.shop)
-      #logger.info "!! #{a.inspect} !!"
-    else
-      #logger.info "!! #{a.errors.inspect} !!"
-    end
+    self.assets.create(content: "Awesome Shirt", shop: self.shop)
   end
 
   def create_final_art!
     self.final_art.create(dpi_target: product_type.dpi_target)
+  end
+
+  def charity
+    unless charity_url.blank?
+      App.charities.find{|c| c.url==charity_url}
+    end
   end
 
 end

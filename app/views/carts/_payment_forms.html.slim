@@ -1,84 +1,66 @@
 div class='payment_options'
 
-  - if @shop.can_transact? && @product.is_orderable?
+  h3 Payment
 
-    h3 Payment
+  p 
+    | You may pay using your credit card via Paypal, or arrange a different mode of payment by contacting us.
+  
+    form id="paypal_form" action="#{App.paypal.url}/cgi-bin/webscr" method="post" target="_parent"
 
-    /added 9/24 KP
-    h3 class='divider'
-      span
-        | choose a payment mode
-    hr  
+      input id="cmd" type='hidden' name='cmd' value='_cart'
+      input id="business" type='hidden' name='business' value=App.paypal.email
+      input id="upload" type='hidden' name='upload' value='1'
+      input id="currency_code" type='hidden' name='currency_code' value=app_currency_symbol
+      input id="notify_url" type='hidden' name='notify_url' value="/payment_notifications/paypal"
+      input id="shopping_url" type="hidden" name="shopping_url" value=app_url
+      input id="return" type="hidden" name="return" value="/shop/successful_purchase?cart_id=#{@cart.id}"
+      input id="cancel_return" type="hidden" name="cancel_return" value="/shop/cancelled_purchase?cart_id=#{@cart.id}"
+      input id="cbt" type="hidden" name="cbt" value="Return to #{app_name}"
+      input id="invoice" type='hidden' name='invoice' value=@cart.id
+      input id="discount_amount_cart" type="hidden" name="discount_amount_cart"
 
-    p 
-      | You may pay using your credit card via Paypal, or arrange a different mode of payment by contacting us.
-    
-      form id="paypal_form" action="#{App.paypal.url}/cgi-bin/webscr" method="post" target="_parent"
+      div class='paypal_items'
 
-        input id="cmd" type='hidden' name='cmd' value='_cart'
-        input id="business" type='hidden' name='business' value=App.paypal.email
-        input id="upload" type='hidden' name='upload' value='1'
-        input id="currency_code" type='hidden' name='currency_code' value=@current_shop.currency_symbol
-        input id="notify_url" type='hidden' name='notify_url' value="/payment_notifications/paypal"
-        input id="shopping_url" type="hidden" name="shopping_url" value=@current_shop.slug
-        input id="return" type="hidden" name="return" value="/shop/successful_purchase?cart_id=#{@cart.id}"
-        input id="cancel_return" type="hidden" name="cancel_return" value="/shop/cancelled_purchase?cart_id=#{@cart.id}"
-        input id="cbt" type="hidden" name="cbt" value="Return to #{@current_shop.name}"
-        input id="custom" type='hidden' name='custom' value=@guest
-        input id="invoice" type='hidden' name='invoice' value=@cart.id
-        input id="discount_amount_cart" type="hidden" name="discount_amount_cart"
+  div class='paypal'
+    h4 Paypal or Credit Card
+    div class='buttons'
+      div class='paypal_button'
+        button class="checkout_with_paypal orange40"
+          | Pay with Paypal »
+        p class='hint'
+          | You will be asked to enter your delivery address and contact info, and then redirected to Paypal for payment.
 
-        div class='paypal_items'
+    a href="https://www.paypal.com/webapps/mpp/paypal-popup" class="paypal-badge" title="How PayPal Works" onclick="javascript:window.open('https://www.paypal.com/webapps/mpp/paypal-popup','WIPaypal','toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=1060, height=700'); return false;"
+      img src="https://www.paypalobjects.com/webstatic/mktg/logo/AM_SbyPP_mc_vs_dc_ae.jpg" style='width:200px' border="0" alt="PayPal Acceptance Mark"
 
-    div class='paypal'
-      h4 Paypal or Credit Card
-      div class='buttons'
-        div class='paypal_button'
-          p class='hint'
-            | You will be asked to enter your delivery address and contact info, and then redirected to Paypal for payment.
-          button class="checkout_with_paypal orange40"
-            | Pay with Paypal »
-          p class='hint'
-            | You will be asked to enter your delivery address and contact info, and then redirected to Paypal for payment.
+  div class='bank_transfer'
+    h4 Pay Offline 
 
-      a href="https://www.paypal.com/webapps/mpp/paypal-popup" class="paypal-badge" title="How PayPal Works" onclick="javascript:window.open('https://www.paypal.com/webapps/mpp/paypal-popup','WIPaypal','toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=1060, height=700'); return false;"
-        img src="https://www.paypalobjects.com/webstatic/mktg/logo/AM_SbyPP_mc_vs_dc_ae.jpg" style='width:200px' border="0" alt="PayPal Acceptance Mark"
+    div class='buttons'
+      div class='email_order_button'
+        
+        button class="checkout_with_nothing orange40" 
+          | Bank Deposit or GCash
+          
+        p class='hint'
+          | You will be asked to enter your delivery address and contact info, and provided with our payment details.
 
-    div class='bank_transfer'
-      h4 Pay Offline 
+div class='online_form' style="display:none"
+  h3 Pay via Paypal
 
-      div class='buttons'
-        div class='email_order_button'
-          p class='hint'
-            | You will be asked to enter your delivery address and contact info, and provided with our payment details.
-          button class="checkout_with_nothing orange40" 
-            | Bank Deposit or GCash
-            
-          p class='hint'
-            | You will be asked to enter your delivery address and contact info, and provided with our payment details.
+  h3 class='divider'
+    span
+      | order form: paying with paypal
+  hr  
 
-- if @shop.can_transact? && @product.is_orderable?
-
-  div class='online_form' style="#{@current_shop.can_transact? ? 'display:none' : ''}"
-    h3 Pay via Paypal
-
-    h3 class='divider'
-      span
-        | order form: paying with paypal
-    hr  
-
-div class='offline_form' style="#{@current_shop.can_transact? ? 'display:none' : ''}"
+div class='offline_form' style="display:none"
   h3 Pay Offline
   h3 class='divider'
     span
       | order form: paying offline
   hr  
       
-div class='order_form' style="#{@current_shop.can_transact? ? 'display:none' : ''}"
-
-  div class='facebook_profile_container'  
-    fb:login-button width="auto" max-rows="1"
-    |  to save your details ...
+div class='order_form row medium-12 small-12' style="display:none"
 
   div class='payment_instructions' 
 
@@ -87,15 +69,7 @@ div class='order_form' style="#{@current_shop.can_transact? ? 'display:none' : '
       strong
         | All fields are required.
     
-    p class='gcash_details vcard'
-      label Globe GCash 
-      em Name 
-      strong class='fn' = @shop.gcash_name
-      |  | 
-      em Mobile 
-      strong class='tel' = @shop.gcash_number
-
-  = simple_form_for @order, :url => "/shop/orders", :method => :post  do |f|
+  = simple_form_for @order, :url => "/orders", :method => :post  do |f|
 
     = f.input :cart_id,             :as => :hidden
     = f.input :contents,            :as => :hidden
@@ -108,20 +82,19 @@ div class='order_form' style="#{@current_shop.can_transact? ? 'display:none' : '
 
     = hidden_field_tag :return_to, "/shop/successful_purchase?cart_id=#{@cart.id}"
 
-    div class='order_form_column'
+    div class='columns medium-6 order_form_column'
       = f.input :first_name, :input_html => {:class => "text"}
       = f.input :last_name, :input_html => {:class => "text"}
       = f.input :email, :input_html => {:class => "text"}
       = f.input :phone, :input_html => {:class => "text"}
       = f.input :instructions, :label => "Special Instructions or Requests", :as => :text, :required => false, :input_html => {:class => "text"}
 
-    div class='order_form_column'
+    div class='columns medium-6 order_form_column'
       = f.input :address, :input_html => {:class => "text"}
       = f.input :city, :input_html => {:class => "text"}
       = f.input :state, :wrapper_html => { :class => "parallel" }, :input_html => {:class => "text"}
       = f.input :postcode, :wrapper_html => { :class => "parallel" }, :input_html => {:class => "text"}
-      = f.input :country, :as => :country, :input_html => {:class => "text"}
+      = f.input :country, :as => :country, :priority => ["Philippines"], :include_blank => false, :input_html => {:class => "text"}
       div class='btn'
         = f.button :submit, :value => "Send Order", :class => "place_order orange40"
-        - if @shop.can_transact?
-          a href="#!" class='cancel_order_form' Cancel
+        a href="#!" class='cancel_order_form' Cancel

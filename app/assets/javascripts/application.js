@@ -22,6 +22,8 @@
 //= require spectrum
 //= require foundation
 //= require foundation/foundation.alert
+//= require inflection
+//= require jquery.ui.touch-punch
 //= require_tree .
 
 $(function(){ $(document).foundation(); });

@@ -12,15 +12,13 @@ class Image
 
   mount_uploader :attachment, ImageAttachment
 
-
   def get_dimensions_and_filesize
-    
-    self.filesize     = attachment.file.size
 
     begin
-      img = MiniMagick::Image.open(attachment.current_path)
-      self.width  = [img[:width],50].max
-      self.height = [img[:height],50].max
+      self.filesize = attachment.file.size
+      img           = MiniMagick::Image.open(attachment.current_path)
+      self.width    = [img[:width],50].max
+      self.height   = [img[:height],50].max
       
     rescue Exception => e
       logger.info "!! ERROR: #{attachment.current_path} #{e.inspect} !!"
@@ -28,7 +26,7 @@ class Image
   end
 
   def attachment_filename
-    attachment ? attachment.original_filename : ""
+   attachment ? attachment.original_filename : ""
   end
 
   def attachment_url
@@ -41,6 +39,14 @@ class Image
 
   def attachment_medium_url
     attachment ? attachment.medium.url : ""
+  end
+
+  def __id
+    _id.to_s
+  end
+
+  def as_json(options = {})
+    super(options.reverse_merge(:methods => [:__id, :attachment_filename, :attachment_medium_url, :attachment_url, :attachment_thumb_url, :is_canned? ]))
   end
 
 end

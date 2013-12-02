@@ -1,6 +1,6 @@
 header id="main" class="top-bar"
-  h1 class="logo title-area"
-    = link_to "Inkify", "/"
+  h1 class="logo title-area" 
+    a href="/" = app_name
 
   section class="top-bar-section"
     nav class="owner_navigation small-12"
@@ -16,9 +16,7 @@ header id="main" class="top-bar"
           li class='management_link right'
             = link_to "Create a New Item &raquo;".html_safe, "/#{@current_shop.slug}/products/new"  
           li class='management_link right'
-            = link_to "Orders", shop_orders_path(@current_shop)
-          li class='management_link right'
-            = link_to "Customers", shop_customers_path(@current_shop)
+            = link_to "Earnings", shop_orders_path(@current_shop)
           li class='management_link shop_settings_link right'
             = link_to "Settings", edit_shop_path(@current_shop)
 
@@ -40,3 +38,7 @@ header id="main" class="top-bar"
   
   - if user_signed_in?
     h2 class="right" Hey there, #{current_user.first_name}!
+
+    - if current_user.carts.active
+      div class='shopping_cart'
+        span class='shopping_cart_counter' = current_user.carts.active.quantities

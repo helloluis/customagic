@@ -20,6 +20,8 @@ class Asset
   field :product_side,  type: Integer,  default: 0  # what side of the product is this asset on? a shirt will have two sides (0 = front, 1 = back)
   field :content,       type: String,   default: "Text"
 
+  field :canned_image,  type: Hash
+
   # # CARRIERWAVE ATTACHMENT 
   # mount_uploader :attachment, AssetAttachment
 
@@ -28,19 +30,19 @@ class Asset
   end
 
   def attachment_filename
-    image && image.attachment ? image.attachment.original_filename : ""
+    image ? image.attachment_filename : (canned_image ? File.basename(canned_image['filename']) : '')
   end
 
   def attachment_url
-    image && image.attachment ? image.attachment.url : ""
+    image ? image.attachment_url : (canned_image ? canned_image['filename'] : '')
   end
 
   def attachment_thumb_url
-    image && image.attachment ? image.attachment.thumb.url : ""
+    image ? image.attachment_thumb_url : (canned_image ? canned_image['thumbnail'] : '')
   end
 
   def attachment_medium_url
-    image && image.attachment ? image.attachment.medium.url : ""
+    image ? image.attachment_medium_url : (canned_image ? canned_image['medium'] : '')
   end
   
   def image=(new_image)
@@ -61,4 +63,8 @@ class Asset
     end
   end
 
+  def as_json(options = {})
+    super(options.reverse_merge(:methods => [:__id, :attachment_filename, :attachment_medium_url, :attachment_url, :attachment_thumb_url]))
+  end
+  
 end
