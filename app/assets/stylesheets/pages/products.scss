@@ -1,6 +1,5 @@
 //start of header#main
-header#main {
-  overflow:hidden;
+#main.top-bar {
   background:#333;
   line-height:40px;
 
@@ -25,14 +24,14 @@ header#main {
 //end of header#main
 
 .steps {
-  margin:0 0 0.3rem;
+  margin:0.2rem 0;
 
   .step {
     float:left;
     line-height:40px;
     padding:0 10px 0 30px;
     margin:0;
-    font-size:1.4rem;
+    font-size:0.8rem;
     //    color:#FFF;
     list-style-position:inside;
     position:relative;
@@ -95,8 +94,25 @@ header#main {
   border:1px solid #ccc;
   padding:20px;
   background:#fff;
+
+  .content_buttons button {
+    font-size:1.5rem;
+    padding:0 1rem;
+    line-height:3;
+  }
+
   .add_art.toggled {
     background:#999;
+  }
+
+  @media only screen and (min-width: 40.063em) {
+    & {
+      margin-top:-4rem;
+
+      .content_buttons button {
+        font-size:0.8rem;
+      }
+    }
   }
 }
 
@@ -133,7 +149,7 @@ header#main {
     position:absolute;
     width:100%;
     height:100%;
-    margin-top:40px;
+    //    margin-top:40px;
   } 
   .editable_area .asset {
     position:absolute;
@@ -200,7 +216,11 @@ header#main {
 
 .asset_tools_container {
   z-index:4;
-  top:2.8rem;
+  top:auto;
+  left:auto;
+  clear:both;
+  position:relative;
+//  top:2.8rem;
   left:0px;
   right:0px;
   height:4rem;
@@ -419,12 +439,13 @@ body.loading .loading_indicator {
     .image_object {
       position:relative;
       list-style-type:none;
-      float:left;
-      margin:0px 2px 2px 0px;
-      border:1px solid #ddd;
-      width:128px;
+        //      float:left;
+        //      margin:0px 2px 2px 0px;
+        //      border:1px solid #ddd;
+        //      width:128px;
       &.loading {
         opacity:0.5;
+
         &:hover{
           .instructions { 
             display:none; 
@@ -437,7 +458,9 @@ body.loading .loading_indicator {
           display:block;
         }
       }
-      .instructions, .loading_indicator {
+
+      .instructions,
+      .loading_indicator {
         position:absolute;
         top:0px;
         left:0px;
@@ -459,7 +482,7 @@ body.loading .loading_indicator {
     }
 
     .image_object_thumbnail {
-      width:126px;
+      width:100%;
       height:128px;
       background-size:cover;
       background-repeat:no-repeat;
@@ -484,13 +507,27 @@ body.loading .loading_indicator {
   text-align:center;
   background:#ccc;
   margin-bottom:20px;
+  cursor:pointer;
 }
+
 .styles.expanded_artwork {
   .artwork_viewer {
     height: 700px;
   }
   .simple_form.product {
     display: none;
+  }
+}
+
+.ui-resizable-handle.ui-icon-gripsmall-diagonal-se {
+  background-position:-35px -172px;
+  background-size:500px 500px;
+  width:26px;
+  height:26px;
+
+  .asset:hover &,
+  .asset:focus & {
+    background-color:rgba(255,255,255,0.7);
   }
 }
 

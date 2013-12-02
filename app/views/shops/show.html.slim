@@ -3,12 +3,14 @@
 - unless @shop.attachment.url.nil?
   div class='logo' style='background-image:url(#{@shop.attachment.url})'
 
-div class='shop_information'
-  h1 = @shop.name
+header class='shop_information row'
+  h1 role="headline" = @shop.name
   p class='description' 
     = @shop.description
     br
     = link_to "Edit &raquo;".html_safe, edit_shop_path(@shop)
+
+div class="row"
   ul class='social_networks'
     - %w(twitter facebook pinterest instagram googleplus).each do |sn|
       - unless @shop.attributes[sn].blank?
@@ -19,5 +21,5 @@ div class='shop_information'
 
   div class="fb-like" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"
 
-ul class='products'
-  = render :partial => @products
+  ul class='products small-block-grid-1 medium-block-grid-3 nolist'
+    = render :partial => @products

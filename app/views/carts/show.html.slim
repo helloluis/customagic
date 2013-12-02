@@ -16,8 +16,9 @@ div class="shop widget_addon"
       div class='shopping_cart has_paypal' 
         div class="shopping_cart_inner"
 
-          = render :partial => "carts/cart_contents"
-          = render :partial => "carts/payment_forms"
+          - if @product.is_orderable?
+            = render :partial => "carts/cart_contents"
+            = render :partial => "carts/payment_forms"
           
       div class='empty_shopping_cart'
         h2 = link_to "Back to Marketplace", "/marketplace"

@@ -92,7 +92,7 @@ var Editor = {
 
     var that = this;
     
-    that.target_dpi    = this.product_type.dpi_target;
+    that.dpi_target    = this.product_type.dpi_target;
     that.full_width    = that.product_type.sides[that.current_side].editable_area[0]*this.product_type.dpi_target;
     that.full_height   = that.product_type.sides[that.current_side].editable_area[1]*this.product_type.dpi_target;
     that.scaled_width  = that.full_width*that.scale;
@@ -132,7 +132,7 @@ var Editor = {
       Flasher.add(['notice',"Please wait, we're saving your changes."], true);
 
       that.publish(function(){
-        window.location.replace( href );
+        window.location.assign( href );
       });
       
       return false;
@@ -157,8 +157,9 @@ var Editor = {
         showInitial: true,
         showInput:   true,
         showSelectionPalette: true,
+        showAlpha:  false,
         palette: [],
-        localStorageKey: "spectrum.homepage",
+        localStorageKey: "spectrum",
         change : function(color){
           var css_name = $(this).attr('data-css-name');
           Editor.selected_asset.dom.
@@ -166,6 +167,8 @@ var Editor = {
           Editor.selected_asset.save();
         }
       });
+
+    $(".bg_color_control").spectrum('option','allowEmpty',true);
       
     $(".alignment_button").click(function(){
       $(this).addClass('current').siblings().removeClass('current');
@@ -497,17 +500,21 @@ var Editor = {
     
     that.loading();
 
-    that.temporary_div = that.scale_up_assets();
+    that.final_art_html  = that.render_assets_in_markup();
+    that.mockup_html     = that.render_assets_in_markup(true);
 
    $.ajax({
       url : "/shops/" + that.shop.slug + "/products/" + that.product.slug,
       type : "PUT",
       data : { 
         product : { 
-          raw_html : that.temporary_div,
-          product_style : $("#product_product_style").val(),
-          product_sub_style : $("#product_product_sub_style").val(),
-          color : $("#product_color").val()
+          final_art_html       : that.final_art_html,
+          mockup_html          : that.mockup_html,
+          final_art_dimensions : [ that.full_width, that.full_height ],
+          mockup_dimensions    : [ that.scaled_width, that.scaled_height ],
+          product_style        : $("#product_product_style").val(),
+          product_sub_style    : $("#product_product_sub_style").val(),
+          color                : $("#product_color").val()
         }, 
         publish : true },
       dataType : "JSON",
@@ -523,20 +530,20 @@ var Editor = {
 
   },
 
-  scale_up_assets : function(){
+  render_assets_in_markup : function(thumb_only){
 
     var that = this,
-        mod  = (100/(that.scale*100)),
+        mod  = thumb_only===true ? 1 : (100/(that.scale*100)),
         main = $("<div class='main'></div>").
                 css({
                   position  : "absolute",
-                  width     : that.full_width,
-                  height    : that.full_height
+                  width     : thumb_only===true ? that.scaled_width  : that.full_width,
+                  height    : thumb_only===true ? that.scaled_height : that.full_height,
                 }),
         content = $("<div class='content'></div>").
                 css({ 
                   position  : "absolute",
-                  backgroundColor: that.product.color,
+                  backgroundColor: 'transparent', //that.product.color,
                   transform : "scale(" + mod + ")",
                   "transform-origin" : "top left",
                   width     : that.scaled_width, 
@@ -560,13 +567,18 @@ var Editor = {
 
       var img = clone.find("img").css({ width: '100%' });
 
+      // a bit of cleanup
       if (img.length) {
-        img.attr('src', img.attr('data-original'));
+        if (img.attr('data-original')) {
+          img.attr('src', img.attr('data-original'));
+        } else {
+          clone.remove();  
+        } 
       }
       
     });
 
-    return "<html><body>" + main.append(content.outerHTML()).outerHTML() + "</body></html>";
+    return "<html style='background-color:transparent;'><body style='background-color:transparent;'>" + main.append(content.outerHTML()).outerHTML() + "</body></html>";
 
   },
 

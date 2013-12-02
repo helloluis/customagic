@@ -36,8 +36,9 @@ head
   = csrf_meta_tags
 
   javascript:
-    SITE_URL = "#{app_url}";
-
+    SITE_URL    = "#{app_url}";
+    ENVIRONMENT = "#{Rails.env.development? ? 'development' : 'production'}";
+    
   - if user_signed_in?
     javascript:
       CURRENT_USER = "#{current_user.username}";

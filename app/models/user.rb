@@ -131,7 +131,7 @@ class User
   end
 
   def find_or_create_cart
-    self.carts.active.any? ? self.carts.active.first : self.carts.create
+    !self.carts.nil? && self.carts.active ? self.carts.active : self.carts.create
   end
 
 end

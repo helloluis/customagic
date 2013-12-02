@@ -100,13 +100,13 @@ div id='designer' class="small-12 small-uncentered medium-10 medium-centered row
                 a href='#!' class='cancel add_art' Cancel
       
     div class='artwork_viewer compact'
-      ul class='artwork'
+      ul class='artwork nolist small-block-grid-2'
 
     div class='toggle_artwork_viewer' View more art ...
 
     = simple_form_for :product do |f|
       div class='colors'
-        h3 Choose a #{@product.product_type.titleize} Color
+        h2 Choose a #{@product.product_type.titleize} Color
         = f.input :color, as: :hidden
         ul class='swatches' data-target=''
           
@@ -118,7 +118,7 @@ div id='designer' class="small-12 small-uncentered medium-10 medium-centered row
           
           = f.input :product_sub_style, as: :hidden
           
-          h3 Choose a Style
+          h2 Choose a Style
           - product_type.product_styles.each do |product_style|
             ul class='product_sub_styles'
               - product_style.sub_styles.each_with_index do |sub_style,i|
@@ -144,7 +144,7 @@ div id='designer' class="small-12 small-uncentered medium-10 medium-centered row
 
   script id='asset_text_tmpl' type='text/template'
     div id="{{__id}}" class='asset asset_{{asset_type}}' data-id="{{__id}}" contenteditable="true" title="Double-click to edit!"
-      p style='position:relative; padding: 10px 0px 0px 0px'
+      span style='padding: 10px 0px 0px 0px'
         | {{{content}}}
 
   script id='asset_photo_tmpl' type='text/template'

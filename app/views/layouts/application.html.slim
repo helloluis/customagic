@@ -39,6 +39,7 @@ head
     SITE_URL        = "#{app_url}";
     CURRENCY_SYMBOL = "#{app_currency_symbol}";
     CURRENCY_LABEL  = "#{app_currency_label}";
+    ENVIRONMENT     = "#{Rails.env.development? ? 'development' : 'production'}";
 
   - if user_signed_in?
     javascript:
