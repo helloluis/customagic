@@ -4,11 +4,12 @@ class Product
 
     included do
       
-      field :product_type,        default: "shirt" 
-      field :product_style,       default: "basic"
-      field :product_sub_style,   default: "basic_standard"
-      field :color,               type: String,   default: "#ffffff"
-
+      field :product_type,         default: "shirt" 
+      field :product_style,        default: "basic"
+      field :product_sub_style,    default: "basic_standard"
+      field :color,                type: String,   default: "#ffffff"
+      field :final_art_dimensions, type: Array, default: [0,0]
+      field :mockup_dimensions,    type: Array, default: [0,0]
       #before_save :set_pricing
     end
 

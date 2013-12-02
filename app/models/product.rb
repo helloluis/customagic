@@ -10,6 +10,7 @@ class Product
   belongs_to :album
 
   has_one :final_art
+  has_one :mockup
   has_many :assets
 
   has_many :tags, :class_name => "ProductTag"
@@ -60,7 +61,13 @@ class Product
   #   { :primary => 'medium', :secondary => 'black', :quantity => 10, :price => 100.00 }
   # ]
 
-  field :raw_html
+  # the final_art_html field records the markup necessary
+  # to render the finished layout in 118 dots per cm (e.g., 210mm by 297mm)
+  field :final_art_html
+
+  # the mockup_html field records the markup necessary
+  # to render the finished layout at 1/8 scale 
+  field :mockup_html
 
   field :dont_track_quantities,   type: Boolean,  default: true
   field :hide_prices,             type: Boolean,  default: false
@@ -552,8 +559,30 @@ class Product
     self.assets.create(content: "Awesome Shirt", shop: self.shop)
   end
 
-  def create_final_art!
-    self.final_art.create(dpi_target: product_type.dpi_target)
+  def generate_final_art!
+    
+    #logger.info "!! CREATING #{mockup_dimensions.inspect} #{final_art_dimensions.inspect} !!"
+
+    if Rails.env.development?
+      d = 28
+      w = mockup_dimensions[0].to_i
+      h = mockup_dimensions[1].to_i
+    else
+      d = product_type.dpi_target.to_i
+      w = final_art_dimensions[0].to_i
+      h = final_art_dimensions[1].to_i
+    end
+    
+    #logger.info "!! DPI: #{d} WIDTH: #{w} HEIGHT: #{h} !!"
+    
+    if final_art.nil?
+      fa = build_final_art(shop_id: shop._id, dpi_target: d, width: w, height: h)
+      fa.save
+    else
+      final_art.update_attributes(dpi_target: d, width: w, height: h)
+      final_art.generate_image
+    end
+    
   end
 
   def charity
