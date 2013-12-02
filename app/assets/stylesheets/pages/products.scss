@@ -520,10 +520,15 @@ body.loading .loading_indicator {
 }
 
 .ui-resizable-handle.ui-icon-gripsmall-diagonal-se {
-  background-position:-39px -174px;
+  background-position:-35px -172px;
   background-size:500px 500px;
   width:26px;
   height:26px;
+
+  .asset:hover &,
+  .asset:focus & {
+    background-color:rgba(255,255,255,0.7);
+  }
 }
 
 .standalone_product {
