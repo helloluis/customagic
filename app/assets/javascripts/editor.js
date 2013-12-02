@@ -2,7 +2,7 @@ var Editor = {
 
   assets_path : "/assets",
 
-  scale : 0.12,
+  scale : ENVIRONMENT=='production' ? 0.12 : 1.0,
 
   initialize : function(shop, types, product, assets, images) {
     
