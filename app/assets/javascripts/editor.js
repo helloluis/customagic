@@ -2,7 +2,7 @@ var Editor = {
 
   assets_path : "/assets",
 
-  scale : ENVIRONMENT=='production' ? 0.12 : 1.0,
+  scale : 0.12,
 
   initialize : function(shop, types, product, assets, images) {
     
@@ -526,7 +526,7 @@ var Editor = {
   scale_up_assets : function(){
 
     var that = this,
-        mod  = (100/(that.scale*100)),
+        mod  = ENVIRONMENT=='production' ? (100/(that.scale*100)) : 1,
         main = $("<div class='main'></div>").
                 css({
                   position  : "absolute",
