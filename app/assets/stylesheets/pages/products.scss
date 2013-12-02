@@ -1,6 +1,5 @@
 //start of header#main
-header#main {
-  overflow:hidden;
+#main.top-bar {
   background:#333;
   line-height:40px;
 
@@ -25,14 +24,14 @@ header#main {
 //end of header#main
 
 .steps {
-  margin:0 0 0.3rem;
+  margin:0.2rem 0;
 
   .step {
     float:left;
     line-height:40px;
     padding:0 10px 0 30px;
     margin:0;
-    font-size:1.4rem;
+    font-size:0.8rem;
     //    color:#FFF;
     list-style-position:inside;
     position:relative;
@@ -95,8 +94,25 @@ header#main {
   border:1px solid #ccc;
   padding:20px;
   background:#fff;
+
+  .content_buttons button {
+    font-size:1.5rem;
+    padding:0 1rem;
+    line-height:3;
+  }
+
   .add_art.toggled {
     background:#999;
+  }
+
+  @media only screen and (min-width: 40.063em) {
+    & {
+      margin-top:-4rem;
+
+      .content_buttons button {
+        font-size:0.8rem;
+      }
+    }
   }
 }
 
@@ -200,7 +216,11 @@ header#main {
 
 .asset_tools_container {
   z-index:4;
-  top:2.8rem;
+  top:auto;
+  left:auto;
+  clear:both;
+  position:relative;
+//  top:2.8rem;
   left:0px;
   right:0px;
   height:4rem;

@@ -106,7 +106,7 @@ div id='designer' class="small-12 small-uncentered medium-10 medium-centered row
 
     = simple_form_for :product do |f|
       div class='colors'
-        h3 Choose a #{@product.product_type.titleize} Color
+        h2 Choose a #{@product.product_type.titleize} Color
         = f.input :color, as: :hidden
         ul class='swatches' data-target=''
           
@@ -118,7 +118,7 @@ div id='designer' class="small-12 small-uncentered medium-10 medium-centered row
           
           = f.input :product_sub_style, as: :hidden
           
-          h3 Choose a Style
+          h2 Choose a Style
           - product_type.product_styles.each do |product_style|
             ul class='product_sub_styles'
               - product_style.sub_styles.each_with_index do |sub_style,i|
