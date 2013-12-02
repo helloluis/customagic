@@ -537,13 +537,14 @@ var Editor = {
         main = $("<div class='main'></div>").
                 css({
                   position  : "absolute",
+                  backgroundColor: "transparent",
                   width     : thumb_only===true ? that.scaled_width  : that.full_width,
                   height    : thumb_only===true ? that.scaled_height : that.full_height,
                 }),
         content = $("<div class='content'></div>").
                 css({ 
                   position  : "absolute",
-                  backgroundColor: 'transparent', //that.product.color,
+                  backgroundColor: 'transparent',
                   transform : "scale(" + mod + ")",
                   "transform-origin" : "top left",
                   width     : that.scaled_width, 
