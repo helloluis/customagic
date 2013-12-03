@@ -37,23 +37,34 @@ class FinalArt
     return false if self.product && (self.product.final_art_html.blank? || self.product.mockup_html.blank?)
     
     opts = {:transparent => true, width: width, height: height, "crop-w".to_sym => width, "crop-h".to_sym => height}
-    # logger.info "!! OPTS #{opts} !!"
-
+    
     if Rails.env.development?
       kit = IMGKit.new(self.product.mockup_html, opts)
     else
       kit = IMGKit.new(self.product.final_art_html, opts)
     end
     
-    file = kit.to_file(Rails.root.join("tmp","#{self.product._id}_#{Time.now.to_i}.png"))
-    
-    # if img = MiniMagick::Image.open(filepath)
-    #   self.write_attributes(width: img[:width], height: img[:height])
-    # end
+    # filepath = Rails.root.join("tmp",".png")
 
-    self.attachment = File.open(file)
+    img = Tempfile.new(["#{self.product._id}_#{Time.now.to_i}",'png'], Rails.root.join("tmp"), :encoding => 'ascii-8bit')
     
+    img.write(kit.to_img(:png))
+
+    img.flush
+
+    self.attachment = File.open(img.path)
+
     self.save
+    
+    img.unlink
+
+    # file = kit.to_file(filepath)
+
+    # self.attachment = File.open(filepath)
+
+    # self.save
+
+    # file.unlink
 
   end
 

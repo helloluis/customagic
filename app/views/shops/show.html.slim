@@ -5,9 +5,11 @@
 
 header class='shop_information row'
   h1 role="headline" = @shop.name
-  p class='description' 
-    = @shop.description
-    br
+  p class='description'
+    - if @shop.description.blank?
+      | Add some text to describe your shop and products 
+    - else
+      = @shop.description
     = link_to "Edit &raquo;".html_safe, edit_shop_path(@shop)
 
 div class="row"

@@ -21,6 +21,7 @@
 //= require spectrum
 //= require foundation
 //= require foundation/foundation.alert
+//= require foundation/foundation.accordion
 //= require foundation/foundation.topbar
 //= require inflection
 //= require jquery.ui.touch-punch
