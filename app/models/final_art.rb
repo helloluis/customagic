@@ -44,13 +44,27 @@ class FinalArt
       kit = IMGKit.new(self.product.final_art_html, opts)
     end
     
-    file = kit.to_file(Rails.root.join("tmp","#{self.product._id}_#{Time.now.to_i}.png"))
+    # filepath = Rails.root.join("tmp",".png")
+
+    img = Tempfile.new(["#{self.product._id}_#{Time.now.to_i}",'png'], Rails.root.join("tmp"), :encoding => 'ascii-8bit')
     
-    self.attachment = File.open(file)
+    img.write(kit.to_img(:png))
+
+    img.flush
+
+    self.attachment = File.open(img.path)
 
     self.save
+    
+    img.unlink
 
-    file.flush
+    # file = kit.to_file(filepath)
+
+    # self.attachment = File.open(filepath)
+
+    # self.save
+
+    # file.unlink
 
   end
 
