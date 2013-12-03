@@ -1,28 +1,3 @@
-//start of header#main
-#main.top-bar {
-  background:#333;
-  line-height:40px;
-
-  h1 {
-    width:100px;
-    height:40px;
-  }
-
-  h2 {
-    line-height:40px;
-    color:#FFF;
-    padding-right:1rem;
-  }
-
-  .navigation {
-    list-style-type:none;
-    margin: 0px;
-    border-bottom:1px solid #ccc;
-    overflow: hidden;
-  }
-}
-//end of header#main
-
 .steps {
   margin:0.2rem 0;
 
@@ -116,12 +91,10 @@
     &:hover {
       background:#F0F0F0;
     }
+  }
 
-    button {
-      padding:0;
-      background:none;
-      color:#000;
-    }
+  .content button {
+//    padding:0;
   }
 
   .content,
@@ -209,8 +182,8 @@
   .swatch {
     float:left;
     margin:0px 1px 0px 0px;
-    width:30px;
-    height:30px;
+    width:3rem;
+    height:3rem;
     border:1px solid #ddd;
     text-indent:-2000px;
 
