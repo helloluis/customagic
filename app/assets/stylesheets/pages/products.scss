@@ -91,8 +91,8 @@
 
 .styles {
   float:left;
-  border:1px solid #ccc;
-  padding:20px;
+  border:solid #ccc;
+  border-width:1px 1px 1px 0;
   background:#fff;
 
   .content_buttons button {
@@ -103,6 +103,35 @@
 
   .add_art.toggled {
     background:#999;
+  }
+
+  .title {
+    border-top: 1px solid #EFEFEF;
+    background:none;
+    color: #222;
+    padding: 1rem;
+    display: block;
+    font-size: 1rem;
+
+    &:hover {
+      background:#F0F0F0;
+    }
+
+    button {
+      padding:0;
+      background:none;
+      color:#000;
+    }
+  }
+
+  .content,
+  .price_container,
+  .submit_button {
+    padding:20px;
+  }
+
+  .price_container p {
+    font-size:1.3rem;
   }
 
   @media only screen and (min-width: 40.063em) {
@@ -176,29 +205,30 @@
   list-style-type:none;
   margin:0px;
   padding:0px;
-}
 
-.swatches .swatch {
-  float:left;
-  margin:0px 1px 0px 0px;
-  width:30px;
-  height:30px;
-  border:1px solid #ddd;
-  text-indent:-2000px;
-}
+  .swatch {
+    float:left;
+    margin:0px 1px 0px 0px;
+    width:30px;
+    height:30px;
+    border:1px solid #ddd;
+    text-indent:-2000px;
 
-.swatches .swatch.current, .swatches .swatch:hover {
-  border-color:#fc0;
-}
+    &.current, .swatches .swatch:hover {
+      border-color:#fc0;
+    }
 
-.swatches .swatch.current {
-  border: 1px solid #fc0;
+    &.current {
+      border: 1px solid #fc0;
+    }
+  }
 }
 
 .viewer .product {
   z-index:2;
   background:transparent image-url("mens_crew_ffffff.jpg") top center no-repeat;
 }
+
 .product_color {
   z-index:1;
   background-color:#fff;
@@ -220,11 +250,11 @@
   left:auto;
   clear:both;
   position:relative;
-//  top:2.8rem;
   left:0px;
   right:0px;
-  height:4rem;
-  background:#888;
+  min-height:4rem;
+  height:auto;
+  border:0 none;
   padding:0;
 
   fieldset {
@@ -243,6 +273,10 @@ ul.asset_tools {
   li {
     float:left;
     margin:0px 10px 0px 0px;
+
+    &.font_family {
+      float:none;
+    }
 
     label {
       display:block;
@@ -431,8 +465,8 @@ body.loading .loading_indicator {
 }
 
 .artwork_viewer {
-  width: 275px;
-  height: 220px;
+  //  width: 275px;
+  height: 420px;
   overflow-y: auto;
   .artwork {
     clear:both;
