@@ -15,7 +15,7 @@ var Calculator = {
 
     this.product_sub_style = _.find(this.product_style.sub_styles, function(pss){ return pss.slug==that.product.product_sub_style; }); // basic_standard
 
-    this.prices = this.product_sub_style.prices;
+    this.buy_now_price = this.product_sub_style.buy_now_price;
 
     this.initialize_sales_goal();
 
@@ -57,7 +57,7 @@ var Calculator = {
   },
   
   find_base_price : function(int) {
-    
+    // defunct
     var that = this,
         int  = parseInt(int),
         bp   = _.find(that.prices, function(p){
@@ -78,7 +78,7 @@ var Calculator = {
   refresh_indicators : function(with_default_retail_price){
 
     var that = this,
-        bp   = that.prices[0][1],
+        bp   = that.buy_now_price, //prices[0][1],
         cp   = parseFloat(that.charity_donation.val()),
         rp   = parseFloat(that.retail_price.val());
           

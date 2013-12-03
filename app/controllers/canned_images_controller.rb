@@ -14,7 +14,7 @@ class CannedImagesController < ApplicationController
     #   render :status => 422
     # end
 
-    render json: { result: App.canned_images }
+    render json: { result: App.canned_images.memes }
     
   end
 

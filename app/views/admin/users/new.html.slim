@@ -1,0 +1,28 @@
+= render partial: "shared/admin_alert"
+- page_title = "Add a user"
+
+= simple_form_for @user, :html => { :class => "form-horizontal" } do |f|
+  .control-group
+    label class="control-label" User Email
+    .controls
+      =f.input :email, label: false
+  .control-group
+    label class="control-label" Password
+    .controls
+      =f.input :password, label: false
+  .control-group
+    label class="control-label" Password Confirmation
+    .controls
+      =f.input :password_confirmation, label: false
+  .control-group
+    label class="control-label" Account Id
+    .controls
+      =text_field_tag 'account_id', value = params[:account_id]
+      span class="help-inline" Optional
+
+  br
+  
+  .form-actions
+    = f.button :submit, :class => 'btn-primary'
+    '
+    = link_to t('.cancel', :default => t("helpers.links.cancel")), users_path, :class => 'btn'

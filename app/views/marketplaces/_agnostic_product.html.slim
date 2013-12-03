@@ -4,7 +4,7 @@ li class='product agnostic_product'
     = link_to product.name, shop_product_path(product.shop, product)
 
   - if product.final_art
-    div class='product_image' style='background-image:url(#{product.final_art.attachment.medium.url})' = link_to "", shop_product_path(product.shop, product)
+    div class='product_image' style='background-color: #{product.color}; background-image:url(#{product.final_art.attachment.medium.url})' = link_to "", shop_product_path(product.shop, product)
   - else
     div class='product_image dummy_product_image' = link_to "", shop_product_path(product.shop, product)
 

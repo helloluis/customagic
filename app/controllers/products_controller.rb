@@ -4,7 +4,7 @@ class ProductsController < ApplicationController
 
   before_filter :set_shop
 
-  before_filter :set_product, only: [ :edit, :edit_info, :update, :update_info, :delete, :show ]
+  before_filter :set_product, only: [ :edit, :edit_info, :update, :update_info, :destroy, :show ]
   before_filter :authenticate_user!, except: [ :show ]
   before_filter :authorize_account_user!
 
@@ -69,8 +69,12 @@ class ProductsController < ApplicationController
     end
   end
 
-  def delete
-
+  def destroy
+    @product.destroy
+    @product.assets.destroy_all
+    respond_to do |format|
+      format.json { render :inline => { :success => true } }
+    end
   end
 
   protected

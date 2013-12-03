@@ -1,0 +1,14 @@
+tr id="user-#{user.id}"
+  td
+    = link_to user.email, user
+  td
+    = link_to user.created_at, user
+  td
+    = link_to user.account, user.account unless user.account.nil?
+  td
+    - unless user.last_sign_in_at.nil?
+      #{time_ago_in_words user.last_sign_in_at} ago
+  td
+    = user.origin
+  td
+    = user.notes

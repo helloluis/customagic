@@ -1,4 +1,5 @@
-class LogoAttachment < CarrierWave::Uploader::Base
+class CannedImageAttachment < CarrierWave::Uploader::Base
+
   include CarrierWave::MiniMagick
 
   storage Rails.env.production? ? :fog : :file
@@ -6,11 +7,15 @@ class LogoAttachment < CarrierWave::Uploader::Base
   version :thumb, :if => :image? do
     process :resize_to_fit => [100, 100]
   end
+  
+  version :medium, :if => :image? do
+    process :resize_to_fit => [600, 600]
+  end  
 
   def store_dir
-    "uploads/shops/attachment/#{model.id}"
+    "uploads/canned_images/attachment/#{model.id}"
   end
-  
+
   def asset
     model
   end
@@ -24,4 +29,5 @@ class LogoAttachment < CarrierWave::Uploader::Base
   def image?(new_file)
     new_file.content_type=~/png|jpg|jpeg|gif/i
   end
+
 end

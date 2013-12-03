@@ -1,0 +1,18 @@
+tr class='shop' title=shop._id
+  td = shop.site.partner
+  td
+    = link_to shop.site.name, shop.site rescue "No site"
+    |  (
+    = shop.site.plan_type rescue "?"
+    | )
+  td
+    = shop.currency rescue "US$"
+    = number_with_precision(shop.total_orders_alltime,:precision=>2,:delimiter=>",")
+  td
+    - if shop.site.is_billable? 
+      - unless shop.site.has_credit_card?
+        = "No CC!" 
+      - else
+        = "Ok"
+  td
+    small = shop.created_at.strftime("%d %B %Y, %H:%M")

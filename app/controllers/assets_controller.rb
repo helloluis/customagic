@@ -32,7 +32,7 @@ class AssetsController < ApplicationController
         
         @image = @shop.images.new(params[:image])
 
-      elsif canned_image = App.canned_images.find{|ci| ci.filename==params[:image][:remote_attachment_url]}
+      elsif canned_image = App.canned_images.values.flatten.find{|ci| ci.filename==params[:image][:remote_attachment_url]}
         
         @asset = @shop.assets.create({
           asset_type:   "photo",

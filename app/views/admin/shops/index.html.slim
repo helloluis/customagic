@@ -1,0 +1,15 @@
+
+table class='table shop_earnings'
+  thead
+    tr
+      th class='partner' Partner
+      th class='shop' Subdomain
+      th = sort_header :total_orders_alltime, label: "Earnings"
+      th class='status' Status
+      th = sort_header :created_at, label: "Created"
+
+  tbody id="shops"
+    = render @shops
+
+div class='pagination'
+  = render 'pagination', search: @shops

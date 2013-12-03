@@ -91,6 +91,8 @@ class Product
   # field :availability_end,        type: DateTime
   field :remote_attachment_url
 
+  field :copyright_infringement,  type: Boolean,  default: false
+
   # search_in :name, :tags_array, {:match => :any}
 
   RATING_RANGE = (1..5)
@@ -568,7 +570,7 @@ class Product
       w = mockup_dimensions[0].to_i
       h = mockup_dimensions[1].to_i
     else
-      d = product_type.dpi_target.to_i
+      d = product_type_object.dpi_target.to_i
       w = final_art_dimensions[0].to_i
       h = final_art_dimensions[1].to_i
     end

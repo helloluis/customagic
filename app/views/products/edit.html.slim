@@ -122,7 +122,7 @@ div id='designer' class="small-12 small-uncentered medium-10 medium-centered row
           - product_type.product_styles.each do |product_style|
             ul class='product_sub_styles'
               - product_style.sub_styles.each_with_index do |sub_style,i|
-                li class='product_sub_style sub_style_#{sub_style.slug} #{i==0 ? 'current' : ''}' data-target=sub_style.slug data-base-price=base_price_for_units(sub_style,20)
+                li class='product_sub_style sub_style_#{sub_style.slug} #{i==0 ? 'current' : ''}' data-target=sub_style.slug data-base-price=sub_style.buy_now_price
                   div class='thumbnail' style="background-image:url(#{asset_path(sub_style.image)})" = sub_style.image
                   h4 = sub_style.name
                   p = sub_style.description
@@ -131,10 +131,12 @@ div id='designer' class="small-12 small-uncentered medium-10 medium-centered row
         p class='price_description'
           | Base cost per #{@product.product_type}
         h2 class='price currency'
-          == number_to_currency(base_price_for_units(@product.product_sub_style_object,1), unit: app_currency_symbol)
+          == number_to_currency(@product.product_sub_style_object.buy_now_price, unit: app_currency_symbol)
 
       div class='submit_button'
         == f.submit "Next Step &raquo;".html_safe, "data-href".to_sym => "/#{@current_shop.slug}/products/#{@product.slug}/edit_info", class: "next_step button"
+
+        button class='delete_product warning' Delete this item
         
 - content_for :page_scripts do
 

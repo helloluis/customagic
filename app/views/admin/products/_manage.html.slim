@@ -1,0 +1,58 @@
+javascript:
+  $("#products").
+    delegate(".show_product, .hide_product", 'click', function(){
+      var tr = $(this).parents("tr"),
+          id = tr.attr('data-id'),
+          visibility = !tr.hasClass('visible_in_marketplace');
+
+        $.ajax({
+          url      : "/products/" + id + "/toggle_visibility",
+          dataType : "JSON",
+          data     : { product : { visible_in_marketplace : visibility } },
+          success  : function(data) {
+            if (data.visible_in_marketplace===true) {
+              tr.addClass('visible_in_marketplace');
+            } else {
+              tr.removeClass('visible_in_marketplace');
+            }
+          }
+        });
+      }).
+    delegate(".feature_product, .unfeature_product", 'click', function(){
+        var tr = $(this).parents("tr"),
+            id = tr.attr('data-id'),
+            featured = !tr.hasClass('featured_in_marketplace');
+
+        $.ajax({
+          url      : "/products/" + id + "/toggle_feature",
+          dataType : "JSON",
+          data     : { product : { featured_in_marketplace : featured } },
+          success  : function(data) {
+            if (data.featured_in_marketplace===true) {
+              tr.addClass('featured_in_marketplace');
+            } else {
+              tr.removeClass('featured_in_marketplace');
+            }
+          }
+        });
+      }).
+    delegate(".category_slug",'change',function(){
+      var el  = $(this),
+          tr  = $(this).parents("tr"),
+          id  = tr.attr('data-id'),
+          val = $(this).val();
+
+      $.ajax({
+        url      : "/products/" + id + "/update_category",
+        dataType : "JSON",
+        data     : { product : { category_slug : val } },
+        success  : function(data){
+          el.after("<span class='confirmation'>&#10004;</span>");
+          _.delay(function(){
+            el.siblings(".confirmation").remove();
+          },1000);
+        }
+      });
+
+      return false;
+    });

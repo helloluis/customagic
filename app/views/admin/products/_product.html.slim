@@ -1,0 +1,33 @@
+- if product.shop && product.shop.site
+  tr data-id=product._id class="product #{product.visible_in_marketplace? ? 'visible_in_marketplace' : ''} #{product.featured_in_marketplace? ? 'featured_in_marketplace' : ''}"
+    td 
+      div class='product_thumbnail' 
+        = link_to (image_tag product.primary_image), site_product_url(product.shop.site, product.slug), :target => "_blank"
+      = link_to product.name, site_product_url(product.shop.site, product.slug), :target => "_blank"
+      |  (
+      = link_to product.shop.site.name, site_url(product.shop.site), :target => "_blank"
+      | )
+    td 
+      == summarize_prices(product)
+      | <br />
+      = pluralize( product.price_variants.length, 'variant' )
+      | ,
+      = pluralize( product.available_stock.to_i, 'unit' )
+    td 
+      = select_tag "category_slug", options_from_collection_for_select(MarketplaceCategory.where(:visible => true).asc(:name), 'slug', 'name', product.category_slug), :include_blank => true, :class => "category_slug"
+    td = distance_of_time_in_words_to_now(product.created_at)
+    td
+      span class='visibility_control is_shown'
+        | Visible 
+        = link_to "Hide This", "#!", :class=>"hide_product", "data-target".to_sym => product.id
+      span class='visibility_control is_hidden'
+        | Hidden 
+        = link_to "Show This", "#!", :class=>"show_product", "data-target".to_sym => product.id
+    td
+      span class='feature_control is_featured'
+        | Featured 
+        = link_to "Unfeature This", "#!", :class=>"unfeature_product", "data-target".to_sym => product.id
+      span class='feature_control is_unfeatured'
+        | Unfeatured 
+        = link_to "Feature This", "#!", :class=>"feature_product", "data-target".to_sym => product.id
+        

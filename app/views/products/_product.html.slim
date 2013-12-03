@@ -4,7 +4,7 @@ li class='product'
     = link_to product.name, shop_product_path(@current_shop, product)
 
   - if product.final_art
-    div class='product_image' style='background-image:url(#{product.final_art.attachment.medium.url})' = link_to "", shop_product_path(@current_shop, product)
+    div data-turbolinks-track='true' class='product_image' style='background-color: #{product.color}; background-image:url(#{product.final_art.attachment.medium.url})' = link_to "", shop_product_path(@current_shop, product)
   - else
     div class='product_image dummy_product_image' = link_to "", shop_product_path(@current_shop, product)
 
@@ -26,5 +26,9 @@ li class='product'
       span class='heart_counter' 0
       
   - if is_owner?(@current_shop)
-    p
-      = link_to "Edit &raquo;".html_safe, edit_shop_product_path(@current_shop, product)
+    - if product.is_orderable?
+      p
+        = link_to "Edit Pricing &raquo;".html_safe, edit_info_shop_product_path(@current_shop, product)
+    - else
+      p
+        = link_to "Edit Design &amp; Pricing &raquo;".html_safe, edit_shop_product_path(@current_shop, product)

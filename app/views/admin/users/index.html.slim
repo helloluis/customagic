@@ -1,0 +1,19 @@
+= render partial: "shared/admin_alert"
+
+- if infinitely_admin?
+  = link_to "Add a User", new_user_path, :class => "btn btn-primary"
+
+table class="table table-striped"
+  thead
+    tr
+      th = sort_header :email
+      th = sort_header :created_at, label: "Date Created"
+      th = sort_header :account_name, label: "Account"
+      th = sort_header :last_sign_in_at, label: "Date Last Accessed"
+      th Origin
+      th Notes
+  tbody id="users"
+    = render @users
+
+div class='pagination'
+  = render 'pagination', search: @users
