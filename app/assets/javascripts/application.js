@@ -10,8 +10,6 @@
 // Read Sprockets README (https://github.com/sstephenson/sprockets#sprockets-directives) for details
 // about supported directives.
 //
-//= require jquery.turbolinks
-//= require turbolinks
 //= require jquery-ui-1.10.3.custom
 //= require jquery.jsonp
 //= require mustache

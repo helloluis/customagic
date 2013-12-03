@@ -38,12 +38,14 @@ head
     javascript:
       CURRENT_USER = "#{current_user.username}";
     
-body class=body_classes
+body data-no-turbolink='true' class=body_classes
 
   div class='viewport'
     
     = render :partial => "shared/header"
 
+    = render :partial => "shared/messages"
+    
     = yield
 
     - if Rails.env.development?
@@ -55,4 +57,4 @@ body class=body_classes
 
     = yield :page_scripts
 
-    = render :partial => "shared/messages"
+    

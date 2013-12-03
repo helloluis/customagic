@@ -52,7 +52,7 @@ var MemeGenerator = {
   upload_image: function(url, callback){
 
     var f = $("#photo_uploader"),
-        d = { product_id : Editor.product._id, 
+        d = { product_id : PRODUCT._id, 
               image : { remote_attachment_url : url } };
 
     $.ajax({
