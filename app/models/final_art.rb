@@ -47,10 +47,10 @@ class FinalArt
     file = kit.to_file(Rails.root.join("tmp","#{self.product._id}_#{Time.now.to_i}.png"))
     
     self.attachment = File.open(file)
-    
-    file.flush
 
     self.save
+
+    file.flush
 
   end
 
