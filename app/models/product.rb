@@ -597,4 +597,8 @@ class Product
     end
   end
 
+  def downloadable_art
+    Rails.env.development? ? mockup.attachment.url : (final_art ? final_art.attachment.url : mockup.attachment.url)
+  end
+
 end
