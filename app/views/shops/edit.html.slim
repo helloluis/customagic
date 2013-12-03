@@ -9,7 +9,8 @@ div class="row container"
       = f.input :name
       = f.input :website
       = f.input :description, :as => :text
-      = f.input :attachment, :as => :file
+      / div class="row"
+      = f.input :attachment, :as => :file, :label => "Logo"
       = f.input :color_scheme, :collection => %w( light dark ), include_blank: false
 
       = f.input :paypal_email
@@ -46,7 +47,7 @@ div class="row container"
 
   aside class="small-12 small-uncentered medium-4 columns"
     h2 class="hidden" Merchant settings
-    ul class="merchant_nav nolist"
+    ul class="merchant_nav nolist side-nav"
       li
         = link_to "Designs"
       li
