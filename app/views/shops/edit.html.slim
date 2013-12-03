@@ -1,41 +1,55 @@
-h1 Shop Settings
+div class="row container"
 
-= simple_form_for @current_shop do |f|
+  div class="small-12 small-uncentered medium-8 columns"
 
-  = f.input :name
-  = f.input :website
-  = f.input :description, :as => :text
-  = f.input :attachment, :as => :file
-  = f.input :color_scheme, :collection => %w( light dark ), include_blank: false
+    h1 role="headline" Shop Settings
 
-  = f.input :paypal_email
+    = simple_form_for @current_shop do |f|
 
-  fieldset class='social_network_fields' 
-    legend Social Network Accounts
-    dl
-      dt 
-        label Twitter
-      dd
-        p 
-          | http://twitter.com/ 
-          = f.input_field :twitter
-      dt
-        label Facebook
-      dd
-        p
-          | http://facebook.com/
-          = f.input_field :facebook
-      dt
-        label Pinterest
-      dd
-        p
-          | http://pinterest.com/
-          = f.input_field :pinterest
-      dt
-        label Google+
-      dd
-        p
-          | http://plus.google.com/
-          = f.input_field :googleplus
-  
-  = f.button :submit
+      = f.input :name
+      = f.input :website
+      = f.input :description, :as => :text
+      = f.input :attachment, :as => :file
+      = f.input :color_scheme, :collection => %w( light dark ), include_blank: false
+
+      = f.input :paypal_email
+
+      fieldset class='social_network_fields' 
+        legend Social Network Accounts
+        dl
+          dt 
+            label Twitter
+          dd
+            p 
+              | http://twitter.com/ 
+              = f.input_field :twitter
+          dt
+            label Facebook
+          dd
+            p
+              | http://facebook.com/
+              = f.input_field :facebook
+          dt
+            label Pinterest
+          dd
+            p
+              | http://pinterest.com/
+              = f.input_field :pinterest
+          dt
+            label Google+
+          dd
+            p
+              | http://plus.google.com/
+              = f.input_field :googleplus
+      
+      = f.button :submit
+
+  aside class="small-12 small-uncentered medium-4 columns"
+    h2 class="hidden" Merchant settings
+    ul class="merchant_nav nolist"
+      li
+        = link_to "Designs"
+      li
+        = link_to "Earnings"
+      li
+        = link_to "Settings"
