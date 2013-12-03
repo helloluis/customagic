@@ -24,11 +24,6 @@ head
   
   meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"
 
-  - if Rails.env.development?
-    = javascript_include_tag "modernizr.min","jquery.min"
-  - else
-    = javascript_include_tag "//cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js", "//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"
-
   = stylesheet_link_tag "application", media: "all", "data-turbolinks-track" => true
   
   = yield :page_styles
@@ -52,6 +47,11 @@ body class=body_classes
     = render :partial => "shared/messages"
 
     = yield
+
+    - if Rails.env.development?
+      = javascript_include_tag "modernizr.min","jquery.min"
+    - else
+      = javascript_include_tag "//cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js", "//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"
 
     = javascript_include_tag "application", "data-turbolinks-track" => true
 

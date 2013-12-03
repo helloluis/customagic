@@ -31,7 +31,6 @@ var Editor = {
     this.product_type  = this.product_types[0]; // shirt
     this.product_style = this.product_types[0].product_styles[0]; // basic tee
     
-
     if (that.product.product_type) {
       if (type = _.find(that.product_types,function(p){ return p.slug==that.product.product_type; })) {
         this.product_type = type;
@@ -92,9 +91,9 @@ var Editor = {
 
     var that = this;
     
-    that.dpi_target    = this.product_type.dpi_target;
-    that.full_width    = that.product_type.sides[that.current_side].editable_area[0]*this.product_type.dpi_target;
-    that.full_height   = that.product_type.sides[that.current_side].editable_area[1]*this.product_type.dpi_target;
+    that.dpi_target    = that.product_type.dpi_target;
+    that.full_width    = that.product_type.sides[that.current_side].editable_area[0]*that.product_type.dpi_target;
+    that.full_height   = that.product_type.sides[that.current_side].editable_area[1]*that.product_type.dpi_target;
     that.scaled_width  = that.full_width*that.scale;
     that.scaled_height = that.full_height*that.scale;
 

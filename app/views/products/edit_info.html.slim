@@ -14,7 +14,7 @@ div id='editor' class='information small-12 small-uncentered medium-12 medium-ce
             strong #{@product.product_type_object.name} Style
           dd = "#{@product.product_style_object.name} (#{@product.product_sub_style_object.name})"
           dt 
-            strong Color
+            strong #{@product.product_type_object.name} Color
           dd 
             = "#{@product.color}"
             span class='color_swatch' style='background-color:#{@product.color}'
@@ -46,6 +46,8 @@ div id='editor' class='information small-12 small-uncentered medium-12 medium-ce
         = f.input :status, label: "Item Status", collection: [['Hidden',1],['Ready to Sell',2]], include_blank: false
         
         = f.submit "Save and Proceed", { 'data-hint'.to_sym => "Next step: Check this item out on your shop" } 
+
+        button class='delete_product warning' Delete This Item
 
     div class='totals_and_instructions columns medium-4 small-12'
 
@@ -87,4 +89,19 @@ div id='editor' class='information small-12 small-uncentered medium-12 medium-ce
 
     $(function(){
       Calculator.initialize(SHOP, TYPES, PRODUCT);
+
+      $(".delete_product").click(function(){
+        var bttn = $(this);
+        if (confirm("Are you sure you want to delete this item?")) {
+          bttn.text("Deleting ...");
+          $.ajax({
+            url : "/shops/" + SHOP.slug + "/products/" + PRODUCT.slug,
+            type : "DELETE",
+            success : function(data) {
+              Flasher.add(['notice',"You've deleted this item successfully. Redirecting you to your shop ..."]);
+              window.location.assign="/" + SHOP.slug;
+            }
+          })
+        }
+      });
     });

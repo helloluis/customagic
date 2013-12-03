@@ -258,7 +258,7 @@ function Asset(){
         that.is_saving = true;
 
         $.ajax({
-          url      : "/shops/" + Editor.shop.slug + "/assets/" + that.id,
+          url      : "/shops/" + SHOP.slug + "/assets/" + that.id,
           data     : { asset : that.hash },
           dataType : "JSON",
           method   : "PUT",

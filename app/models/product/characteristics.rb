@@ -30,18 +30,17 @@ class Product
     end
 
     def base_price
-      product_sub_style_object.prices.first.last
+      product_sub_style_object.buy_now_price
+      #product_sub_style_object.prices.first.last
     end
     
     def update_sales_information!
-      if pp = product_sub_style_object.prices.find{|p| (p.first).to_a.include?(sales_goal)} 
-        self.base_price = pp.last
-        hash = []
-        product_style_object.sizes.each do |psize|
-          hash << { primary: psize, secondary: "", quantity: 1000000, price: buy_now_price }
-        end
-        self.price_variants = hash
+      self.base_price = product_sub_style_object.buy_now_price
+      hash = []
+      product_style_object.sizes.each do |psize|
+        hash << { primary: psize, secondary: "", quantity: 1000000, price: buy_now_price }
       end
+      self.price_variants = hash
       self.save
     end
 

@@ -3,7 +3,7 @@ div class='product standalone_product small-12 small-uncentered medium-12 medium
 
   div class='medium-6 product_image_container product_image_container_#{@product.product_type} #{@product.product_type}_#{@product.color.gsub('#','')}'
 
-    div class='product_image' style='background-image:url(#{@product.final_art.attachment.medium.url})'
+    div data-turbolinks-track='true' class='product_image' style='background-image:url(#{@product.final_art.attachment.medium.url})'
 
   div class='product_purchase medium-6'
 
