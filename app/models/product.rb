@@ -10,7 +10,7 @@ class Product
   belongs_to :album
 
   has_one :final_art
-  #has_one :mockup
+  has_one :mockup
   has_many :assets
 
   has_many :tags, :class_name => "ProductTag"
@@ -564,26 +564,47 @@ class Product
   def generate_final_art!
     
     #logger.info "!! CREATING #{mockup_dimensions.inspect} #{final_art_dimensions.inspect} !!"
+    md = 28
+    mw = mockup_dimensions[0].to_i
+    mh = mockup_dimensions[1].to_i
+    fd = product_type_object.dpi_target.to_i
+    fw = final_art_dimensions[0].to_i
+    fh = final_art_dimensions[1].to_i
 
-    if Rails.env.development?
-      d = 28
-      w = mockup_dimensions[0].to_i
-      h = mockup_dimensions[1].to_i
+    if mockup.nil?
+      m = build_mockup(dpi_target: md, width: mw, height: mh)
+      m.save
     else
-      d = product_type_object.dpi_target.to_i
-      w = final_art_dimensions[0].to_i
-      h = final_art_dimensions[1].to_i
+      m.update_attributes(dpi_target: md, width: mw, height: mh)
+      m.generate_image
     end
-    
-    #logger.info "!! DPI: #{d} WIDTH: #{w} HEIGHT: #{h} !!"
-    
+
     if final_art.nil?
-      fa = build_final_art(shop_id: shop._id, dpi_target: d, width: w, height: h)
-      fa.save
+      self.delay.create_final_art(shop_id: shop._id, dpi_target: d, width: w, height: h)
     else
-      final_art.update_attributes(dpi_target: d, width: w, height: h)
-      final_art.generate_image
+      final_art.delay.update_attributes(dpi_target: d, width: w, height: h)
+      final_art.delay.generate_image
     end
+
+    # if Rails.env.development?
+    #   d = 28
+    #   w = mockup_dimensions[0].to_i
+    #   h = mockup_dimensions[1].to_i
+    # else
+    #   d = product_type_object.dpi_target.to_i
+    #   w = final_art_dimensions[0].to_i
+    #   h = final_art_dimensions[1].to_i
+    # end
+    
+    # #logger.info "!! DPI: #{d} WIDTH: #{w} HEIGHT: #{h} !!"
+    
+    # if final_art.nil?
+    #   fa = build_final_art(shop_id: shop._id, dpi_target: d, width: w, height: h)
+    #   fa.save
+    # else
+    #   final_art.update_attributes(dpi_target: d, width: w, height: h)
+    #   final_art.generate_image
+    # end
     
   end
 
