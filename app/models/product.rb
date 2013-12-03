@@ -561,12 +561,12 @@ class Product
     self.assets.create(content: "Awesome Shirt", shop: self.shop)
   end
 
-  def generate_final_art!
+  def generate_art!
     
-    #logger.info "!! CREATING #{mockup_dimensions.inspect} #{final_art_dimensions.inspect} !!"
     md = 28
     mw = mockup_dimensions[0].to_i
     mh = mockup_dimensions[1].to_i
+
     fd = product_type_object.dpi_target.to_i
     fw = final_art_dimensions[0].to_i
     fh = final_art_dimensions[1].to_i
@@ -575,36 +575,19 @@ class Product
       m = build_mockup(dpi_target: md, width: mw, height: mh)
       m.save
     else
-      m.update_attributes(dpi_target: md, width: mw, height: mh)
-      m.generate_image
+      mockup.update_attributes(dpi_target: md, width: mw, height: mh)
+      mockup.generate_image
     end
 
-    if final_art.nil?
-      self.delay.create_final_art(shop_id: shop._id, dpi_target: d, width: w, height: h)
-    else
-      final_art.delay.update_attributes(dpi_target: d, width: w, height: h)
-      final_art.delay.generate_image
-    end
-
-    # if Rails.env.development?
-    #   d = 28
-    #   w = mockup_dimensions[0].to_i
-    #   h = mockup_dimensions[1].to_i
-    # else
-    #   d = product_type_object.dpi_target.to_i
-    #   w = final_art_dimensions[0].to_i
-    #   h = final_art_dimensions[1].to_i
-    # end
-    
-    # #logger.info "!! DPI: #{d} WIDTH: #{w} HEIGHT: #{h} !!"
-    
-    # if final_art.nil?
-    #   fa = build_final_art(shop_id: shop._id, dpi_target: d, width: w, height: h)
-    #   fa.save
-    # else
-    #   final_art.update_attributes(dpi_target: d, width: w, height: h)
-    #   final_art.generate_image
-    # end
+    # delayed processing for final_art rendering
+    #unless Rails.env.development?
+      if final_art.nil?
+        self.delay.create_final_art(shop_id: shop._id, dpi_target: fd, width: fw, height: fh)
+      else
+        final_art.delay.update_attributes(dpi_target: fd, width: fw, height: fh)
+        final_art.delay.generate_image
+      end
+    #end
     
   end
 

@@ -44,7 +44,7 @@ class FinalArt
       kit = IMGKit.new(self.product.final_art_html, opts)
     end
 
-    img = Tempfile.new(["#{self.product._id}_#{Time.now.to_i}",'png'], Rails.root.join("tmp"), :encoding => 'ascii-8bit')
+    img = Tempfile.new(["#{self.product._id}_#{Time.now.to_i}",'.png'], Rails.root.join("tmp"), :encoding => 'ascii-8bit')
     
     img.write(kit.to_img(:png))
 

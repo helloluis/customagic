@@ -46,7 +46,7 @@ class ProductsController < ApplicationController
   def update
     if @product.update_attributes(params[:product])
       logger.info "!! DONE UPDATING ATTRIBUTES !!"
-      @product.generate_final_art! if params[:publish]
+      @product.generate_art! if params[:publish]
       respond_to do |format|
         format.json { render :json => @product }
       end
