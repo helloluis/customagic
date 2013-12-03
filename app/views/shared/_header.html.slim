@@ -1,31 +1,44 @@
 nav id="main" data-topbar="true" class="top-bar"
-  ul class="title-area nolist"
-    li 
-      h1 class="logo title-area" 
-        a href="/" = app_name
-    li
-      p class="toggle-topbar menu-icon"
-        a href="#"
-          span Menu
+  section class="top-bar-section collapse main-nav"
+    ul class="title-area nolist"
+      li 
+        h1 class="logo title-area" 
+          a href="/" = app_name
+      li
+        p class="toggle-topbar menu-icon"
+          a href="#"
+            span Menu
 
-  section class="top-bar-section collapse"
+    ul class="navigation clearfix right nolist settings_nav"
+      li class='nav_link left'
+        a href="/marketplace" Go to marketplace »
+      li class='nav_link left'
+        a href="/logout" Logout
+
+
+  section class="top-bar-section collapse secondary-nav"
     h2 class="hidden title" User actions
     - if is_owner?(@current_shop)
       ul class='navigation clearfix left nolist breadcrumb'
         li class='nav_link left'
-          a href="/marketplace" Marketplace
+          - if user_signed_in?
+            h2 class="text-center" Hey there, #{current_user.first_name}!
+        
         li class='nav_link left'
           a href="/#{@current_shop.slug}" Your Shop
-        - if @current_product
-          li class='nav_link left'
-            a href="/#{@current_shop.slug}/#{@current_product.slug}" = @current_product.name
-      ul class="navigation clearfix right nolist settings_nav"
-        li class='management_link right'
-          = link_to "Create a New Item &raquo;".html_safe, "/#{@current_shop.slug}/products/new"  
-        li class='management_link right'
+        /- if @current_product
+        /  li class='nav_link left'
+        /    a href="/#{@current_shop.slug}/#{@current_product.slug}" = @current_product.name
+
+        li class='management_link left'
           = link_to "Earnings", shop_orders_path(@current_shop)
-        li class='management_link shop_settings_link right'
+
+        li class='management_link shop_settings_link left'
           = link_to "Settings", edit_shop_path(@current_shop)
+
+        li class='management_link left create_new_item'
+          = link_to "Create a New Item &raquo;".html_safe, "/#{@current_shop.slug}/products/new"  
+
 
     - else
       ul class='navigation clearfix left nolist breadcrumb'
@@ -43,10 +56,7 @@ nav id="main" data-topbar="true" class="top-bar"
           - if user_signed_in?
             li class='management_link left'
               = link_to "Manage Your Shop", "/#{current_user.shop.slug}"  
-  
-  - if user_signed_in?
-    h2 class="right small-12 medium-3 large-2 text-center" Hey there, #{current_user.first_name}!
+  - if current_user.carts.active
+    div class='shopping_cart'
+      span class='shopping_cart_counter' = current_user.carts.active.quantities
 
-    - if current_user.carts.active
-      div class='shopping_cart'
-        span class='shopping_cart_counter' = current_user.carts.active.quantities

@@ -1,3 +1,18 @@
+////////////////
+///
+///   I.    Colors
+///   II.    Logos
+///   III.    Fonts, headings, lists, paragraphs
+///   IV.   Header
+///   V.  Buttons
+///   VI.   Icons
+///
+///
+///////////////// 
+
+$link : #dc0000;
+
+/// Logos 
 .logo {
   background:transparent image-url("logo.png") no-repeat top center!important;
   width:330px;
@@ -10,3 +25,159 @@
   -o-background-size:contain!important;
   background-size:contain!important;
 }
+
+/// Fonts, headings, lists, paragraphs
+@import url(http://fonts.googleapis.com/css?family=Droid+Sans);
+@font-face {
+  font-family: 'Droid Sans', sans-serif;
+}
+@font-face {
+  font-family: 'texgyreherosbold';
+  src: image-url('fonts/texgyreheros-bold-webfont.eot');
+  src: image-url('fonts/texgyreheros-bold-webfont.eot?#iefix') format('embedded-opentype'),
+       image-url('fonts/texgyreheros-bold-webfont.woff') format('woff'),
+       image-url('fonts/texgyreheros-bold-webfont.ttf') format('truetype'),
+       image-url('fonts/texgyreheros-bold-webfont.svg#texgyreherosbold') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'texgyreherosregular';
+  src: image-url('fonts/texgyreheros-regular-webfont.eot');
+  src: image-url('fonts/texgyreheros-regular-webfont.eot?#iefix') format('embedded-opentype'),
+       image-url('fonts/texgyreheros-regular-webfont.woff') format('woff'),
+       image-url('fonts/texgyreheros-regular-webfont.ttf') format('truetype'),
+       image-url('fonts/texgyreheros-regular-webfont.svg#texgyreherosregular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.texgyreregular_fontstack {
+  font-family: 'texgyreherosregular', 'Helvetica Neue', Arial, sans-serif!important;
+}
+
+.texgyrebold_fontstack {
+  font-family: 'texgyreherosbold', 'Helvetica Neue', Arial, sans-serif!important;
+}
+
+h1, h2, h3 {
+  @extend .texgyrebold_fontstack;
+}
+
+h1, h2, h3, h4, h5, h6, p, a, span, li {
+  text-shadow:0 1px 1px #000;
+}
+
+
+
+/// Header
+///  start of header#main
+
+#main.top-bar {
+  .top-bar-section {
+    padding: 0 1rem;
+
+    ul {
+      border:0;
+      background:none;
+      li { 
+        a {
+          background:none;
+          font-size:14px;
+          line-height: 39px;
+          text-transform: lowercase;
+          @extend .texgyrebold_fontstack;
+        }
+      }
+    }
+  }
+  .navigation {
+    list-style-type:none;
+    margin: 0px;
+    overflow: hidden;
+  }
+
+  
+  .main-nav { 
+    background:transparent image-url("nav_red.png") repeat-x !important;
+    background-position:center -15px!important;
+    height:50px;
+    line-height: 50px;
+    z-index: 3;
+    h1.logo {
+      width: 95px;
+      height: 60px;
+      &:hover {
+        transform:rotate(2deg);
+        -ms-transform:rotate(2deg); /* IE 9 */
+        -webkit-transform:rotate(2deg); /* Safari and Chrome */
+      }
+      a {
+        line-height:60px;
+        background-color:transparent!important;
+        display:block;
+        padding:0;
+      } 
+    }
+
+    h2 {
+      line-height:40px;
+      color:#FFF;
+      padding-right:1rem;
+    }
+    ul {
+      li {
+        a {
+          &:hover {
+            color:#ccc;
+          }
+        }
+      }
+    }
+  }
+  .secondary-nav {
+    background:transparent image-url("nav_gray.png") repeat-x!important;
+    background-position: top right !important;
+    top: -13px;
+    height:60px;
+    line-height: 60px;
+    z-index: 2;
+
+    h2 {
+      @extend .texgyreregular_fontstack;      
+      font-size:12px;
+      line-height: 41px;
+      color:#fff;
+      margin:0 30px 0 0;
+      text-transform: lowercase;
+
+    }
+
+    ul {
+      border:0;
+      clear:both;
+      background:none;
+      margin:0 0 0 5px;
+      li { 
+        a {
+          &:hover {
+            color:#ccc;
+          }
+        }
+        &.management_link.create_new_item {
+          background:rgba(0,0,0,0.1);
+        }
+      }
+    }
+  }
+  .shopping_cart {
+    display:none;
+  }
+}
+//end of header#main
+
+
+
+
+
