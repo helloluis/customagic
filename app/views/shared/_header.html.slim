@@ -10,6 +10,12 @@ nav id="main" data-topbar="true" class="top-bar"
             span Menu
 
     ul class="navigation clearfix right nolist settings_nav"
+      li class='nav_link left shopping_cart'
+        - if current_user.carts.active
+          a href=''
+            span class='icon-cart'
+            span class='shopping_cart_counter' = current_user.carts.active.quantities
+
       li class='nav_link left'
         a href="/marketplace" Go to marketplace »
       li class='nav_link left'
@@ -25,19 +31,21 @@ nav id="main" data-topbar="true" class="top-bar"
             h2 class="text-center" Hey there, #{current_user.first_name}!
         
         li class='nav_link left'
-          a href="/#{@current_shop.slug}" Your Shop
+          a href="/#{@current_shop.slug}" 
+            span class='icon-home'
+            | Your Shop
         /- if @current_product
         /  li class='nav_link left'
         /    a href="/#{@current_shop.slug}/#{@current_product.slug}" = @current_product.name
 
         li class='management_link left'
-          = link_to "Earnings", shop_orders_path(@current_shop)
+          = link_to "<span class='icon-bars'></span>Earnings".html_safe, shop_orders_path(@current_shop)
 
         li class='management_link shop_settings_link left'
-          = link_to "Settings", edit_shop_path(@current_shop)
+          = link_to "<span class='icon-cog'></span>Settings".html_safe, edit_shop_path(@current_shop)
 
         li class='management_link left create_new_item'
-          = link_to "Create a New Item &raquo;".html_safe, "/#{@current_shop.slug}/products/new"  
+          = link_to "<span class='icon-plus'></span>Create a New Item".html_safe, "/#{@current_shop.slug}/products/new"  
 
 
     - else
@@ -56,7 +64,4 @@ nav id="main" data-topbar="true" class="top-bar"
           - if user_signed_in?
             li class='management_link left'
               = link_to "Manage Your Shop", "/#{current_user.shop.slug}"  
-  - if current_user.carts.active
-    div class='shopping_cart'
-      span class='shopping_cart_counter' = current_user.carts.active.quantities
 

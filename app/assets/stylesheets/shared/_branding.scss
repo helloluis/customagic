@@ -3,12 +3,13 @@
 ///   I.    Colors
 ///   II.    Logos
 ///   III.    Fonts, headings, lists, paragraphs
-///   IV.   Header
+///   IV.   Icons
 ///   V.  Buttons
-///   VI.   Icons
+///   VI.   Header
 ///
 ///
 ///////////////// 
+@import "compass";
 
 $link : #dc0000;
 
@@ -69,6 +70,56 @@ h1, h2, h3, h4, h5, h6, p, a, span, li {
   text-shadow:0 1px 1px #000;
 }
 
+////////////
+/// Icons
+////////////
+@font-face {
+  font-family: 'icomoon';
+  src:image-url('fonts/icomoon.eot');
+  src:image-url('fonts/icomoon.eot?#iefix') format('embedded-opentype'),
+    image-url('fonts/icomoon.ttf') format('truetype'),
+    image-url('fonts/icomoon.woff') format('woff'),
+    image-url('fonts/icomoon.svg#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+  font-family: 'icomoon';
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-pencil:before {
+  content: "\e600";
+}
+.icon-home:before {
+  content: "\e601";
+}
+.icon-cart:before {
+  content: "\e602";
+}
+.icon-bars:before {
+  content: "\e603";
+}
+.icon-tag:before {
+  content: "\e604";
+}
+.icon-cog:before {
+  content: "\e605";
+}
+.icon-plus:before {
+  content: "\e606";
+}
+
 
 
 /// Header
@@ -88,10 +139,22 @@ h1, h2, h3, h4, h5, h6, p, a, span, li {
           line-height: 39px;
           text-transform: lowercase;
           @extend .texgyrebold_fontstack;
+          
+          [class^="icon-"], [class*=" icon-"] {
+            color:#fff;
+            margin-right:8px;
+            font-size:13px;
+          }      
+          &:hover {
+            [class^="icon-"], [class*=" icon-"] {
+              color:#ccc;
+            }
+          }
         }
       }
     }
   }
+
   .navigation {
     list-style-type:none;
     margin: 0px;
@@ -167,12 +230,20 @@ h1, h2, h3, h4, h5, h6, p, a, span, li {
         }
         &.management_link.create_new_item {
           background:rgba(0,0,0,0.1);
+          .icon-plus {
+            font-size:7px;
+            @include border-radius(20px);
+            @include box-shadow(1px 1px 0 #000);
+            background:#fff;
+            padding:3px;
+            color:#666;
+            text-shadow:none;
+          }
         }
       }
     }
   }
   .shopping_cart {
-    display:none;
   }
 }
 //end of header#main
