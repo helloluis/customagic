@@ -2,6 +2,8 @@
 #main.top-bar {
   background:#333;
   line-height:40px;
+  padding-top:5px;
+  height:50px;
 
   h1 {
     width:100px;
@@ -116,12 +118,10 @@
     &:hover {
       background:#F0F0F0;
     }
+  }
 
-    button {
-      padding:0;
-      background:none;
-      color:#000;
-    }
+  .content button {
+//    padding:0;
   }
 
   .content,
