@@ -1,4 +1,4 @@
-class FinalArt
+class Mockup 
 
   include Mongoid::Document
   include Mongoid::Timestamps
@@ -14,7 +14,7 @@ class FinalArt
 
   after_create :generate_image
 
-  mount_uploader :attachment, FinalArtAttachment
+  mount_uploader :attachment, MockupAttachment
 
   def attachment_filename
     attachment ? attachment.original_filename : ""
@@ -31,19 +31,15 @@ class FinalArt
   def attachment_medium_url
     attachment ? attachment.medium.url : ""
   end
-
+  
   def generate_image
 
     return false if self.product && (self.product.final_art_html.blank? || self.product.mockup_html.blank?)
     
     opts = {:transparent => true, width: width, height: height, "crop-w".to_sym => width, "crop-h".to_sym => height}
-    
-    if Rails.env.development?
-      kit = IMGKit.new(self.product.mockup_html, opts)
-    else
-      kit = IMGKit.new(self.product.final_art_html, opts)
-    end
 
+    kit = IMGKit.new(self.product.mockup_html, opts)
+    
     img = Tempfile.new(["#{self.product._id}_#{Time.now.to_i}",'.png'], Rails.root.join("tmp"), :encoding => 'ascii-8bit')
     
     img.write(kit.to_img(:png))

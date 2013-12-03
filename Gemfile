@@ -3,20 +3,20 @@ source 'https://rubygems.org'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '3.2.15'
 gem 'rake'
-# gem 'activeresource'
+
 gem 'time_diff'
-#gem 'mongoid', '~> 4.0', :github => 'mongoid/mongoid'
+
 gem 'mongoid', '3.1.5'
 gem 'bson_ext'
 gem 'mongoid_search'
 gem 'mongoid_slug'
-# gem 'mongoid-sadstory' # https://github.com/mongoid/mongoid/issues/2954
+
 gem 'mongoid_taggable'
-# gem 'mongoid_rating'
+
 gem 'mongoid_rateable'
 gem 'mongo_session_store-rails3'
-# gem "mongo_sessions", :require => "mongo_sessions/rails_mongo_store", :git => 'git://github.com/biilmann/mongo_sessions'
-# gem 'mongoid_rails_migrations'
+
+gem 'delayed_job_mongoid'
 
 # Use SCSS for stylesheets
 gem 'sass-rails' #, '~> 4.0.0'

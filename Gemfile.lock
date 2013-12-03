@@ -80,6 +80,11 @@ GEM
     compass-rails (1.0.3)
       compass (>= 0.12.2, < 0.14)
     country_select (1.2.0)
+    delayed_job (3.0.5)
+      activesupport (~> 3.0)
+    delayed_job_mongoid (2.0.0)
+      delayed_job (~> 3.0)
+      mongoid (~> 3.0)
     devise (2.2.8)
       bcrypt-ruby (~> 3.0)
       orm_adapter (~> 0.1)
@@ -296,6 +301,7 @@ DEPENDENCIES
   compass
   compass-rails
   country_select
+  delayed_job_mongoid
   devise
   devise_invitable
   fb_graph
