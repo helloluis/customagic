@@ -44,8 +44,6 @@ body class=body_classes
     
     = render :partial => "shared/header"
 
-    = render :partial => "shared/messages"
-
     = yield
 
     - if Rails.env.development?
@@ -57,3 +55,4 @@ body class=body_classes
 
     = yield :page_scripts
 
+    = render :partial => "shared/messages"

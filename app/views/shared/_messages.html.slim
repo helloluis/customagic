@@ -6,8 +6,9 @@ div id='messages'
         = flash[key] 
         a href="#" class="close" 
           | &times;
-  
-javascript:
-  $(function(){
-    Flasher.initialize();
-  });
+
+- content_for :page_scripts do  
+  javascript:
+    $(function(){
+      Flasher.initialize();
+    });
