@@ -1,10 +1,10 @@
 ////////////////
 ///
 ///   I.    Colors
-///   II.    Logos
-///   III.    Fonts, headings, lists, paragraphs
+///   II.   Logos
+///   III.  Fonts, headings, lists, paragraphs
 ///   IV.   Icons
-///   V.  Buttons
+///   V.    Buttons
 ///   VI.   Header
 ///
 ///
@@ -12,6 +12,13 @@
 @import "compass";
 
 $link : #dc0000;
+
+body {
+  background:image-url("background_white_wall.jpg") no-repeat!important;
+  background-color:#fff !important;
+  background-position:top 50% !important;  
+}
+
 
 /// Logos 
 .logo {
@@ -66,9 +73,6 @@ h1, h2, h3 {
   @extend .texgyrebold_fontstack;
 }
 
-h1, h2, h3, h4, h5, h6, p, a, span, li {
-  text-shadow:0 1px 1px #000;
-}
 
 ////////////
 /// Icons
@@ -120,12 +124,75 @@ h1, h2, h3, h4, h5, h6, p, a, span, li {
   content: "\e606";
 }
 
+/// Buttons
+.active { 
+  .button.button-icon {
+    background:#666;
+    border:5px solid #666;
+    @include border-radius(40px);
+    margin:0 0.8rem 0 0;
+    padding:0;
+    &:hover {
+      background:none;
+    }
+    span {
+      border:1px dashed #fff;
+      background:none;
+      padding:5px 4px;
+      line-height: 2;
+      @include border-radius(40px);
+      span {
+        padding:2px 7px;
+        margin:0;
+        line-height: 2;
+        border:0;
+        color:#fff;
+        background:$link;
+      }
+    }
+  }
+}
+
+.button.button-icon {
+  background:#999;
+  border:5px solid #999;
+  @include border-radius(40px);
+  margin:0 0.8rem 0 0;
+  padding:0;
+  &:hover {
+    background:none;
+  }
+  span {
+    border:1px dashed #fff;
+    background:none;
+    padding:5px 4px;
+    line-height: 2;
+    @include border-radius(40px);
+    span {
+      padding:2px 7px;
+      margin:0;
+      line-height: 2;
+      border:0;
+      background:#ccc;
+      color:#999;
+
+    }
+  }
+}
 
 
 /// Header
 ///  start of header#main
 
 #main.top-bar {
+  line-height: 90px;
+  height:90px;
+  background:none;
+  
+  h1, h2, h3, h4, h5, h6, p, a, span, li {
+    text-shadow:0 1px 1px #000;
+  }
+
   .top-bar-section {
     padding: 0 1rem;
 
@@ -142,7 +209,7 @@ h1, h2, h3, h4, h5, h6, p, a, span, li {
           
           [class^="icon-"], [class*=" icon-"] {
             color:#fff;
-            margin-right:8px;
+            margin-right:0.5rem;
             font-size:13px;
           }      
           &:hover {
@@ -157,7 +224,7 @@ h1, h2, h3, h4, h5, h6, p, a, span, li {
 
   .navigation {
     list-style-type:none;
-    margin: 0px;
+    margin: 0;
     overflow: hidden;
   }
 
@@ -212,7 +279,7 @@ h1, h2, h3, h4, h5, h6, p, a, span, li {
       font-size:12px;
       line-height: 41px;
       color:#fff;
-      margin:0 30px 0 0;
+      margin:0 2rem 0 0;
       text-transform: lowercase;
 
     }
@@ -221,7 +288,7 @@ h1, h2, h3, h4, h5, h6, p, a, span, li {
       border:0;
       clear:both;
       background:none;
-      margin:0 0 0 5px;
+      margin:0 0 0 0.3rem;
       li { 
         a {
           &:hover {
@@ -235,7 +302,7 @@ h1, h2, h3, h4, h5, h6, p, a, span, li {
             @include border-radius(20px);
             @include box-shadow(1px 1px 0 #000);
             background:#fff;
-            padding:3px;
+            padding:0.3rem;
             color:#666;
             text-shadow:none;
           }

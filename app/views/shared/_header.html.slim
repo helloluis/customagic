@@ -8,18 +8,18 @@ nav id="main" data-topbar="true" class="top-bar"
         p class="toggle-topbar menu-icon"
           a href="#"
             span Menu
+    - if user_signed_in?
+      ul class="navigation clearfix right nolist settings_nav"
+        li class='nav_link left shopping_cart'
+          - if current_user.carts.active
+            a href=''
+              span class='icon-cart'
+              span class='shopping_cart_counter' = current_user.carts.active.quantities
 
-    ul class="navigation clearfix right nolist settings_nav"
-      li class='nav_link left shopping_cart'
-        - if current_user.carts.active
-          a href=''
-            span class='icon-cart'
-            span class='shopping_cart_counter' = current_user.carts.active.quantities
-
-      li class='nav_link left'
-        a href="/marketplace" Go to marketplace »
-      li class='nav_link left'
-        a href="/logout" Logout
+        li class='nav_link left'
+          a href="/marketplace" Go to marketplace »
+        li class='nav_link left'
+          a href="/logout" Logout
 
 
   section class="top-bar-section collapse secondary-nav"
