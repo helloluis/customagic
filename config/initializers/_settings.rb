@@ -51,28 +51,23 @@ App.product_types = [
         ],
         sizes: %w(small medium large x-large xx-large),
         sub_styles: [
-          { name: "Standard Tagless Tee",
+          { name: "Standard Tee",
             slug: "basic_standard", 
             description: "Budget friendly", 
             image: "shirt_thumb.png",
-            min_order: 20,
-            buy_now_price: 200,
-            # prices: [
-            #   [ 1..5,   200 ],
-            #   [ 6..20,  190 ],
-            #   [ 21..50, 170 ],
-            #   [ 51..100, 150 ],
-            #   [ 101..300, 130 ],
-            #   [ 301..1000, 110 ],
-            #   [ 1001..5000, 100 ]
-            # ] 
+            buy_now_price: 600,
+            highest_production_price: 500,
+            lowest_production_price: 300,
+            delta: 10
           },
-          { name: "Canvas Ringspun Tee",  
+          { name: "Canvas Tee",  
             slug: "basic_canvas",
             description: "Premium materials", 
             image: "shirt_thumb.png",
-            min_order: 20,
-            buy_now_price: 250,
+            buy_now_price: 750,
+            highest_production_price: 650,
+            lowest_production_price: 450,
+            delta: 10
             # prices: [
             #   [ 1..5,   250 ],
             #   [ 6..20,  240 ],
@@ -83,22 +78,22 @@ App.product_types = [
             #   [ 1001..5000, 115 ]
             # ]  
           },
-          { name: "American Apparel Crew",  
-            slug: "basic_american",
-            description: "Brand quality", 
-            image: "shirt_thumb.png",
-            min_order: 20,
-            buy_now_price: 300,
-            # prices: [
-            #   [ 1..5,   300 ],
-            #   [ 6..20,  290 ],
-            #   [ 21..50, 270 ],
-            #   [ 51..100, 250 ],
-            #   [ 101..300, 220 ],
-            #   [ 301..1000, 200 ],
-            #   [ 1001..5000, 165 ]
-            # ]  
-          }
+          # { name: "American Apparel Crew",  
+          #   slug: "basic_american",
+          #   description: "Brand quality", 
+          #   image: "shirt_thumb.png",
+          #   min_order: 20,
+          #   buy_now_price: 800,
+          #   # prices: [
+          #   #   [ 1..5,   300 ],
+          #   #   [ 6..20,  290 ],
+          #   #   [ 21..50, 270 ],
+          #   #   [ 51..100, 250 ],
+          #   #   [ 101..300, 220 ],
+          #   #   [ 301..1000, 200 ],
+          #   #   [ 1001..5000, 165 ]
+          #   # ]  
+          # }
         ]
       },
       # { name: "Women's Relaxed Fit", slug: "womens_relaxed" },

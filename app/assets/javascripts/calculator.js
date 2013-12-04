@@ -15,7 +15,13 @@ var Calculator = {
 
     this.product_sub_style = _.find(this.product_style.sub_styles, function(pss){ return pss.slug==that.product.product_sub_style; }); // basic_standard
 
-    this.buy_now_price = this.product_sub_style.buy_now_price;
+    this.buy_now_price  = this.product.buy_now_price;
+
+    this.highest_cost   = this.product_sub_style.highest_production_price;
+
+    this.lowest_cost    = this.product_sub_style.lowest_production_price;
+    
+    this.delta          = this.product_sub_style.delta;
 
     this.initialize_sales_goal();
 
@@ -30,14 +36,12 @@ var Calculator = {
           that.refresh_indicators();
         };
 
-    this.base_price        = $("#product_base_price");
     this.retail_price      = $("#product_buy_now_price");
     this.charity_donation  = $("#product_charity_donation");
     this.profit            = $(".profit_margin");
-    this.total_earn_20     = $(".total_earnings_10");
+    this.total_earn_1      = $(".total_earnings_1");
+    this.total_earn_20     = $(".total_earnings_20");
     this.total_earn_100    = $(".total_earnings_100");
-
-    //this.retail_price.keyup(refresh_indicators);
 
     this.refresh_indicators(true);
 
@@ -50,54 +54,51 @@ var Calculator = {
     $("input.currency").
       keyup(function(){
         clearTimeout($.data(this,'timer'));
-        var wait = setTimeout(function(){ that.refresh_indicators(); }, 2000);
+        var wait = setTimeout(function(){ that.refresh_indicators(); }, 1000);
         $(this).data('timer',wait);
       });
 
   },
-  
-  find_base_price : function(int) {
-    // defunct
-    var that = this,
-        int  = parseInt(int),
-        bp   = _.find(that.prices, function(p){
-                  var range = [p[0][0], p[0][p[0].length-1]];
-                  if (int>=parseInt(range[0]) && int<=parseInt(range[1])) {
-                    return true;
-                  }
-                });
-    
-    if (bp){
-      return bp[1];  
-    } else {
-      return that.prices[0][1];
-    }
-    
-  },
 
-  refresh_indicators : function(with_default_retail_price){
+  refresh_indicators : function(){
 
     var that = this,
-        bp   = that.buy_now_price, //prices[0][1],
+        hp   = that.highest_cost,
+        lp   = that.lowest_cost,
+        del  = that.delta,
+        bp   = that.buy_now_price,
         cp   = parseFloat(that.charity_donation.val()),
         rp   = parseFloat(that.retail_price.val());
-          
-    that.base_price.val(bp);
     
-    if (rp<bp+cp) {
-      that.retail_price.val( bp+cp );
-      var profit = 0;
-    } else {
-      var profit = Math.max(0,rp-(bp+cp));  
+    if (rp<hp+cp) {
+      that.retail_price.val( hp+cp );
     }
 
-    that.profit.text(profit);
-    
-    that.total_earn_20.text(profit*20);
-    that.total_earn_100.text(profit*100);
+    that.total_earn_1.text( that.calculate_production_cost_delta(1) );
+    that.total_earn_20.text( that.calculate_production_cost_delta(20) );
+    that.total_earn_100.text( that.calculate_production_cost_delta(100) );
 
     $(".currency").not("input").currency({ region: SHOP.currency_symbol });
     $("input.currency").currency({ region : 'NA' });
+
+  },
+
+  calculate_production_cost_delta : function(units) {
+
+    var that   = this,
+        hp     = that.highest_cost,
+        lp     = that.lowest_cost,
+        rp     = that.retail_price.val(),
+        cp     = parseFloat(that.charity_donation.val())
+        del    = that.delta,
+        profit = 0;
+
+    for (var i=0; i<units-1; i++) {
+      var base = Math.max(lp, (hp-(del*i)));
+      profit += base-(rp+cp);
+    }
+
+    return profit;
 
   }
 

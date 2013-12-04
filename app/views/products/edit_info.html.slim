@@ -30,12 +30,22 @@ div id='editor' class='information small-12 small-uncentered medium-12 medium-ce
 
         = f.input :description, :as => :text
 
-        dl class='base_and_buy_now_prices'
-          dt data-hint="This is our production cost per shirt" class="hint--right" 
-            label Base Price
+        dl class='production_cost'
+          dt data-hint="Your first shirt will cost this much to produce" class="hint--right" 
+            label Highest Production Cost
           dd 
-            h3 class='base_price currency' = @product.base_price
-        
+            h3 data-float=@product.product_sub_style_object.highest_production_price class='highest_production_cost currency' 
+              = @product.product_sub_style_object.highest_production_price
+          dt data-hint="It will cost this much after #{@product.production_price_steps} have been sold" class="hint--right" 
+            label Lowest Production Cost
+          dd
+            h3 data-float=@product.product_sub_style_object.lowest_production_price class='base_price currency' 
+              = @product.product_sub_style_object.lowest_production_price
+          dt class='hint--right' data-hint="Based on your current sales, this is the current production cost"
+            label Current Production Cost
+          dd
+            h3 class='base_price currency' = @product.production_cost
+
         = f.input :buy_now_price, label: "Retail Price (#{@current_shop.currency_symbol})", input_html: { class: 'currency' }
 
         = f.input :charity_donation, label: "Donation (#{@current_shop.currency_symbol})", \
@@ -52,14 +62,17 @@ div id='editor' class='information small-12 small-uncentered medium-12 medium-ce
     div class='totals_and_instructions columns medium-4 small-12'
 
       dl class='totals'
-        dt Your Profit per Unit
-        dd data-hint="You make this much per sale" class='hint--left profit_margin currency' 0
-        dt Your Total Earnings at 20 Units
+        dt Your Current Sales
+        dd = @product.num_orders
+        dt Your Earnings After Your First Sale
+        dd 
+          span class='total_earnings_1 currency' 0
+        dt Your Earnings at 20 Units
         dd data-hint="You'll earn this much if you sell 20" class="hint--left"
-          span class='total_earnings_10 currency' 
-        dt Your Total Earnings at 100 Units
+          span class='total_earnings_20 currency' 0
+        dt Your Earnings at 100 Units
         dd data-hint="You'll earn this much if you sell 100" class="hint--left"
-          span class='total_earnings_100 currency' 
+          span class='total_earnings_100 currency' 0
 
       div class='help'
         dl class='faq'
@@ -67,7 +80,9 @@ div id='editor' class='information small-12 small-uncentered medium-12 medium-ce
             h3 How does this work?
           dd
             p
-              | Just add a name and description for your #{@product.product_type}, set your retail price, and you're good to go! Everytime someone buys your #{@product.product_type}, you'll earn the difference between your retail price and our base price. (If your retail price was 200.00, and our base price was 100.00, you would earn 100.00 per unit sold.)
+              | Just add a name and description for your #{@product.product_type}, set your retail price, and you're good to go! Everytime someone buys your #{@product.product_type}, you'll earn the difference between your retail price and our base price. (If your retail price was 600.00, and our base price was 500.00, you would earn 100.00 per unit sold.)
+            p
+              | As you sell more #{@product.product_type}s, our base price decreases and your profit increases! The base price is reduced by #{number_to_currency(@product.product_sub_style_object.delta, unit: "PHP")} for every #{@product.product_type} sold.
           dt 
             h3 Am I required to give a portion of my profit to a charity?
           dd

@@ -580,14 +580,14 @@ class Product
     end
 
     # delayed processing for final_art rendering
-    #unless Rails.env.development?
+    unless Rails.env.development?
       if final_art.nil?
         self.delay.create_final_art(shop_id: shop._id, dpi_target: fd, width: fw, height: fh)
       else
         final_art.delay.update_attributes(dpi_target: fd, width: fw, height: fh)
         final_art.delay.generate_image
       end
-    #end
+    end
     
   end
 

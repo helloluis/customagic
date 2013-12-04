@@ -30,18 +30,29 @@ class Product
     end
 
     def base_price
-      product_sub_style_object.buy_now_price
-      #product_sub_style_object.prices.first.last
+      product_sub_style_object.highest_production_price
     end
     
     def update_sales_information!
-      self.base_price = product_sub_style_object.buy_now_price
+      self.base_price = product_sub_style_object.highest_production_price
       hash = []
       product_style_object.sizes.each do |psize|
         hash << { primary: psize, secondary: "", quantity: 1000000, price: buy_now_price }
       end
       self.price_variants = hash
       self.save
+    end
+
+    def production_price_steps
+      (product_sub_style_object.highest_production_price-product_sub_style_object.lowest_production_price)/product_sub_style_object.delta
+    end
+
+    def production_cost
+      hp  = product_sub_style_object.highest_production_price
+      lp  = product_sub_style_object.lowest_production_price
+      del = product_sub_style_object.delta
+
+      [hp-(num_orders*del),lp].max
     end
 
   end
