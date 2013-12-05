@@ -25,4 +25,14 @@
 
 .shop .products {
   margin:2rem 0;
+
+  .product {
+    padding-top:0.8rem;
+    border:1px solid transparent;
+
+    &:hover {
+      border-color:#ccc;
+      background:#FFF;
+    }
+  }
 }
