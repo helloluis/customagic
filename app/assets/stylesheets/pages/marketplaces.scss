@@ -1,14 +1,16 @@
 .marketplace_products {
   margin:20px 0px;
+
   .product {
-    float:left;
-    width:300px;
     height:auto;
     clear:none;
     position:relative;
-    .product_name, .donation {
+
+    .product_name,
+    .donation {
       display:none;
     }
+    
     .product_prices {
       position:absolute;
       bottom:0px;
@@ -19,4 +21,8 @@
       margin:0px;
     }
   }
+}
+
+.shop .products {
+  margin-top:2rem;
 }

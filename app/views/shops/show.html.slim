@@ -13,13 +13,13 @@ header class='shop_information columns'
     = link_to "Edit &raquo;".html_safe, edit_shop_path(@shop)
 
 div class="columns"
-  ul class='social_networks'
+  div class='social_networks'
     - %w(twitter facebook pinterest instagram googleplus).each do |sn|
       - unless @shop.attributes[sn].blank?
         - if sn=='googleplus'
-          li class='sn googleplus' = "http://plus.google.com/#{@shop.googleplus}"
+          div class='sn googleplus' = "http://plus.google.com/#{@shop.googleplus}"
         - else
-          li class='sn #{sn}' = "http://#{sn}.com/#{@shop.attributes[sn]}"
+          div class='sn #{sn}' = "http://#{sn}.com/#{@shop.attributes[sn]}"
 
   div class="fb-like" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"
 
