@@ -57,27 +57,32 @@ App.product_types = [
             image: "shirt_thumb.png",
             buy_now_price: 600,
             highest_production_price: 500,
-            lowest_production_price: 300,
-            delta: 10
+            lowest_production_price: 250,
+            production_costs: [
+              [0,   500],
+              [5,   450],
+              [20,  400],
+              [50,  350],
+              [100, 300],
+              [250, 250]
+            ]
           },
-          { name: "Canvas Tee",  
-            slug: "basic_canvas",
-            description: "Premium materials", 
+          { name: "Premium Tee",  
+            slug: "basic_premium",
+            description: "Premium 100% cotton", 
             image: "shirt_thumb.png",
             buy_now_price: 750,
-            highest_production_price: 650,
-            lowest_production_price: 450,
-            delta: 10
-            # prices: [
-            #   [ 1..5,   250 ],
-            #   [ 6..20,  240 ],
-            #   [ 21..50, 210 ],
-            #   [ 51..100, 200 ],
-            #   [ 101..300, 170 ],
-            #   [ 301..1000, 150 ],
-            #   [ 1001..5000, 115 ]
-            # ]  
-          },
+            highest_production_price: 600,
+            lowest_production_price: 350,
+            production_costs: [
+              [0,   600],
+              [5,   550],
+              [20,  500],
+              [50,  450],
+              [100, 400],
+              [250, 350]
+            ]
+          }
           # { name: "American Apparel Crew",  
           #   slug: "basic_american",
           #   description: "Brand quality", 

@@ -5,19 +5,32 @@ LB 2013-12-03
 
 You'll need MongoDB running in order to boot this app.
 
-Use Pow in combination with Foreman to run both the app server and your worker (for DelayedJob) at the same time
+Use Pow in combination with Foreman to run both the app server and your worker (for DelayedJob) at the same time.
 
 You'll need to install Pow by following the instructions at http://pow.cx
 
-Then you'll need to install Foreman via:
+Make sure you have version 0.4.0 or later. If you have an older version, just follow the same instructions in the site above and it'll overwrite your current Pow.
+
+Next you'll need to install Foreman via:
+
+$ bundle install
 
 $ gem install foreman
 
-Then do a port-forward between Foreman and your Pow symlinks
+$ script/rails runner 'Delayed::Backend::Mongoid::Job.create_indexes'
+
+Ocassionally, you'll run into a Permission Denied error when running the second command. Just do this, then run it again:
+
+$ chmod +x script/rails
+
+Now do a port-forward between Foreman and your Pow symlinks
 
 $ cd ~/sites/customagic
-$ echo 'port: 7000" > .foreman
+
+$ echo "port: 7000" > .foreman
+
 $ cd ~/.pow/
+
 $ echo 7000 > ~/.pow/inkify
 
 Make sure that no other symlink to inkify currently exists, otherwise the last line will fail. "Inkify.xxx" and "Inkify.com.xxx" are the only combinations that will allow you to login to the app via Facebook-auth, so make sure that you're using the appropriate domain name.

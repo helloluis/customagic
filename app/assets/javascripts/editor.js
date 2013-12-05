@@ -226,8 +226,7 @@ var Editor = {
 
     var that = this;
     
-    $(".content_buttons").
-      find(".add_text").
+    $(".add_text").
       click(function(){
         that.create_text_asset();
       });

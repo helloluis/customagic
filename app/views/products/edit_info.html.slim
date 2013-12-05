@@ -5,7 +5,7 @@ div id='editor' class='information small-12 small-uncentered medium-12 medium-ce
   div class='inner clearfix'
     div class='viewer columns medium-4 small-12'
 
-      div class='item' style='background-color: #{@product.color}; background-image: url(#{@product.final_art.attachment.medium.url})'
+      div class='item' style='background-color: #{@product.color}; background-image: url(#{@product.art_attachment.medium.url})'
 
       div class='item_specifications'
 
@@ -21,7 +21,7 @@ div id='editor' class='information small-12 small-uncentered medium-12 medium-ce
           dt
             strong Download Print-Ready Image
           dd
-            = link_to truncate(@product.downloadable_art, length:50), @product.downloadable_art, target: "_blank"
+            = link_to truncate(@product.art_attachment.url, length:50), @product.art_attachment.url, target: "_blank"
     div class='info_form_container columns medium-4 small-12'
 
       = simple_form_for @product, :url => update_info_shop_product_path(@current_shop, @product), :method => :post do |f|
