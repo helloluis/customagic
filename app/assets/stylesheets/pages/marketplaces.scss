@@ -16,14 +16,14 @@
       bottom:5%;
       right:3%;
       padding:5px 10px;
-      background:#000;
+      //      background:#000;
       color:#fff;
       margin:0px;
     }
   }
 }
 
-.shop .products {
+.products {
   margin:2rem 0;
 
   .product {
@@ -33,6 +33,14 @@
     &:hover {
       border-color:#ccc;
       background:#FFF;
+    }
+
+    .product_info {
+      padding:0.5rem 0.5rem 0;
+    }
+
+    .product_image {
+      border-bottom:1px solid #CCC;
     }
   }
 }

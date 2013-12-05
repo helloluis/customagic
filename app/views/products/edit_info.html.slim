@@ -36,7 +36,7 @@ div id='editor' class='information small-12 small-uncentered medium-12 medium-ce
           dd 
             h3 data-float=@product.product_sub_style_object.highest_production_price class='highest_production_cost currency' 
               = @product.product_sub_style_object.highest_production_price
-          dt data-hint="It will cost this much after #{@product.production_price_steps} have been sold" class="hint--right" 
+          dt class="hint--right" 
             label Lowest Production Cost
           dd
             h3 data-float=@product.product_sub_style_object.lowest_production_price class='base_price currency' 
@@ -44,7 +44,7 @@ div id='editor' class='information small-12 small-uncentered medium-12 medium-ce
           dt class='hint--right' data-hint="Based on your current sales, this is the current production cost"
             label Current Production Cost
           dd
-            h3 class='base_price currency' = @product.production_cost
+            / h3 class='base_price currency' = @product.production_cost
 
         = f.input :buy_now_price, label: "Retail Price (#{@current_shop.currency_symbol})", input_html: { class: 'currency' }
 

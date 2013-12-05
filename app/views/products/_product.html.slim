@@ -8,27 +8,26 @@ li class='product'
   - else
     div class='product_image dummy_product_image' = link_to "", shop_product_path(@current_shop, product)
 
-  div class='product_prices'
-    ul 
-      li class='buy_now_price'
+  div class='product_prices product_info'
+    ul class="nolist clearfix"
+      li class='buy_now_price left'
         p 
           | #{link_to(number_to_currency(product.buy_now_price, unit: @current_shop.currency_symbol), shop_product_path(@current_shop, product))}
-      li class='donation'
+      li class='donation right'
         - if product.charity_donation > 0 && product.charity
           p
             = number_to_currency(product.charity_donation, unit: @current_shop.currency_symbol)
             |  of each #{product.product_type} sold will be donated to 
             = link_to product.charity.name, product.charity.url
 
-  div class='product_hearts'
+  div class='product_hearts product_info'
     span class='icon heart toggle_heart' data-id=product.id <3
     - if product.num_favorites>0
       span class='heart_counter' 0
       
   - if is_owner?(@current_shop)
-    - if product.is_orderable?
-      p
+    p class="product_info"
+      - if product.is_orderable?
         = link_to "Edit Pricing &raquo;".html_safe, edit_info_shop_product_path(@current_shop, product)
-    - else
-      p
+      - else
         = link_to "Edit Design &amp; Pricing &raquo;".html_safe, edit_shop_product_path(@current_shop, product)

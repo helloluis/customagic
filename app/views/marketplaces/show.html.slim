@@ -1,4 +1,4 @@
-
-ul class='products marketplace_products small-block-grid-1 medium-block-grid-3 large-block-grid-5 nolist clearfix'
-  - @products.each do |p|
-    = render :partial => "/marketplaces/agnostic_product", :locals => { product: p }
+div class="columns"
+  ul class='products marketplace_products small-block-grid-1 medium-block-grid-3 large-block-grid-5 nolist clearfix'
+    - @products.each do |p|
+      = render :partial => "/marketplaces/agnostic_product", :locals => { product: p }

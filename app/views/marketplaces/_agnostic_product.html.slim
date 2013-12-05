@@ -1,6 +1,6 @@
 li class='product agnostic_product'
   
-  h3 class='product_name' 
+  h2 class='product_name' 
     = link_to product.name, shop_product_path(product.shop, product)
 
   - if product.final_art
@@ -8,19 +8,19 @@ li class='product agnostic_product'
   - else
     div class='product_image dummy_product_image' = link_to "", shop_product_path(product.shop, product)
 
-  div class='product_prices'
-    ul 
-      li class='buy_now_price'
+  div class='product_prices product_info'
+    ul class="nolist clearfix"
+      li class='buy_now_price left'
         p 
           | #{link_to(number_to_currency(product.buy_now_price, unit: product.shop.currency_symbol), shop_product_path(product.shop, product))}
-      li class='donation'
+      li class='donation right'
         - if product.charity_donation > 0 && product.charity
           p
             = number_to_currency(product.charity_donation, unit: product.shop.currency_symbol)
             |  of each #{product.product_type} sold will be donated to 
             = link_to product.charity.name, product.charity.url
 
-  div class='product_hearts'
+  div class='product_hearts product_info'
     span class='icon heart toggle_heart' data-id=product.id <3
     - if product.num_favorites>0
       span class='heart_counter' 0
