@@ -21,7 +21,7 @@ div class="columns"
         - else
           div class='sn #{sn}' = "http://#{sn}.com/#{@shop.attributes[sn]}"
 
-  div class="fb-like" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"
+    div class="fb-like" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"
 
   ul class='products small-block-grid-1 medium-block-grid-3 large-block-grid-5 nolist'
     = render :partial => @products
