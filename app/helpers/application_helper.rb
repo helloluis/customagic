@@ -46,7 +46,7 @@ module ApplicationHelper
   end
 
   def body_classes
-    classes = "#{mobile_browser? ? 'mobile_browser' : ''}"
+    classes = "#{mobile_browser? ? 'mobile_browser' : ''} clearfix"
     if @current_shop
       classes += " shop shop_#{@current_shop.color_scheme}"
     else
