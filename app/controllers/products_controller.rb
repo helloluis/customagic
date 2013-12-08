@@ -4,7 +4,7 @@ class ProductsController < ApplicationController
 
   before_filter :set_shop
 
-  before_filter :set_product, only: [ :edit, :edit_info, :update, :update_info, :destroy, :show ]
+  before_filter :set_product, only: [ :edit, :edit_info, :update, :update_info, :ready, :destroy, :show ]
   before_filter :authenticate_user!, except: [ :show ]
   before_filter :authorize_account_user!
 
@@ -43,9 +43,12 @@ class ProductsController < ApplicationController
     render :layout => "editor"
   end
 
+  def ready
+    render :layout => "editor"
+  end
+
   def update
     if @product.update_attributes(params[:product])
-      logger.info "!! DONE UPDATING ATTRIBUTES !!"
       @product.generate_art! if params[:publish]
       respond_to do |format|
         format.json { render :json => @product }
@@ -57,7 +60,7 @@ class ProductsController < ApplicationController
     if @product.update_attributes(params[:product])
       @product.update_sales_information!
       respond_to do |format|
-        format.html { redirect_to "/#{@current_shop.slug}" }
+        format.html { redirect_to :action => :ready }
       end
     else
       respond_to do |format|
