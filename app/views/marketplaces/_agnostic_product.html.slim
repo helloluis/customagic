@@ -1,4 +1,4 @@
-li class='product agnostic_product'
+li class='product agnostic_product #{product.is_pending? ? 'pending_product' : ''}'
   
   h3 class='product_name' 
     = link_to product.name, shop_product_path(product.shop, product)
@@ -21,6 +21,7 @@ li class='product agnostic_product'
             = link_to product.charity.name, product.charity.url
 
   div class='product_hearts'
-    span class='icon heart toggle_heart' data-id=product.id <3
+    span class='icon heart toggle_heart' data-id=product.id 
+      | &lt;3
     - if product.num_favorites>0
       span class='heart_counter' 0

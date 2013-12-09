@@ -7,8 +7,8 @@ end
 
 App = Hashie::Mash.new(settings)
 
-App.name = "Inkify"
-App.partner_name = "inkify"
+App.name = "GreenTees"
+App.partner_name = "greentees"
 # App.uri = URI::HTTP.build(host: host, port: port.try(:to_i))
 App.url = Rails.env.development? ? "inkify.xxx" : "inkify.me"
 App.default_product_type = "shirt"

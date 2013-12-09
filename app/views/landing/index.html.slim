@@ -45,59 +45,57 @@
 
     });
 
+= render :partial => "shared/header"
+
 div class='masthead'
   
   div class='inner'
 
     header class="row"
       div class='small-12 medium-12'
+        h1 class="logo" #{app_name}
+        
         ul class='header_panels nolist clearfix'
           li class='header_panel'
-            div class='small-12 medium-5 columns'
-              h1 class="logo" Inkify
-            div class="small-12 columns medium-7" 
-              h2
-                | #{app_name} is the simplest way to design and sell #{app_default_product_type}s online!
-              = render :partial => "landing/facebook_login"
+            div class='artwork current'
           li class='header_panel'
-            div class="small-12 columns medium-6"
-              h2 class="smaller" 
-                | Raising funds for charity has never been easier! Just set your price, then set the donation amount. We do the rest!
-              = render :partial => "landing/facebook_login"
-            div class="small-12 columns medium-4"
-              h1 class="logo" Inkify
-            
+            div class='artwork'
           li class='header_panel'
-            div class="small-12 medium-5 columns"
-              h1 class="logo" Inkify
-            div class="small-12 columns medium-7"
-              h2 class="smaller" 
-                | You design, we deliver.<br />Your #{app_default_product_type} will show up at your customer's doorstep within 7 days.
-              = render :partial => "landing/facebook_login"
+            div class='artwork'
+
+        div class='artwork_details_container'
+          div class='artwork_details'
+            h2 class='artwork_title' 
+            h3 class='artwork_byline'
+              | by
+              span class='artwork_artist'
+            h3 class='artwork_price currency'
+            button class='buy_artwork' Buy Now
+          span class='arrow left' &laquo;
+          span class='arrow right' &raquo;
 
 div class='features'
 
-  ul class='features-list row small-block-grid-1 medium-block-grid-3 nolist'
-    li class="feature"
-      h2 Design Like a Boss
-      p 
-        | Bosses don't like a lot of technical mumbo-jumbo, so #{app_name} doesn't have any of that. Type in your text or upload your artwork, then move it around and resize it any way you want via our awesome #{app_default_product_type} designer. It's almost as easy as having your secretary do it!
-    
-    li class='feature'
-      h2 Sell Like a Celebrity
-      p 
-        | Watch as people flock to your beautiful mobile-friendly store to gaze upon your wares. Share your product designs with your friends and followers on Twitter, Facebook, Pinterest, and Google+.
+  h1 class='strapline'
+    span
+      | Design an <strong>eco-friendly</strong> shirt,
+    span
+      | sell it on our <strong>marketplace</strong>,
+    span
+      | then <strong>donate</strong> a portion of your
+    span
+      | earnings to charity.
 
-    li class='feature'
-      h2 Earn Like a Tycoon
-      p 
-        | Set a price for each new item, and optionally set an amount to automatically donate to charity! We accept and fulfill orders on your behalf, and deposit your profits to your Paypal or local bank account.
+  = render :partial => "landing/facebook_login"
 
 div class='marketplace row medium-12 small-6'
-  h2 Featured #{app_default_product_type}s
-
+  
   ul class='products marketplace_products clearfix'
-    - @products.each do |p|
+    - @available_products.each do |p|
+      = render :partial => "/marketplaces/agnostic_product", :locals => { product: p }
+
+  ul class='products pending_products marketplace_products clearfix'
+    - @pending_products.each do |p|
       = render :partial => "/marketplaces/agnostic_product", :locals => { product: p }
 
 div class='footer' id="colophon"

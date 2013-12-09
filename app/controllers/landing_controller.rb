@@ -5,7 +5,8 @@ class LandingController < ApplicationController
   respond_to :json, :html
 
   def index
-    @products = Product.where(status:2).desc(:created_at).limit(10)
+    @available_products = Product.where(status:2).desc(:created_at).limit(10)
+    @pending_products   = Product.where(status:0).desc(:created_at)
   end
   
 end

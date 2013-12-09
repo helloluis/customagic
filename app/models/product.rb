@@ -39,7 +39,7 @@ class Product
   field :category_slug,         type: String,   default: ''
   field :num_orders,            type: Integer,  default: 0
   field :num_favorites,         type: Integer,  default: 0
-  field :status,                type: Integer,  default: 0    # 0 = in progress, 1 = hidden, 2 = visible, 3 = out of stock, 4 = coming soon, 9 = demo
+  field :status,                type: Integer,  default: 1    # 0 = in progress, 1 = hidden, 2 = visible, 3 = out of stock, 4 = coming soon, 9 = demo
   
   field :campaign_length,       type: Integer,  default: 10  # days
 
@@ -156,6 +156,10 @@ class Product
     end
   end
 
+  def is_pending?
+    status==0
+  end
+  
   def is_orderable?
     status==2
   end
