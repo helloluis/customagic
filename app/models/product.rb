@@ -161,7 +161,19 @@ class Product
   end
   
   def is_orderable?
-    status==2
+    status==2 || num_favorites>product_sub_style_object.minimum_favorites
+  end
+
+  def is_pending?
+    num_favorites<product_sub_style_object.minimum_favorites
+  end
+
+  def favorites_remaining
+    if num_favorites < product_sub_style_object.minimum_favorites
+      product_sub_style_object.minimum_favorites-num_favorites
+    else
+      0
+    end
   end
   
   def is_group_orderable?
@@ -601,8 +613,8 @@ class Product
     end
   end
 
-  def downloadable_art
-    Rails.env.development? ? mockup.attachment.url : (final_art ? final_art.attachment.url : mockup.attachment.url)
+  def art_attachment
+    Rails.env.development? ? mockup.attachment : (final_art ? final_art.attachment : mockup.attachment)
   end
 
 end

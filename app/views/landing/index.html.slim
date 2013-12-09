@@ -90,11 +90,11 @@ div class='features'
 
 div class='marketplace row medium-12 small-6'
   
-  ul class='products marketplace_products clearfix'
+  ul class='products marketplace_products nolist small-block-grid-1 medium-block-grid-3 large-block-grid-5 clearfix'
     - @available_products.each do |p|
       = render :partial => "/marketplaces/agnostic_product", :locals => { product: p }
 
-  ul class='products pending_products marketplace_products clearfix'
+  ul class='products pending_products marketplace_products nolist small-block-grid-1 medium-block-grid-3 large-block-grid-5 clearfix'
     - @pending_products.each do |p|
       = render :partial => "/marketplaces/agnostic_product", :locals => { product: p }
 

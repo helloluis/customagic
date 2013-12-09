@@ -1,16 +1,19 @@
 - @page_title = "#{@product.name} | #{@current_shop.name}"
 div class='product standalone_product small-12 small-uncentered medium-12 medium-centered row'
 
-  div class='medium-6 product_image_container product_image_container_#{@product.product_type} #{@product.product_type}_#{@product.color.gsub('#','')}'
+  div class='medium-7 columns product_image_container product_image_container_#{@product.product_type} #{@product.product_type}_#{@product.color.gsub('#','')}'
 
-    div data-turbolinks-track='true' class='product_image' style='background-image:url(#{@product.final_art.attachment.medium.url})'
+    div data-turbolinks-track='true' class='product_image' style='background-image:url(#{@product.art_attachment.medium.url})'
 
-  div class='product_purchase medium-6'
+  div class='product_purchase columns medium-5'
 
     div class='inner'
       h1 
         = @product.name
         | &nbsp;
+      p class='byline' 
+        | by 
+        span class='author_name' = @current_shop.user.name
         - if is_owner?(@current_shop)
           span class='owner_tools'
             = link_to "Edit &raquo;".html_safe, edit_info_shop_product_path(@current_shop, @product)
@@ -18,22 +21,29 @@ div class='product standalone_product small-12 small-uncentered medium-12 medium
       div class='product_prices'
 
         h3 class='unit_price currency' = number_to_currency(@product.buy_now_price, unit: @current_shop.currency_symbol)
-      
-        = link_to "Add to Cart", add_product_carts_path(product_id: @product.id), class: 'buy_now', "data-loading".to_sym => "Adding ..." 
+        
+        - if @product.is_orderable?
+
+          = link_to "Add to Cart", add_product_carts_path(product_id: @product.id), class: 'buy_now', "data-loading".to_sym => "Adding ..." 
 
       div class='product_hearts'
         span class='icon heart toggle_heart' data-id=@product.id <3
-        - if @product.num_favorites>0
-          span class='heart_counter' 0
+        span class='heart_counter' = @product.num_favorites
           
-      div class='product_variants'
-        h4 Available Sizes
-        select id='product_variant' name='product_variant'
-          option value='small' Small
-          option value='medium' Medium
-          option value='large' Large
-          option value='XL' X-Large
-          option value='XXL' XX-Large
+      - if @product.is_pending?
+        div class='product_pending'
+          p This #{@product.product_type} is not yet available for ordering. It needs #{pluralize @product.favorites_remaining,'heart'} in order for us to start production. If you want to be able to buy this #{@product.product_type}, click the Heart above and tell your friends to do the same.
+
+      - elsif @product.is_orderable?
+
+        div class='product_variants'
+          h4 Available Sizes
+          select id='product_variant' name='product_variant'
+            option value='small' Small
+            option value='medium' Medium
+            option value='large' Large
+            option value='XL' X-Large
+            option value='XXL' XX-Large
 
       - if @product.charity_donation > 0 && @product.charity
         div class='product_donation'
@@ -100,6 +110,8 @@ div class='product standalone_product small-12 small-uncentered medium-12 medium
           el.text( el.attr('data-loading') );
           window.location.assign(url);
         });
+
+        Hearts.initialize();
 
       });
 

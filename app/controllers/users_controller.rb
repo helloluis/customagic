@@ -33,4 +33,13 @@ class UsersController < ApplicationController
     end
   end
   
+  def toggle_heart
+    if user_signed_in? && (@product=Product.find(params[:id]))
+      current_user.toggle_favorite!(@product)
+      respond_to do |format|
+        format.json { render :json => @product.num_favorites, :callback => params[:callback] }
+      end
+    end
+  end
+
 end
