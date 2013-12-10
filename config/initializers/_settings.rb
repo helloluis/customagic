@@ -103,7 +103,7 @@ App.product_types = [
 ]
 
 App.charities = [
-  { name: "Philippine Red Cross", url: "http://redcross.org.ph", email: 'prc@redcross.org.ph' }
+  { name: "Philippine Red Cross", slug: "philippineredcross", url: "http://redcross.org.ph", email: 'prc@redcross.org.ph' }
 ]
 
 App.shipping_costs = [

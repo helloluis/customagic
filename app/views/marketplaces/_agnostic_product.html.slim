@@ -25,3 +25,7 @@ li class='product agnostic_product #{product.is_pending? ? 'pending_product' : '
       | &lt;3
     - if product.num_favorites>0
       span class='heart_counter' 0
+
+  div class='product_charity'
+    span class='icon charity #{product.charity.slug}' 
+      = product.charity.name
