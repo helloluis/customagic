@@ -40,6 +40,7 @@ Customagic::Application.routes.draw do
 
   resource :marketplace do
     get :featured
+    get :fresh
   end
   resources :canned_images do 
     get :memes, on: :collection

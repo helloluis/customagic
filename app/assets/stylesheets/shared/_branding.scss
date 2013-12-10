@@ -23,15 +23,9 @@ body {
 /// Logos 
 .logo {
   background:transparent image-url("logo.png") no-repeat top center!important;
-  width:330px;
-  height:210px;
+  width:275px;
+  height:185px;
   text-indent:-99999px;
-  -webkit-background-size:contain!important;
-  -khtml-background-size:contain!important;
-  -moz-background-size:contain!important;
-  -ms-background-size:contain!important;
-  -o-background-size:contain!important;
-  background-size:contain!important;
 }
 
 /// Fonts, headings, lists, paragraphs
@@ -175,7 +169,6 @@ h1, h2, h3 {
       border:0;
       background:#ccc;
       color:#999;
-
     }
   }
 }
@@ -191,6 +184,11 @@ h1, h2, h3 {
   
   h1, h2, h3, h4, h5, h6, p, a, span, li {
     text-shadow:0 1px 1px #000;
+  }
+
+  .logo {
+    width:162px;
+    height:116px;
   }
 
   .top-bar-section {
