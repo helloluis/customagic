@@ -607,6 +607,10 @@ class Product
     
   end
 
+  def has_charity?
+    !charity_url.blank? && charity_donation > 0
+  end
+
   def charity
     unless charity_url.blank?
       App.charities.find{|c| c.url==charity_url}

@@ -10,7 +10,7 @@ App = Hashie::Mash.new(settings)
 App.name = "GreenTees"
 App.partner_name = "greentees"
 # App.uri = URI::HTTP.build(host: host, port: port.try(:to_i))
-App.url = Rails.env.development? ? "inkify.xxx" : "inkify.me"
+App.url = Rails.env.development? ? "greentees.xxx" : "greentees.ph"
 App.default_product_type = "shirt"
 
 App.support_email = "departmentofink@gmail.com"

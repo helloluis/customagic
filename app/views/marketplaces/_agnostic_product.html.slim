@@ -9,16 +9,8 @@ li class='product agnostic_product #{product.is_pending? ? 'pending_product' : '
     div class='product_image dummy_product_image' = link_to "", shop_product_path(product.shop, product)
 
   div class='product_prices'
-    ul 
-      li class='buy_now_price'
-        p 
-          | #{link_to(number_to_currency(product.buy_now_price, unit: product.shop.currency_symbol), shop_product_path(product.shop, product))}
-      li class='donation'
-        - if product.charity_donation > 0 && product.charity
-          p
-            = number_to_currency(product.charity_donation, unit: product.shop.currency_symbol)
-            |  of each #{product.product_type} sold will be donated to 
-            = link_to product.charity.name, product.charity.url
+    p 
+      | #{link_to(number_to_currency(product.buy_now_price, unit: product.shop.currency_symbol), shop_product_path(product.shop, product))}
 
   div class='product_hearts'
     span class='icon heart toggle_heart' data-id=product.id 
@@ -26,6 +18,7 @@ li class='product agnostic_product #{product.is_pending? ? 'pending_product' : '
     - if product.num_favorites>0
       span class='heart_counter' 0
 
-  div class='product_charity'
-    span class='icon charity #{product.charity.slug}' 
-      = product.charity.name
+  - if product.has_charity?
+    div class='product_charity'
+      span class='icon charity #{product.charity.slug}' 
+        = product.charity.name

@@ -45,7 +45,7 @@ div class='product standalone_product small-12 small-uncentered medium-12 medium
             option value='XL' X-Large
             option value='XXL' XX-Large
 
-      - if @product.charity_donation > 0 && @product.charity
+      - if @product.has_charity?
         div class='product_donation'
           p
             = number_to_currency(@product.charity_donation, unit: @current_shop.currency_symbol)
