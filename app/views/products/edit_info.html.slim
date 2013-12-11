@@ -46,10 +46,10 @@ div id='editor' class='information small-12 small-uncentered medium-12 medium-ce
             label Current Production Cost
           dd
             / h3 class='base_price currency' = @product.production_cost
-/ =======
-/             h3 data-float=@product.product_sub_style_object.production_price class='production_cost currency' 
-/               = @product.product_sub_style_object.production_price
-/ >>>>>>> fa21fad2e4c5e8acc956fb9abbfe19216bb491a4
+            / =======
+            /             h3 data-float=@product.product_sub_style_object.production_price class='production_cost currency' 
+            /               = @product.product_sub_style_object.production_price
+            / >>>>>>> fa21fad2e4c5e8acc956fb9abbfe19216bb491a4
 
         = f.input :buy_now_price, label: "Retail Price (#{@current_shop.currency_symbol})", input_html: { class: 'currency' }
 

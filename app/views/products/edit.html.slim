@@ -36,7 +36,9 @@ div id='designer' class="small-12 small-uncentered medium-10 medium-centered row
           span class="text_icon"
           | Text
         div id="text_options" class="content active"
-          button class='add_text button small-12' Add Text
+          button class='add_text button small-12'
+            span
+              span Add Text
           ul class='asset_tools nolist disabled show_asset_text_fields clearfix'
             li class='font_family asset_text_field'
               label Font
@@ -142,9 +144,11 @@ div id='designer' class="small-12 small-uncentered medium-10 medium-centered row
           == number_to_currency(@product.product_sub_style_object.buy_now_price, unit: app_currency_symbol)
 
       div class='submit_button'
-        == f.submit "Next Step &raquo;".html_safe, "data-href".to_sym => "/#{@current_shop.slug}/products/#{@product.slug}/edit_info", class: "next_step button"
+        == f.button :submit, "Next Step &raquo;".html_safe, "data-href".to_sym => "/#{@current_shop.slug}/products/#{@product.slug}/edit_info", class: "next_step button"
 
-        button class='delete_product warning' Delete this item
+        button class='delete_product button warning' 
+          span
+            span Delete this item
         
 - content_for :page_scripts do
 

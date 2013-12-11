@@ -10,8 +10,9 @@
 ///
 ///////////////// 
 @import "compass";
+@import "foundation/functions";
 
-$primary_color : #009345;
+$primary-color : #009345;
 $link : #dc0000;
 
 body {
@@ -23,10 +24,11 @@ body {
 /// Logos 
 .logo a {
   background:transparent image-url("logo.png") no-repeat top center!important;
-  width:275px;
-  height:185px;
+  width:rem-calc(275px);
+  height:rem-calc(185px);
   display:block;
   text-indent:-99999px;
+  @include background-size(cover!important);
 }
 
 /// Fonts, headings, lists, paragraphs
@@ -67,7 +69,6 @@ body {
 h1, h2, h3 {
   @extend .texgyrebold_fontstack;
 }
-
 
 ////////////
 /// Icons
@@ -120,64 +121,81 @@ h1, h2, h3 {
 }
 
 /// Buttons
-.active { 
-  .button.button-icon {
-    background:#666;
-    border:5px solid #666;
-    @include border-radius(40px);
-    margin:0 0.8rem 0 0;
-    padding:0;
-    &:hover {
-      background:none;
-    }
-    span {
-      border:1px dashed #fff;
-      background:none;
-      padding:5px 4px;
-      line-height: 2;
-      @include border-radius(40px);
-      span {
-        padding:2px 7px;
-        margin:0;
-        line-height: 2;
-        border:0;
-        color:#fff;
-        background:$link;
-      }
-    }
-  }
+button, 
+.button {
+  background:$primary-color;
 }
 
+.button,
 .button.button-icon {
   background:#999;
   border:5px solid #999;
   @include border-radius(40px);
   margin:0 0.8rem 0 0;
   padding:0;
+
   &:hover {
     background:none;
   }
+
   span {
     border:1px dashed #fff;
     background:none;
-    padding:5px 4px;
+    padding:rem-calc(5px) rem-calc(4px);
     line-height: 2;
     @include border-radius(40px);
+    display:inline-block;
+    width:100%;
+
     span {
-      padding:2px 7px;
+      padding:rem-calc(2) rem-calc(15);
+      display:block;
       margin:0;
       line-height: 2;
       border:0;
-      background:#ccc;
       color:#999;
+      background-color:#CCC;
+      @include transition(1s);
     }
   }
 }
 
+.button {
+  .active &.button-icon,
+  & {
+    background:#666;
+    border:rem-calc(5) solid #666;
+    @include border-radius(40px);
+    margin:0 0.8rem 0 0;
+    padding:0;
+
+    span span {
+      color:#FFF;
+      background:$primary-color;
+    }
+  
+    &:hover {
+      background:none;
+      color:$primary-color;
+
+      span span {
+        background:darken($primary-color, 10%);
+      }
+    }
+  }
+
+  span span {
+    @include background(linear-gradient($primary-color, darken($primary-color, 15%)));
+  }
+
+  &:hover span span {
+    @include background(linear-gradient(lighten($primary-color, 15%), darken($primary-color, 25%)));
+    text-shadow:1px 2px darken($primary-color, 25%);
+  }
+}
 
 /// Header
 ///  start of header#main
-
 #main.top-bar {
   line-height: 90px;
   height:90px;
@@ -188,8 +206,8 @@ h1, h2, h3 {
   }
 
     .logo a {
-      width:remCalc(162);
-      height:116px;
+      width:rem-calc(162);
+      height:rem-calc(116);
     }
 
   .top-bar-section {
@@ -225,7 +243,6 @@ h1, h2, h3 {
     overflow: hidden;
   }
 
-  
   .main-nav { 
     background:transparent image-url("nav_bg.png") repeat-x;
     background-position:50% 0;
@@ -261,8 +278,7 @@ h1, h2, h3 {
     }
   }
   .secondary-nav {
-    background:transparent image-url("nav_bg_subnav.png") repeat-x!important;
-    background-position: top right !important;
+    background:transparent image-url("nav_bg_subnav.png") repeat-x 100% 0;
     top: -13px;
     height:60px;
     line-height: 60px;
