@@ -39,7 +39,7 @@ class Product
   field :category_slug,         type: String,   default: ''
   field :num_orders,            type: Integer,  default: 0
   field :num_favorites,         type: Integer,  default: 0
-  field :status,                type: Integer,  default: 0    # 0 = in progress, 1 = hidden, 2 = visible, 3 = out of stock, 4 = coming soon, 9 = demo
+  field :status,                type: Integer,  default: 1    # 0 = in progress, 1 = hidden, 2 = visible, 3 = out of stock, 4 = coming soon, 9 = demo
   
   field :campaign_length,       type: Integer,  default: 10  # days
 
@@ -156,8 +156,24 @@ class Product
     end
   end
 
+  def is_pending?
+    status==0
+  end
+  
   def is_orderable?
-    status==2
+    status==2 || num_favorites>product_sub_style_object.minimum_favorites
+  end
+
+  def is_pending?
+    num_favorites<product_sub_style_object.minimum_favorites
+  end
+
+  def favorites_remaining
+    if num_favorites < product_sub_style_object.minimum_favorites
+      product_sub_style_object.minimum_favorites-num_favorites
+    else
+      0
+    end
   end
   
   def is_group_orderable?
@@ -589,6 +605,10 @@ class Product
       end
     end
     
+  end
+
+  def has_charity?
+    !charity_url.blank? && charity_donation > 0
   end
 
   def charity

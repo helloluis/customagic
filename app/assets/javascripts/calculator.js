@@ -4,24 +4,22 @@ var Calculator = {
     
     var that = this;
 
-    this.shop           = shop;
-    this.product_types  = types;
-    this.product        = product;
-    this.product_form   = $(".info_form_container > form");
-
-    this.product_type   = _.find(this.product_types, function(pt){ return pt.slug==that.product.product_type }); // shirt
-    
-    this.product_style  = _.find(this.product_type.product_styles, function(ps){ return ps.slug==that.product.product_style; }); // basic tee
+    this.shop              = shop;
+    this.product_types     = types;
+    this.product           = product;
+    this.product_form      = $(".info_form_container > form");
+   
+    this.product_type      = _.find(this.product_types, function(pt){ return pt.slug==that.product.product_type }); // shirt
+       
+    this.product_style     = _.find(this.product_type.product_styles, function(ps){ return ps.slug==that.product.product_style; }); // basic tee
 
     this.product_sub_style = _.find(this.product_style.sub_styles, function(pss){ return pss.slug==that.product.product_sub_style; }); // basic_standard
 
-    this.buy_now_price  = this.product.buy_now_price;
+    this.buy_now_price     = this.product.buy_now_price;
 
-    this.highest_cost   = this.product_sub_style.highest_production_price;
+    this.production_cost   = this.product_sub_style.production_price;
 
-    this.lowest_cost    = this.product_sub_style.lowest_production_price;
-    
-    this.delta          = this.product_sub_style.delta;
+    this.delta             = this.product_sub_style.delta;
 
     this.initialize_sales_goal();
 
@@ -63,31 +61,33 @@ var Calculator = {
   refresh_indicators : function(){
 
     var that = this,
-        hp   = that.highest_cost,
-        lp   = that.lowest_cost,
+        pp   = that.production_cost,
         del  = that.delta,
         bp   = that.buy_now_price,
         cp   = parseFloat(that.charity_donation.val()),
         rp   = parseFloat(that.retail_price.val());
     
-    if (rp<hp+cp) {
-      that.retail_price.val( hp+cp );
+    if (rp<pp+cp) {
+      that.retail_price.val( pp+cp );
     }
 
-    that.total_earn_1.text( that.calculate_production_cost_delta(1) );
-    that.total_earn_20.text( that.calculate_production_cost_delta(20) );
-    that.total_earn_100.text( that.calculate_production_cost_delta(100) );
+    that.total_earn_1.text( that.calculate_profit(rp, pp, cp, 1) );
+    that.total_earn_20.text( that.calculate_profit(rp, pp, cp, 20) );
+    that.total_earn_100.text( that.calculate_profit(rp, pp, cp, 100) );
 
     $(".currency").not("input").currency({ region: SHOP.currency_symbol });
     $("input.currency").currency({ region : 'NA' });
 
   },
 
+  calculate_profit : function(retail, production, charity, units){
+    return (retail-(production+charity))*units;
+  },
+
   calculate_production_cost_delta : function(units) {
 
     var that   = this,
-        hp     = that.highest_cost,
-        lp     = that.lowest_cost,
+        pp     = that.production_cost,
         rp     = that.retail_price.val(),
         cp     = parseFloat(that.charity_donation.val())
         del    = that.delta,

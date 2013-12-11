@@ -40,6 +40,7 @@ Customagic::Application.routes.draw do
 
   resource :marketplace do
     get :featured
+    get :fresh
   end
   resources :canned_images do 
     get :memes, on: :collection
@@ -55,6 +56,7 @@ Customagic::Application.routes.draw do
     resources :products do
       get  :edit_info,    on: :member
       post :update_info,  on: :member
+      get  :ready,        on: :member
     end
   end
 
@@ -85,6 +87,7 @@ Customagic::Application.routes.draw do
   match "/:shop_id/products/:id/edit" => "products#edit", :method => :get
   match "/:shop_id/products/:id/edit_info" => "products#edit_info", :method => :get
   match "/user/hearts" => "users#hearts"
+  match "/user/toggle_heart/:id" => "users#toggle_heart"
   match "/:id" => "shops#show", :method => :get
 
   root :to => "landing#index"

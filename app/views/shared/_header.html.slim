@@ -1,4 +1,4 @@
-nav id="main" data-topbar="true" class="top-bar"
+nav id="main" data-topbar="true" class="top-bar clearfix"
   section class="top-bar-section collapse main-nav"
     ul class="title-area nolist"
       li 
@@ -61,7 +61,10 @@ nav id="main" data-topbar="true" class="top-bar"
         - else
           li class='nav_link left'
             = link_to "Featured", featured_marketplace_path
+          li class='nav_link left'
+            = link_to "Fresh", fresh_marketplace_path
           - if user_signed_in?
             li class='management_link left'
               = link_to "Manage Your Shop", "/#{current_user.shop.slug}"  
 
+br class="clear"

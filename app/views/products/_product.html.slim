@@ -24,7 +24,12 @@ li class='product'
     span class='icon heart toggle_heart' data-id=product.id <3
     - if product.num_favorites>0
       span class='heart_counter' 0
-      
+  
+  - if product.has_charity?
+    div class='product_charity'
+      span class='icon charity #{product.charity.slug}' 
+        = product.charity.name
+        
   - if is_owner?(@current_shop)
     p class="product_info"
       - if product.is_orderable?

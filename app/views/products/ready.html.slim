@@ -1,0 +1,43 @@
+div id='editor' class='information small-12 small-uncentered medium-12 medium-centered row'
+  
+  = render :partial => "products/steps"
+
+  div class='inner clearfix'
+    div class='viewer columns medium-4 small-12'
+
+      div class='item' style='background-color: #{@product.color}; background-image: url(#{@product.art_attachment.medium.url})'
+
+      div class='item_specifications'
+
+        dl
+          dt 
+            strong #{@product.product_type_object.name} Style
+          dd = "#{@product.product_style_object.name} (#{@product.product_sub_style_object.name})"
+          dt 
+            strong #{@product.product_type_object.name} Color
+          dd 
+            = "#{@product.color}"
+            span class='color_swatch' style='background-color:#{@product.color}'
+          dt
+            strong Download Print-Ready Image
+          dd
+            = link_to truncate(@product.art_attachment.url, length:50), @product.art_attachment.url, target: "_blank"
+
+    div class='info_form_container columns medium-4 small-12'
+
+      h1 Final Check 
+
+      p 
+        | Click the button below to start displaying your #{@product.product_type} within the marketplace. Note that it won't immediately go on sale. Each design requires a minimum of #{@product.product_sub_style_object.minimum_favorites} hearts before we can start producing it.
+
+      p 
+        | Once your design has received #{@product.product_sub_style_object.minimum_favorites} hearts, we will notify you and production will begin. Your shirts will typically be available for sale within 5-10 days.
+
+      = simple_form_for @product do |f|
+
+        = f.input :status, :as => :hidden, :value => 2
+
+        = f.submit "Ready!"
+
+
+          

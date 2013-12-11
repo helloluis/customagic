@@ -79,7 +79,7 @@
   position:relative;
   overflow:hidden;
   height:850px;
-  border:1px solid #ccc;
+  padding-top:1.5rem;
 
   .item_specifications a {
     display: block;
@@ -359,9 +359,11 @@ ul.asset_tools {
 }
 
 #editor.information {
+
   .inner {
-    margin-top:50px;
+    background:#FFF;
   }
+
   .viewer {
     overflow:visible;
     .item {
@@ -373,6 +375,7 @@ ul.asset_tools {
       background-size: contain;
     }
   }
+
   .info_form_container {
     float:left;
     form {
@@ -439,7 +442,7 @@ body.loading .loading_indicator {
   .product_image {
     //    float: left;
     height: 300px;
-    background: transparent none top center no-repeat;
+    background: transparent image-url('mens_crew_000000.png') no-repeat 50%;
     background-size: cover;
 
     a {

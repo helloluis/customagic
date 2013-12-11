@@ -11,6 +11,7 @@
 ///////////////// 
 @import "compass";
 
+$primary_color : #009345;
 $link : #dc0000;
 
 body {
@@ -19,19 +20,13 @@ body {
   background-position:top 50% !important;  
 }
 
-
 /// Logos 
-.logo {
+.logo a {
   background:transparent image-url("logo.png") no-repeat top center!important;
-  width:330px;
-  height:210px;
+  width:275px;
+  height:185px;
+  display:block;
   text-indent:-99999px;
-  -webkit-background-size:contain!important;
-  -khtml-background-size:contain!important;
-  -moz-background-size:contain!important;
-  -ms-background-size:contain!important;
-  -o-background-size:contain!important;
-  background-size:contain!important;
 }
 
 /// Fonts, headings, lists, paragraphs
@@ -175,7 +170,6 @@ h1, h2, h3 {
       border:0;
       background:#ccc;
       color:#999;
-
     }
   }
 }
@@ -193,29 +187,32 @@ h1, h2, h3 {
     text-shadow:0 1px 1px #000;
   }
 
+    .logo a {
+      width:remCalc(162);
+      height:116px;
+    }
+
   .top-bar-section {
     padding: 0 1rem;
 
     ul {
       border:0;
       background:none;
-      li { 
-        a {
-          background:none;
-          font-size:14px;
-          line-height: 39px;
-          text-transform: lowercase;
-          @extend .texgyrebold_fontstack;
-          
+      li a {
+        background:none;
+        font-size:14px;
+        line-height: 39px;
+        text-transform: lowercase;
+        @extend .texgyrebold_fontstack;
+        
+        [class^="icon-"], [class*=" icon-"] {
+          color:#fff;
+          margin-right:0.5rem;
+          font-size:13px;
+        }      
+        &:hover {
           [class^="icon-"], [class*=" icon-"] {
-            color:#fff;
-            margin-right:0.5rem;
-            font-size:13px;
-          }      
-          &:hover {
-            [class^="icon-"], [class*=" icon-"] {
-              color:#ccc;
-            }
+            color:#ccc;
           }
         }
       }
@@ -230,19 +227,21 @@ h1, h2, h3 {
 
   
   .main-nav { 
-    background:transparent image-url("nav_red.png") repeat-x !important;
-    background-position:center -15px!important;
-    height:50px;
+    background:transparent image-url("nav_bg.png") repeat-x;
+    background-position:50% 0;
     line-height: 50px;
     z-index: 3;
+    min-height:3.6rem;
+    
     h1.logo {
-      width: 95px;
-      height: 60px;
+      @include background-size(cover!important);
+
       &:hover {
         transform:rotate(2deg);
         -ms-transform:rotate(2deg); /* IE 9 */
         -webkit-transform:rotate(2deg); /* Safari and Chrome */
       }
+
       a {
         line-height:60px;
         background-color:transparent!important;
@@ -256,18 +255,13 @@ h1, h2, h3 {
       color:#FFF;
       padding-right:1rem;
     }
-    ul {
-      li {
-        a {
-          &:hover {
-            color:#ccc;
-          }
-        }
-      }
+
+    ul li a:hover {
+      color:#ccc;
     }
   }
   .secondary-nav {
-    background:transparent image-url("nav_gray.png") repeat-x!important;
+    background:transparent image-url("nav_bg_subnav.png") repeat-x!important;
     background-position: top right !important;
     top: -13px;
     height:60px;
@@ -286,17 +280,18 @@ h1, h2, h3 {
 
     ul {
       border:0;
-      clear:both;
+      clear:none;
       background:none;
       margin:0 0 0 0.3rem;
+
       li { 
-        a {
-          &:hover {
-            color:#ccc;
-          }
+        a:hover {
+          color:#ccc;
         }
+       
         &.management_link.create_new_item {
           background:rgba(0,0,0,0.1);
+       
           .icon-plus {
             font-size:7px;
             @include border-radius(20px);
@@ -307,7 +302,9 @@ h1, h2, h3 {
             text-shadow:none;
           }
         }
+
       }
+
     }
   }
   .shopping_cart {

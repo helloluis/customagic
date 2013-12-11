@@ -7,10 +7,10 @@ end
 
 App = Hashie::Mash.new(settings)
 
-App.name = "Inkify"
-App.partner_name = "inkify"
+App.name = "GreenTees"
+App.partner_name = "greentees"
 # App.uri = URI::HTTP.build(host: host, port: port.try(:to_i))
-App.url = Rails.env.development? ? "inkify.xxx" : "inkify.me"
+App.url = Rails.env.development? ? "greentees.xxx" : "greentees.ph"
 App.default_product_type = "shirt"
 
 App.support_email = "departmentofink@gmail.com"
@@ -51,38 +51,30 @@ App.product_types = [
         ],
         sizes: %w(small medium large x-large xx-large),
         sub_styles: [
-          { name: "Standard Tee",
+          { name: "Men/Unisex Crew",
             slug: "basic_standard", 
-            description: "Budget friendly", 
+            description: "Organic cotton, round-neck", 
             image: "shirt_thumb.png",
-            buy_now_price: 600,
-            highest_production_price: 500,
-            lowest_production_price: 250,
-            production_costs: [
-              [0,   500],
-              [5,   450],
-              [20,  400],
-              [50,  350],
-              [100, 300],
-              [250, 250]
-            ]
-          },
-          { name: "Premium Tee",  
-            slug: "basic_premium",
-            description: "Premium 100% cotton", 
-            image: "shirt_thumb.png",
-            buy_now_price: 750,
-            highest_production_price: 600,
-            lowest_production_price: 350,
-            production_costs: [
-              [0,   600],
-              [5,   550],
-              [20,  500],
-              [50,  450],
-              [100, 400],
-              [250, 350]
-            ]
+            buy_now_price: 500,
+            minimum_favorites: 100,
+            production_price: 300
           }
+          # { name: "Premium Tee",
+          #   slug: "basic_premium",
+          #   description: "Premium 100% cotton", 
+          #   image: "shirt_thumb.png",
+          #   buy_now_price: 750,
+          #   highest_production_price: 600,
+          #   lowest_production_price: 350,
+          #   production_costs: [
+          #     [0,   600],
+          #     [5,   550],
+          #     [20,  500],
+          #     [50,  450],
+          #     [100, 400],
+          #     [250, 350]
+          #   ]
+          # }
           # { name: "American Apparel Crew",  
           #   slug: "basic_american",
           #   description: "Brand quality", 
@@ -111,7 +103,7 @@ App.product_types = [
 ]
 
 App.charities = [
-  { name: "Philippine Red Cross", url: "http://redcross.org.ph", email: 'prc@redcross.org.ph' }
+  { name: "Philippine Red Cross", slug: "philippineredcross", url: "http://redcross.org.ph", email: 'prc@redcross.org.ph' }
 ]
 
 App.shipping_costs = [

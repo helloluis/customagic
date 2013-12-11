@@ -8,6 +8,9 @@
                         },
         current_panel = 0,
         slide_panels  = function(){
+                          
+                          update_details_panel();
+
                           var left = 0;
                           if (current_panel<$(".header_panel").length-1) {
                             current_panel+=1;
@@ -15,15 +18,27 @@
                           } else {
                             current_panel=0;
                           }
+
                           $(".header_panels").
                             delay(5000).
                             animate({ left: left }, 
                               { duration : 500, 
                                 complete : function(){
-                                  slide_panels(); 
+                                  slide_panels();
+                                  
                                 }
                               });
                         },
+        update_details_panel  = function(){
+                                  var ref = $($(".header_panels .header_panel").get(current_panel)).find("div"),
+                                      cont = $(".artwork_details_container");
+                                  
+                                  cont.find(".artwork_title > a").text( ref.attr('data-title') );
+                                  cont.find(".artwork_artist").text( ref.attr('data-author') );
+                                  cont.find(".artwork_link").attr( 'href', ref.attr('data-link') );
+                                  cont.find(".artwork_price").text( ref.attr('data-price') );
+
+                                },
         slider_timer;
     
     $(function(){
@@ -32,7 +47,8 @@
         animate({ left: -$("header").width() }, 
           { duration : 500, 
             complete : function(){
-              slide_panels(); 
+              slide_panels();
+              update_details_panel(); 
             }
           });
 
@@ -42,62 +58,64 @@
       
       $(window).resize(_.throttle(resize_panels),300);
       resize_panels();
-
+      
     });
+
+/= render :partial => "shared/header"
 
 div class='masthead'
   
   div class='inner'
 
-    header class="row"
-      div class='small-12 medium-12'
-        ul class='header_panels nolist clearfix'
-          li class='header_panel'
-            div class='small-12 medium-5 columns'
-              h1 class="logo" Inkify
-            div class="small-12 columns medium-7" 
-              h2
-                | #{app_name} is the simplest way to design and sell #{app_default_product_type}s online!
-              = render :partial => "landing/facebook_login"
-          li class='header_panel'
-            div class="small-12 columns medium-6"
-              h2 class="smaller" 
-                | Raising funds for charity has never been easier! Just set your price, then set the donation amount. We do the rest!
-              = render :partial => "landing/facebook_login"
-            div class="small-12 columns medium-4"
-              h1 class="logo" Inkify
-            
-          li class='header_panel'
-            div class="small-12 medium-5 columns"
-              h1 class="logo" Inkify
-            div class="small-12 columns medium-7"
-              h2 class="smaller" 
-                | You design, we deliver.<br />Your #{app_default_product_type} will show up at your customer's doorstep within 7 days.
-              = render :partial => "landing/facebook_login"
+    header
+      
+      h1 class="logo" #{app_name}
+      
+      ul class='header_panels nolist clearfix'
+        li class='header_panel'
+          div class='artwork current' style='background-image:url(/assets/mastheads/Henri_Rousseau_-_The_Dream.jpg)' data-author="Henri Rosseau" data-title="The Dream" data-price="600" data-link=""
+        li class='header_panel'
+          div class='artwork' style='background-image:url(/assets/mastheads/Gustav_Klimt_-_The_Kiss.jpg)' data-author="Gustav Klimt" data-title="The Kiss" data-price="600" data-link=""
+        li class='header_panel'
+          div class='artwork' style='background-image:url(/assets/mastheads/Juan_Luna_-_Spoliarium.jpg)' data-author="Juan Luna" data-title="Spoliarium" data-price="600" data-link=""
+
+      div class='artwork_details_container'
+        div class='artwork_details'
+          h2 class='artwork_title' 
+            a class='artwork_link' href="#!" The Dream
+          h3 class='artwork_byline'
+            | by&nbsp;
+            span class='artwork_artist' Henri Rousseau
+          h3 class='artwork_price currency' 600.00
+          button class='buy_artwork' data-link="" Buy Now
+        span class='arrow left' &laquo;
+        span class='arrow right' &raquo;
 
 div class='features'
 
-  ul class='features-list row small-block-grid-1 medium-block-grid-3 nolist'
-    li class="feature"
-      h2 Design Like a Boss
-      p 
-        | Bosses don't like a lot of technical mumbo-jumbo, so #{app_name} doesn't have any of that. Type in your text or upload your artwork, then move it around and resize it any way you want via our awesome #{app_default_product_type} designer. It's almost as easy as having your secretary do it!
-    
-    li class='feature'
-      h2 Sell Like a Celebrity
-      p 
-        | Watch as people flock to your beautiful mobile-friendly store to gaze upon your wares. Share your product designs with your friends and followers on Twitter, Facebook, Pinterest, and Google+.
+  h1 class='strapline'
+    span
+      | Design an <strong>eco-friendly</strong> shirt,
+    span
+      | sell it on our <strong>marketplace</strong>,
+    span
+      | then <strong>donate</strong> a portion of your
+    span
+      | earnings to charity.
 
-    li class='feature'
-      h2 Earn Like a Tycoon
-      p 
-        | Set a price for each new item, and optionally set an amount to automatically donate to charity! We accept and fulfill orders on your behalf, and deposit your profits to your Paypal or local bank account.
+  = render :partial => "landing/facebook_login"
 
 div class='marketplace row medium-12 small-6'
-  h2 Featured #{app_default_product_type}s
-
+  
   ul class='products marketplace_products nolist small-block-grid-1 medium-block-grid-3 large-block-grid-5 clearfix'
-    - @products.each do |p|
+    - @available_products.each do |p|
+      = render :partial => "/marketplaces/agnostic_product", :locals => { product: p }
+
+  h2 Fresh Brews
+  p These designs need your votes before they can be added to the marketplace!
+
+  ul class='products pending_products marketplace_products nolist small-block-grid-1 medium-block-grid-3 large-block-grid-5 clearfix'
+    - @pending_products.each do |p|
       = render :partial => "/marketplaces/agnostic_product", :locals => { product: p }
 
 div class='footer' id="colophon"

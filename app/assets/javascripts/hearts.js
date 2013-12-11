@@ -39,18 +39,21 @@ var Hearts = {
   },
 
   initialize_buttons : function(){
-    $(".toggle_heart").click(function(){
-      var el = $(this),
-          id = el.attr('data-id');
+    $(".toggle_heart").
+      unbind('click').
+        click(function(){
+        var el = $(this),
+            id = el.attr('data-id');
 
-      $.ajax({
-        url : "/user/toggle_heart/" + id,
-        dataType : "JSON",
-        success : function(data) {
-          el.toggleClass('hearted');
-        }
+        $.ajax({
+          url : "/user/toggle_heart/" + id,
+          dataType : "JSON",
+          success : function(data) {
+            el.toggleClass('hearted');
+            el.siblings(".heart_counter").text(data);
+          }
+        });
       });
-    });
   }
 
 };

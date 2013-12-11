@@ -22,6 +22,7 @@ div id='editor' class='information small-12 small-uncentered medium-12 medium-ce
             strong Download Print-Ready Image
           dd
             = link_to truncate(@product.art_attachment.url, length:50), @product.art_attachment.url, target: "_blank"
+
     div class='info_form_container columns medium-4 small-12'
 
       = simple_form_for @product, :url => update_info_shop_product_path(@current_shop, @product), :method => :post do |f|
@@ -32,7 +33,7 @@ div id='editor' class='information small-12 small-uncentered medium-12 medium-ce
 
         dl class='production_cost'
           dt data-hint="Your first shirt will cost this much to produce" class="hint--right" 
-            label Highest Production Cost
+            label Production Cost
           dd 
             h3 data-float=@product.product_sub_style_object.highest_production_price class='highest_production_cost currency' 
               = @product.product_sub_style_object.highest_production_price
@@ -45,6 +46,10 @@ div id='editor' class='information small-12 small-uncentered medium-12 medium-ce
             label Current Production Cost
           dd
             / h3 class='base_price currency' = @product.production_cost
+/ =======
+/             h3 data-float=@product.product_sub_style_object.production_price class='production_cost currency' 
+/               = @product.product_sub_style_object.production_price
+/ >>>>>>> fa21fad2e4c5e8acc956fb9abbfe19216bb491a4
 
         = f.input :buy_now_price, label: "Retail Price (#{@current_shop.currency_symbol})", input_html: { class: 'currency' }
 
@@ -53,9 +58,7 @@ div id='editor' class='information small-12 small-uncentered medium-12 medium-ce
         
         = f.input :charity_url, collection: App.charities.map{|c| [c.name, c.url]}, label: "Charity", include_blank: false
 
-        = f.input :status, label: "Item Status", collection: [['Hidden',1],['Ready to Sell',2]], include_blank: false
-        
-        = f.submit "Save and Proceed", { 'data-hint'.to_sym => "Next step: Check this item out on your shop" } 
+        = f.submit "Save and Proceed", { 'data-hint'.to_sym => "Next step: Final Check" } 
 
         button class='delete_product warning' Delete This Item
 
@@ -80,9 +83,7 @@ div id='editor' class='information small-12 small-uncentered medium-12 medium-ce
             h3 How does this work?
           dd
             p
-              | Just add a name and description for your #{@product.product_type}, set your retail price, and you're good to go! Everytime someone buys your #{@product.product_type}, you'll earn the difference between your retail price and our base price. (If your retail price was 600.00, and our base price was 500.00, you would earn 100.00 per unit sold.)
-            p
-              | As you sell more #{@product.product_type}s, our base price decreases and your profit increases! The base price is reduced by #{number_to_currency(@product.product_sub_style_object.delta, unit: "PHP")} for every #{@product.product_type} sold.
+              | Just add a name and description for your #{@product.product_type}, set your retail price, and you're good to go! Once your #{@product.product_type} has received at least #{@product.product_sub_style_object.minimum_favorites} hearts, we'll begin immediate production. We'll keep you updated regarding your sales via your Earnings page.
           dt 
             h3 Am I required to give a portion of my profit to a charity?
           dd

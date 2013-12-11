@@ -9,4 +9,9 @@ class MarketplacesController < ApplicationController
     render :action => :show
   end
 
+  def fresh
+    @products = Product.where(status: 0).desc(:created_at)
+    render :action => :show
+  end
+
 end
