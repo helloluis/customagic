@@ -1,20 +1,24 @@
 @import "compass";
+@import "foundation/functions";
+@import "shared/branding";
 
 .masthead {
   width:100%;
   background-color:#fff;
-  box-shadow:0 0 10px #999;
-  margin-bottom:30px;
+  box-shadow:0 0 rem-calc(10px) #999;
+  margin-bottom:rem-calc(30px);
+
   header {
     overflow:hidden;
-    height:400px;
+    height:rem-calc(300px);
+    margin-bottom:rem-calc(50px);
   }
   .inner {
     padding:0px;
   }
   .header_panels { 
     overflow:hidden;
-    height:380px;
+    height:rem-calc(380px);
     position:absolute;
     top:0px;
     z-index:1;
@@ -37,61 +41,150 @@
 
   
     h2 {
-      font-size:40px;
+      font-size:rem-calc(40px);
       font-weight:normal;
-      margin:30px 0px;
+      margin:rem-calc(30px) 0px;
       &.smaller {
-        margin-top:15px;
-        font-size:30px;
+        margin-top:rem-calc(15px);
+        font-size:rem-calc(30px);
       }
     }
-  
-    .facebook_profile_container {
-      float:left;
-      p {
-          font-size:24px;
-          text-align:left;
-        }
-      }
   }
+
   .artwork_details_container {
     position:absolute;
-    top:300px;
-    left:400px;
-    width:300px;
+    top:rem-calc(300);
+    left:40%;
+    width:rem-calc(264);
+    height:rem-calc(144);
+    padding:0 rem-calc(10);
     z-index:2;
-    background:#fff;
+    background:image-url("scratched_paper.png") no-repeat;
+    text-align:center;
+
+    .arrow {
+      line-height:rem-calc(144);
+      height:rem-calc(144);
+      font-size:rem-calc(20px);
+      color:$primary-color;
+      -webkit-font-stretch:condensed;
+      -khtml-font-stretch:condensed;
+      -moz-font-stretch:condensed;
+      -ms-font-stretch:condensed;
+      -o-font-stretch:condensed;
+      font-stretch:condensed;
+      font-weight:bold;
+      cursor:pointer;
+    }
+
+    .artwork_details {
+      width:85%;
+      margin:0 auto;
+      padding:rem-calc(10px) 0 0;
+
+      h2, h3 {
+        font-size:rem-calc(18px);
+        font-weight:normal;
+
+        a {
+          color:#333;
+        }
+      }
+    }
+
+    h3.artwork_byline a {
+      color:#4d4d4d;
+      font-size:rem-calc(16px);
+    }
+
+    .artwork_price {
+      margin:rem-calc(10px) 0 rem-calc(5px);
+      font-weight:bold;
+    }
+
+    button {
+      line-height:1.8;
+      padding:rem-calc(4) rem-calc(20);
+    }
   }
 }
 
-.features, .more_information {
-  margin: 0 auto 50px auto;
-  max-width:980px;
+.strapline {
+  color:$primary-color;
+  font-size:rem-calc(34px);
+  float:left;
+
+  span {
+    display:block;
+
+    &.sell {
+      text-indent:rem-calc(70px);
+    }
+
+    &.earnings {
+      text-indent:rem-calc(100px);
+    }
+  }
+
+  strong {
+    text-shadow:1px 1px #000, -1px -1px #000;
+    font-weight:normal!important;
+  }
+}
+
+.features,
+.more_information {
+  margin: 0 auto rem-calc(50px) auto;
+  min-width:rem-calc(980px);
   overflow:hidden;
-//  .feature {
-//    float:left;
-//    width:28%;
-//    margin-right:4%;
-//    padding:10px 0px;
-//    h2, h3 {
-//      margin-bottom:10px;
-//    }
-//    p {
-//      line-height:1.6;
-//    }
-//    &:first-child {
-//      padding-left:0%;
-//    }
-//  }
+  //  .feature {
+  //    float:left;
+  //    width:28%;
+  //    margin-right:4%;
+  //    padding:10px 0px;
+  //    h2, h3 {
+  //      margin-bottom:10px;
+  //    }
+  //    p {
+  //      line-height:1.6;
+  //    }
+  //    &:first-child {
+  //      padding-left:0%;
+  //    }
+  //  }
+
+  .facebook_profile_container {
+    width:47%;
+    display:table-cell;
+    vertical-align:middle;
+    height:rem-calc(234px);
+    padding-left:rem-calc(25px);
+
+    p {
+      vertical-align:middle;
+      display:inline-block;
+
+      .button {
+        font-size:rem-calc(17px);
+        font-weight:bold!important;
+      }
+    }
+  }
+
+  span.option {
+    color:$primary-color;
+    font-weight:bold;
+    margin-right:rem-calc(10px);
+  }
 }
 
 .footer {
   background-color:#999;
   color:#fff;
-  margin-top:20px;
+  margin-top:rem-calc(20px);
   .inner {
     margin:0px auto 0px auto;
-    max-width:980px;
-    padding:20px;
+    max-width:rem-calc(980px);
+    padding:rem-calc(20px);
   }
 }

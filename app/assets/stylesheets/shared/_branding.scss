@@ -11,6 +11,7 @@
 ///////////////// 
 @import "compass";
 @import "foundation/functions";
+@import "shared/fonts";
 
 $primary-color : #009345;
 $link : #dc0000;
@@ -22,42 +23,20 @@ body {
 }
 
 /// Logos 
-.logo a {
-  background:transparent image-url("logo.png") no-repeat top center!important;
-  width:rem-calc(275px);
-  height:rem-calc(185px);
-  display:block;
-  text-indent:-99999px;
-  @include background-size(cover!important);
+.logo {
+  overflow:hidden;
+
+  a {
+    background:transparent image-url("logo.png") no-repeat top center!important;
+    width:rem-calc(275px);
+    height:rem-calc(185px);
+    display:block;
+    text-indent:-99999px;
+    @include background-size(cover!important);
+  }
 }
 
 /// Fonts, headings, lists, paragraphs
-@import url(http://fonts.googleapis.com/css?family=Droid+Sans);
-@font-face {
-  font-family: 'Droid Sans', sans-serif;
-}
-@font-face {
-  font-family: 'texgyreherosbold';
-  src: image-url('fonts/texgyreheros-bold-webfont.eot');
-  src: image-url('fonts/texgyreheros-bold-webfont.eot?#iefix') format('embedded-opentype'),
-       image-url('fonts/texgyreheros-bold-webfont.woff') format('woff'),
-       image-url('fonts/texgyreheros-bold-webfont.ttf') format('truetype'),
-       image-url('fonts/texgyreheros-bold-webfont.svg#texgyreherosbold') format('svg');
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'texgyreherosregular';
-  src: image-url('fonts/texgyreheros-regular-webfont.eot');
-  src: image-url('fonts/texgyreheros-regular-webfont.eot?#iefix') format('embedded-opentype'),
-       image-url('fonts/texgyreheros-regular-webfont.woff') format('woff'),
-       image-url('fonts/texgyreheros-regular-webfont.ttf') format('truetype'),
-       image-url('fonts/texgyreheros-regular-webfont.svg#texgyreherosregular') format('svg');
-  font-weight: normal;
-  font-style: normal;
-}
-
 .texgyreregular_fontstack {
   font-family: 'texgyreherosregular', 'Helvetica Neue', Arial, sans-serif!important;
 }
@@ -70,66 +49,18 @@ h1, h2, h3 {
   @extend .texgyrebold_fontstack;
 }
 
-////////////
-/// Icons
-////////////
-@font-face {
-  font-family: 'icomoon';
-  src:image-url('fonts/icomoon.eot');
-  src:image-url('fonts/icomoon.eot?#iefix') format('embedded-opentype'),
-    image-url('fonts/icomoon.ttf') format('truetype'),
-    image-url('fonts/icomoon.woff') format('woff'),
-    image-url('fonts/icomoon.svg#icomoon') format('svg');
-  font-weight: normal;
-  font-style: normal;
-}
-
-[class^="icon-"], [class*=" icon-"] {
-  font-family: 'icomoon';
-  speak: none;
-  font-style: normal;
-  font-weight: normal;
-  font-variant: normal;
-  text-transform: none;
-  line-height: 1;
-
-  /* Better Font Rendering =========== */
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-.icon-pencil:before {
-  content: "\e600";
-}
-.icon-home:before {
-  content: "\e601";
-}
-.icon-cart:before {
-  content: "\e602";
-}
-.icon-bars:before {
-  content: "\e603";
-}
-.icon-tag:before {
-  content: "\e604";
-}
-.icon-cog:before {
-  content: "\e605";
-}
-.icon-plus:before {
-  content: "\e606";
-}
-
 /// Buttons
 button, 
 .button {
   background:$primary-color;
+  @include border-radius(rem-calc(20px));
+  white-space:nowrap;
 }
 
 .button,
 .button.button-icon {
   background:#999;
-  border:5px solid #999;
+  border:rem-calc(5px) solid #999;
   @include border-radius(40px);
   margin:0 0.8rem 0 0;
   padding:0;
@@ -147,17 +78,25 @@ button,
     display:inline-block;
     width:100%;
 
-    span {
-      padding:rem-calc(2) rem-calc(15);
+    span,
+    .button_inner_most {
       display:block;
+      font-size:rem-calc(16)!important;
       margin:0;
-      line-height: 2;
+      line-height: 2.8;
+      padding:0 rem-calc(20px);
       border:0;
       color:#999;
       background-color:#CCC;
       @include transition(1s);
+      @include border-radius(rem-calc(20px));
     }
   }
+}
+
+.button.button.button-icon span span {
+  padding:0 rem-calc(15px)!important;
+  line-height:2.3;
 }
 
 .button {
@@ -165,11 +104,9 @@ button,
   & {
     background:#666;
     border:rem-calc(5) solid #666;
-    @include border-radius(40px);
-    margin:0 0.8rem 0 0;
-    padding:0;
 
-    span span {
+    span span,
+    .button_inner_most {
       color:#FFF;
       background:$primary-color;
     }
@@ -178,27 +115,37 @@ button,
       background:none;
       color:$primary-color;
 
-      span span {
+      span span,
+      .button_inner_most {
         background:darken($primary-color, 10%);
       }
     }
   }
+}
 
-  span span {
-    @include background(linear-gradient($primary-color, darken($primary-color, 15%)));
+@mixin gradient_button($selector, $button_color, $text_color) {
+  #{$selector} span .button_inner_most {
+    @include background(linear-gradient($button_color, darken($button_color, 15%)));
+    color:$text_color;
+    font-weight:bold!important;
   }
 
-  &:hover span span {
-    @include background(linear-gradient(lighten($primary-color, 15%), darken($primary-color, 25%)));
-    text-shadow:1px 2px darken($primary-color, 25%);
+  #{$selector}:hover span .button_inner_most {
+    @include background(linear-gradient(lighten($button_color, 15%), darken($button_color, 25%)));
+    text-shadow:1px 2px darken($button_color, 25%);
   }
 }
+
+@include gradient_button("button.button", $primary-color, #FFF);
+@include gradient_button(".button.active", $primary-color, #FFF);
+@include gradient_button(".destroy_button.button", #F00, #FFF);
+//// Buttons
 
 /// Header
 ///  start of header#main
 #main.top-bar {
-  line-height: 90px;
-  height:90px;
+  line-height: rem-calc(90px);
+  height:rem-calc(90px);
   background:none;
   
   h1, h2, h3, h4, h5, h6, p, a, span, li {
@@ -218,15 +165,15 @@ button,
       background:none;
       li a {
         background:none;
-        font-size:14px;
-        line-height: 39px;
+        font-size:rem-calc(14px);
+        line-height: rem-calc(39px);
         text-transform: lowercase;
         @extend .texgyrebold_fontstack;
         
         [class^="icon-"], [class*=" icon-"] {
           color:#fff;
           margin-right:0.5rem;
-          font-size:13px;
+          font-size:rem-calc(13px);
         }      
         &:hover {
           [class^="icon-"], [class*=" icon-"] {
@@ -246,7 +193,7 @@ button,
   .main-nav { 
     background:transparent image-url("nav_bg.png") repeat-x;
     background-position:50% 0;
-    line-height: 50px;
+    line-height: rem-calc(50px);
     z-index: 3;
     min-height:3.6rem;
     
@@ -260,7 +207,7 @@ button,
       }
 
       a {
-        line-height:60px;
+        line-height:rem-calc(60px);
         background-color:transparent!important;
         display:block;
         padding:0;
@@ -268,7 +215,7 @@ button,
     }
 
     h2 {
-      line-height:40px;
+      line-height:rem-calc(40px);
       color:#FFF;
       padding-right:1rem;
     }
@@ -279,9 +226,9 @@ button,
   }
   .secondary-nav {
     background:transparent image-url("nav_bg_subnav.png") repeat-x 100% 0;
-    top: -13px;
-    height:60px;
-    line-height: 60px;
+    top: rem-calc(-13px);
+    height:rem-calc(60px);
+    line-height: rem-calc(60px);
     z-index: 2;
 
     h2 {
@@ -320,8 +267,19 @@ button,
         }
 
       }
-
     }
+
+    //landing secondary nav
+    .landing & {
+      top: rem-calc(309px);
+      z-index: 0;
+
+      ul {
+        display:none;
+      }
+    }
+    //landing secondary nav
+
   }
   .shopping_cart {
   }

@@ -3,7 +3,7 @@ div id='editor' class='information small-12 small-uncentered medium-12 medium-ce
   = render :partial => "products/steps"
 
   div class='inner clearfix'
-    div class='viewer columns medium-4 small-12'
+    div class='viewer columns medium-5 small-12'
 
       div class='item' style='background-color: #{@product.color}; background-image: url(#{@product.art_attachment.medium.url})'
 
@@ -23,7 +23,7 @@ div id='editor' class='information small-12 small-uncentered medium-12 medium-ce
           dd
             = link_to truncate(@product.art_attachment.url, length:50), @product.art_attachment.url, target: "_blank"
 
-    div class='info_form_container columns medium-4 small-12'
+    div class='info_form_container columns medium-7 small-12'
 
       h1 Final Check 
 
@@ -37,7 +37,10 @@ div id='editor' class='information small-12 small-uncentered medium-12 medium-ce
 
         = f.input :status, :as => :hidden, :value => 2
 
-        = f.submit "Ready!"
+        div class="submit_button"
+          span class="button active"
+            span
+              = f.submit "Ready!", :class => "button_inner_most"
 
 
-          
+            

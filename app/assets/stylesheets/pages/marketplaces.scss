@@ -1,5 +1,8 @@
+@import "compass";
+@import "foundation/functions";
+
 .marketplace_products {
-  margin:20px 0px;
+  margin:rem-calc(20px) 0px;
 
   .product {
     height:auto;
@@ -15,7 +18,7 @@
       position:absolute;
       bottom:5%;
       right:3%;
-      padding:5px 10px;
+      padding:rem-calc(5px) rem-calc(10px);
       //      background:#000;
       color:#fff;
       margin:0px;
@@ -40,7 +43,7 @@
     }
 
     .product_image {
-      border-bottom:1px solid #CCC;
+      border-bottom:rem-calc(1px) solid #CCC;
     }
   }
 }

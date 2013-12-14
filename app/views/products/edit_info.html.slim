@@ -58,9 +58,16 @@ div id='editor' class='information small-12 small-uncentered medium-12 medium-ce
         
         = f.input :charity_url, collection: App.charities.map{|c| [c.name, c.url]}, label: "Charity", include_blank: false
 
-        = f.submit "Save and Proceed", { 'data-hint'.to_sym => "Next step: Final Check" } 
+        div class="submit_button"
 
-        button class='delete_product warning' Delete This Item
+          span class="button active"
+            span
+              = f.submit "Save and Proceed", "class" => "button_inner_most"
+              //== f.submit "Save and Proceed", { 'data-hint'.to_sym => "Next step: Final Check" }, "class" => "button_inner_most"
+
+          button class='delete_product destroy_button button warning'
+            span
+              span class="button_inner_most" Delete This Item
 
     div class='totals_and_instructions columns medium-4 small-12'
 

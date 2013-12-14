@@ -61,7 +61,7 @@
       
     });
 
-/= render :partial => "shared/header"
+= render :partial => "shared/header"
 
 div class='masthead'
   
@@ -69,7 +69,7 @@ div class='masthead'
 
     header
       
-      h1 class="logo" #{app_name}
+      / h1 class="logo" #{app_name}
       
       ul class='header_panels nolist clearfix'
         li class='header_panel'
@@ -80,6 +80,8 @@ div class='masthead'
           div class='artwork' style='background-image:url(/assets/mastheads/Juan_Luna_-_Spoliarium.jpg)' data-author="Juan Luna" data-title="Spoliarium" data-price="600" data-link=""
 
       div class='artwork_details_container'
+        span class='arrow left' <
+        span class='arrow right' >
         div class='artwork_details'
           h2 class='artwork_title' 
             a class='artwork_link' href="#!" The Dream
@@ -88,19 +90,17 @@ div class='masthead'
             span class='artwork_artist' Henri Rousseau
           h3 class='artwork_price currency' 600.00
           button class='buy_artwork' data-link="" Buy Now
-        span class='arrow left' &laquo;
-        span class='arrow right' &raquo;
 
-div class='features'
+div class='features row'
 
   h1 class='strapline'
     span
       | Design an <strong>eco-friendly</strong> shirt,
-    span
+    span class="sell"
       | sell it on our <strong>marketplace</strong>,
-    span
+    span class="donate"
       | then <strong>donate</strong> a portion of your
-    span
+    span class="earnings"
       | earnings to charity.
 
   = render :partial => "landing/facebook_login"
