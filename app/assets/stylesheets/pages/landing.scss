@@ -65,18 +65,26 @@
 
     .arrow {
       line-height:rem-calc(144);
+      width:35px;
       height:rem-calc(144);
+      text-indent:-2000px;
       font-size:rem-calc(20px);
       color:$primary-color;
-      -webkit-font-stretch:condensed;
-      -khtml-font-stretch:condensed;
-      -moz-font-stretch:condensed;
-      -ms-font-stretch:condensed;
-      -o-font-stretch:condensed;
-      font-stretch:condensed;
-      font-weight:bold;
+      // -webkit-font-stretch:condensed;
+      // -khtml-font-stretch:condensed;
+      // -moz-font-stretch:condensed;
+      // -ms-font-stretch:condensed;
+      // -o-font-stretch:condensed;
+      // font-stretch:condensed;
+      // font-weight:bold;
+
       cursor:pointer;
+      background: image-url('arrows.png') 0% 50% no-repeat;
+      &.right {
+        background-position:100% 50%;
+      }
     }
+
 
     .artwork_details {
       width:85%;
@@ -93,14 +101,16 @@
       }
     }
 
-    h3.artwork_byline a {
+    h3.artwork_byline {
       color:#4d4d4d;
-      font-size:rem-calc(16px);
+      font-size:rem-calc(14px);
+      font-weight:normal;
     }
 
     .artwork_price {
       margin:rem-calc(10px) 0 rem-calc(5px);
-      font-weight:bold;
+      font-weight:normal;
+      font-size:rem-calc(15px);
     }
 
     button {
