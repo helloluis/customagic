@@ -17,7 +17,7 @@ $primary-color : #009345;
 $link : #dc0000;
 
 body {
-  background:image-url("background_white_wall.jpg") no-repeat!important;
+  background:image-url("background_canvas2.png") !important;
   background-color:#fff !important;
   background-position:top 50% !important;  
 }
@@ -42,7 +42,7 @@ body {
 }
 
 .texgyrebold_fontstack {
-  font-family: 'texgyreherosbold', 'Helvetica Neue', Arial, sans-serif!important;
+  font-family: 'texgyreherosbold', 'Helvetica Neue', Arial, sans-serif;
 }
 
 h1, h2, h3 {

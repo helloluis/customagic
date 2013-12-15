@@ -51,8 +51,8 @@ Customagic::Application.routes.draw do
     resources :assets do
       post :create_photo, on: :collection
     end
-    resources :orders
     resources :customers
+    resources :earnings
     resources :products do
       get  :edit_info,    on: :member
       post :update_info,  on: :member

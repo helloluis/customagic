@@ -54,5 +54,26 @@ module ApplicationHelper
     end
     classes
   end
+
+  def edit_product_path(shop, product)
+    "/#{shop.slug}/products/#{product.slug}/edit"
+  end
+
+  def edit_product_info_path(shop, product)
+    "/#{shop.slug}/products/#{product.slug}/edit_info"
+  end
+
+  def number_to_ordinal(num)
+    num = num.to_i
+    if (10...20)===num
+    "#{num}th"
+    else
+    g = %w{ th st nd rd th th th th th th }
+    a = num.to_s
+    c=a[-1..-1].to_i
+    a + g[c]
+    end
+  end
+
     
 end

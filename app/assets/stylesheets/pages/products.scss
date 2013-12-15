@@ -82,7 +82,9 @@
   position:relative;
   overflow:hidden;
   height:850px;
-  padding-top:1.5rem;
+  border:1px solid #ccc;
+
+  //padding-top:1.5rem;
 
   .item_specifications a {
     display: block;
@@ -129,6 +131,13 @@
   .price_container,
   .submit_button {
     padding:20px;
+  }
+
+  .content {
+    background:#ddd;
+    &.active {
+      background:#d1d1d1 !important;
+    }
   }
 
   .price_container p {
@@ -456,9 +465,12 @@ body.loading .loading_indicator {
     text-align:center;
   }
 
-  .product_image {
-    //    float: left;
-    height: 300px;
+  .product_image_container .product_image {
+    // override these dimensions in specific views,
+    // but don't remove them from this base definition
+    width: 297px;
+    height: 420px;
+    left: 137px;
     background: transparent image-url('mens_crew_000000.png') no-repeat 50%;
     background-size: cover;
 

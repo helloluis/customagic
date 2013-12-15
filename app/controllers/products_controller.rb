@@ -49,7 +49,7 @@ class ProductsController < ApplicationController
 
   def update
     if @product.update_attributes(params[:product])
-      @product.generate_art! if params[:publish]
+      @product.generate_art!
       respond_to do |format|
         format.json { render :json => @product }
       end
@@ -69,6 +69,14 @@ class ProductsController < ApplicationController
           render :layout => "editor", :action => :edit_info
         end
       end
+    end
+  end
+
+  def make_ready
+    @product.update_attributes(status: 2)
+    respond_to do |format|
+      flash[:notice] = "Your work is now visible in the marketplace!"
+      redirect_to product_path(@product)
     end
   end
 

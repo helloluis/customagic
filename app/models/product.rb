@@ -30,7 +30,7 @@ class Product
   has_many :orders
 
   field :name
-  slug  :name,  :scope => :shop, :reserve => [ 'tag', 'tags', 'shop', 'product' ]
+  slug  :name, :reserve => [ 'tag', 'tags', 'shop', 'product' ]
 
   field :description
   field :on_sale,               type: Boolean,  default: false
@@ -261,6 +261,7 @@ class Product
   def status=(new_status)
     write_attribute(:status, new_status)
     write_attribute(:visible_in_marketplace, false) if new_status==1
+    generate_art!(true) if new_status==2
   end
 
   def load_previous_shipping_costs
@@ -577,7 +578,7 @@ class Product
     self.assets.create(content: "Awesome Shirt", shop: self.shop)
   end
 
-  def generate_art!
+  def generate_art!(and_final_art=false)
     
     md = 28
     mw = mockup_dimensions[0].to_i
@@ -596,7 +597,7 @@ class Product
     end
 
     # delayed processing for final_art rendering
-    unless Rails.env.development?
+    if and_final_art && !Rails.env.development?
       if final_art.nil?
         self.delay.create_final_art(shop_id: shop._id, dpi_target: fd, width: fw, height: fh)
       else

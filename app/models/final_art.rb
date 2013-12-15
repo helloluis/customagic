@@ -34,7 +34,7 @@ class FinalArt
 
   def generate_image
 
-    return false if self.product && (self.product.final_art_html.blank? || self.product.mockup_html.blank?)
+    return false if self.product && self.product.final_art_html.blank?
     
     opts = {:transparent => true, width: width, height: height, "crop-w".to_sym => width, "crop-h".to_sym => height}
     

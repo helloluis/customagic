@@ -1,3 +1,17 @@
+- content_for :page_scripts do
+  javascript:
+    var toggle_payment_fields = function(){
+      var pref = $("#shop_preferred_payment_method").val();
+      $(".payment_method_fields").hide();
+      $("." + pref.toLowerCase() + "_fields").show();
+    };
+
+    $(function(){
+
+      $("#shop_preferred_payment_method").change(toggle_payment_fields).change();
+
+    });
+
 div class="row container"
 
   div class="small-12 small-uncentered medium-8 columns"
@@ -6,16 +20,13 @@ div class="row container"
 
     = simple_form_for @current_shop do |f|
 
-      = f.input :name
-      = f.input :website
-      = f.input :description, :as => :text
-      / div class="row"
-      = f.input :attachment, :as => :file, :label => "Logo"
-      = f.input :color_scheme, :collection => %w( light dark ), include_blank: false
+      fieldset id="information"
+        = f.input :name
+        = f.input :website
+        = f.input :description, :as => :text
+        = f.input :attachment, :as => :file, :label => "Logo"
 
-      = f.input :paypal_email
-
-      fieldset class='social_network_fields' 
+      fieldset id="social_networks" class='social_network_fields' 
         legend Social Network Accounts
         dl
           dt 
@@ -42,6 +53,20 @@ div class="row container"
             p
               | http://plus.google.com/
               = f.input_field :googleplus
+
+      fieldset id="payment"
+        
+        = f.input :preferred_payment_method, :collection => [["Bank Deposit",'bank_deposit'],["Paypal", "paypal"]], :include_blank => false
+        
+        div class='paypal_fields payment_method_fields'
+          = f.input :paypal_email
+
+        div class='bank_deposit_fields payment_method_fields'
+          = f.input :bank_account_name
+          = f.input :bank_account_number
+          = f.input :bank_name
+          = f.input :bank_address
+          = f.input :bank_account_type, :collection => ["Savings","Checking"], :include_blank => false
       
       = f.button :submit
 
@@ -49,8 +74,10 @@ div class="row container"
     h2 class="hidden" Merchant settings
     ul class="merchant_nav nolist side-nav"
       li
-        = link_to "Designs"
+        = link_to "Information", "#information"
       li
-        = link_to "Earnings"
+        = link_to "Social Networks", "#social_networks"
       li
-        = link_to "Settings"
+        = link_to "Payment", "#payment"
+
+

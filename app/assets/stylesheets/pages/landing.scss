@@ -10,6 +10,7 @@
 
   header {
     overflow:hidden;
+    width:100%;
     height:rem-calc(300px);
     margin-bottom:rem-calc(50px);
   }
@@ -53,7 +54,7 @@
 
   .artwork_details_container {
     position:absolute;
-    top:rem-calc(300);
+    top:rem-calc(325);
     left:40%;
     width:rem-calc(264);
     height:rem-calc(144);
@@ -109,13 +110,14 @@
   }
 }
 
-.strapline {
+h1.strapline {
   color:$primary-color;
   font-size:rem-calc(34px);
   float:left;
 
   span {
     display:block;
+    font-family:'Wellfleet', serif;
 
     &.sell {
       text-indent:rem-calc(70px);
@@ -127,8 +129,15 @@
   }
 
   strong {
-    text-shadow:1px 1px #000, -1px -1px #000;
+    color:#410200;
+    text-shadow:1px 2px $primary-color;
     font-weight:normal!important;
+  }
+}
+
+.marketplace {
+  h2 {
+    font-family: 'Wellfleet', serif;
   }
 }
 
