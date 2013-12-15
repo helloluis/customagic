@@ -3,25 +3,29 @@
 - unless @shop.attachment.url.nil?
   div class='logo' style='background-image:url(#{@shop.attachment.url})'
 
-header class='shop_information columns'
-  h1 role="headline" = @shop.name
-  p class='description'
-    - if @shop.description.blank?
-      | Add some text to describe your shop and products 
-    - else
-      = @shop.description
-    = link_to "Edit &raquo;".html_safe, edit_shop_path(@shop)
-
-div class="columns"
-  div class='social_networks'
-    - %w(twitter facebook pinterest instagram googleplus).each do |sn|
-      - unless @shop.attributes[sn].blank?
-        - if sn=='googleplus'
-          div class='sn googleplus' = "http://plus.google.com/#{@shop.googleplus}"
+header class='shop_information row small-12 medium-12'
+  div class='columns small-7 medium-6'
+    h1 role="headline" = @shop.name
+    p class='description'
+      - if @shop.description.blank?
+        | Add some text to describe your shop and products 
+      - else
+        = @shop.description
+      = link_to "Edit &raquo;".html_safe, edit_shop_path(@shop)
+  div class='columns small-5 medium-6'
+    ul class='social_networks'
+      - %w(twitter facebook pinterest instagram googleplus).each do |sn|
+        - if @shop.attributes[sn].blank? && is_owner?(@shop)
+          li class='sn #{sn} disabled hint--top' data-hint="Edit Your Shop Settings ..." = link_to "Edit", edit_shop_path(@shop)
         - else
-          div class='sn #{sn}' = "http://#{sn}.com/#{@shop.attributes[sn]}"
+          - if sn=='googleplus'
+            li class='sn googleplus hint--top' data-hint="#{@shop.googleplus} on Google+" = link_to @shop.googleplus, "http://plus.google.com/#{@shop.googleplus}"
+          - else
+            li class='sn #{sn} hint--top' data-hint="#{@shop.attributes[sn]} on #{sn.titleize}" = link_to @shop.attributes[sn], "http://#{sn}.com/#{@shop.attributes[sn]}"
 
     div class="fb-like" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"
+
+div class="columns small-12 medium-12"
 
   ul class='products small-block-grid-1 medium-block-grid-3 large-block-grid-5 nolist'
     = render :partial => @products
