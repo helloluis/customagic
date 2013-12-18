@@ -125,14 +125,14 @@ button,
 
 @mixin gradient_button($selector, $button_color, $text_color) {
   #{$selector} span .button_inner_most {
-    @include background(linear-gradient($button_color, darken($button_color, 15%)));
+    @include background(linear-gradient(lighten($button_color, 15%), darken($button_color, 5%)));
     color:$text_color;
     font-weight:bold!important;
   }
 
   #{$selector}:hover span .button_inner_most {
     @include background(linear-gradient(lighten($button_color, 15%), darken($button_color, 25%)));
-    text-shadow:1px 2px darken($button_color, 25%);
+    text-shadow:1px 2px darken($button_color, 15%);
   }
 }
 
