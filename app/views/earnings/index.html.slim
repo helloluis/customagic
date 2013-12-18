@@ -1,0 +1,50 @@
+div class='row small-12 medium-12'
+
+  div class='columns small-12 medium-7'
+    h1 Earnings
+
+    dl class='earnings_summary'
+      dt Units Sold
+      dd 0
+
+      dt Past 30 Days
+      dd &#8369; 0.00
+
+      dt All-Time
+      dd &#8369; 0.00
+
+
+    h2 Sales
+
+    ol class='sales'
+      / - @sales.each do |sale|
+      /   = sale.product
+
+  div class='columns small-12 medium-5'
+
+    h3 Settings
+
+    = simple_form_for @current_shop do |f|
+
+      dl 
+        dt Payment Method
+        dd 
+          = @current_shop.preferred_payment_method.gsub("_"," ").titleize 
+          |  (
+          = link_to "Edit ...", edit_shop_path(@current_shop)
+          | )
+
+        dt Payment Schedule
+        dd
+          | Every 
+          = number_to_ordinal(@current_shop.created_at.day)
+          |  of the month
+
+        dt Payment History
+        dd
+          - if @payments && @payments.any?
+            ol class='payment_history'
+              li
+
+          - else
+            p No payments have been made yet!

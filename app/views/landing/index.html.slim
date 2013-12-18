@@ -36,7 +36,7 @@
                                   cont.find(".artwork_title > a").text( ref.attr('data-title') );
                                   cont.find(".artwork_artist").text( ref.attr('data-author') );
                                   cont.find(".artwork_link").attr( 'href', ref.attr('data-link') );
-                                  cont.find(".artwork_price").text( ref.attr('data-price') );
+                                  cont.find(".artwork_price").text( ref.attr('data-price') ).currency({ region : "PHP" });
 
                                 },
         slider_timer;
@@ -88,7 +88,8 @@ div class='masthead'
           h3 class='artwork_byline'
             | by&nbsp;
             span class='artwork_artist' Henri Rousseau
-          h3 class='artwork_price currency' 600.00
+          h3 class='artwork_price currency' 
+            | &#8369;600.00
           button class='buy_artwork' data-link="" Buy Now
 
 div class='features row'
@@ -107,16 +108,21 @@ div class='features row'
 
 div class='marketplace row medium-12 small-6'
   
-  ul class='products marketplace_products nolist small-block-grid-1 medium-block-grid-3 large-block-grid-5 clearfix'
-    - @available_products.each do |p|
-      = render :partial => "/marketplaces/agnostic_product", :locals => { product: p }
+  - if @available_products.any?  
+    ul class='products marketplace_products nolist small-block-grid-1 medium-block-grid-3 large-block-grid-5 clearfix'
+      - @available_products.each do |p|
+        = render :partial => "/marketplaces/agnostic_product", :locals => { product: p }
 
-  h2 Fresh Brews
-  p These designs need your votes before they can be added to the marketplace!
+  - if @pending_products.any?
+    h2 Fresh Brews
+    p These designs need your votes before they can be added to the marketplace!
 
-  ul class='products pending_products marketplace_products nolist small-block-grid-1 medium-block-grid-3 large-block-grid-5 clearfix'
-    - @pending_products.each do |p|
-      = render :partial => "/marketplaces/agnostic_product", :locals => { product: p }
+    ul class='products pending_products marketplace_products nolist small-block-grid-1 medium-block-grid-3 large-block-grid-5 clearfix'
+      - @pending_products.each do |p|
+        = render :partial => "/marketplaces/agnostic_product", :locals => { product: p }
+  - else
+    h2 No New Brews
+    p Fill up our marketplace with your awesome work now!
 
 div class='footer' id="colophon"
   div class='inner'

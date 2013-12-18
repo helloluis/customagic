@@ -39,6 +39,14 @@ class Shop
   field :gcash_name
   field :gcash_number
 
+  field :preferred_payment_method, type: String, default: "bank_deposit"
+
+  field :bank_account_name
+  field :bank_account_number
+  field :bank_name
+  field :bank_address
+  field :bank_account_type
+
   validates_presence_of :name
   validates_uniqueness_of :name
 

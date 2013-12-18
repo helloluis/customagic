@@ -38,7 +38,7 @@ nav id="main" data-topbar="true" class="top-bar clearfix"
         /    a href="/#{@current_shop.slug}/#{@current_product.slug}" = @current_product.name
 
         li class='management_link left'
-          = link_to "<span class='icon-bars'></span>Earnings".html_safe, shop_orders_path(@current_shop)
+          = link_to "<span class='icon-bars'></span>Earnings".html_safe, shop_earnings_path(@current_shop)
 
         li class='management_link shop_settings_link left'
           = link_to "<span class='icon-cog'></span>Settings".html_safe, edit_shop_path(@current_shop)

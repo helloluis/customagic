@@ -34,7 +34,7 @@ class Mockup
   
   def generate_image
 
-    return false if self.product && (self.product.final_art_html.blank? || self.product.mockup_html.blank?)
+    return false if self.product && self.product.mockup_html.blank?
     
     opts = {:transparent => true, width: width, height: height, "crop-w".to_sym => width, "crop-h".to_sym => height}
 
@@ -45,6 +45,8 @@ class Mockup
     img.write(kit.to_img(:png))
 
     img.flush
+    
+    logger.info "!! #{img.inspect} !!"
 
     self.attachment = File.open(img.path)
 

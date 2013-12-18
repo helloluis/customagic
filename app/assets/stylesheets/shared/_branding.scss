@@ -17,7 +17,7 @@ $primary-color : #009345;
 $link : #dc0000;
 
 body {
-  background:image-url("background_white_wall.jpg") no-repeat!important;
+  background:image-url("background_canvas2.png") !important;
   background-color:#fff !important;
   background-position:top 50% !important;  
 }
@@ -42,7 +42,7 @@ body {
 }
 
 .texgyrebold_fontstack {
-  font-family: 'texgyreherosbold', 'Helvetica Neue', Arial, sans-serif!important;
+  font-family: 'texgyreherosbold', 'Helvetica Neue', Arial, sans-serif;
 }
 
 h1, h2, h3 {
@@ -226,9 +226,9 @@ button,
   }
   .secondary-nav {
     background:transparent image-url("nav_bg_subnav.png") repeat-x 100% 0;
-    top: rem-calc(-13px);
-    height:rem-calc(60px);
-    line-height: rem-calc(60px);
+    top: rem-calc(-35px);
+    height:rem-calc(75px);
+    line-height: rem-calc(75px);
     z-index: 2;
 
     h2 {
@@ -245,7 +245,7 @@ button,
       border:0;
       clear:none;
       background:none;
-      margin:0 0 0 0.3rem;
+      margin:rem-calc(20px) 0 0 0.3rem;
 
       li { 
         a:hover {
@@ -287,6 +287,40 @@ button,
 //end of header#main
 
 
+.sn {
+  width:60px;
+  height:60px;
+  background:transparent image-url("social_network_icons.png") no-repeat;
+  a {
+    width:100%;
+    height:100%;
+    display:block;
+    text-indent:-9999px;
+  }
+  &.facebook {
+    background-position:-60px 0px;
+  }
+  &.instagram {
+    background-position:-118px 0px;
+  }
+  &.googleplus {
+    background-position:-176px 0px;
+  }
+  &.pinterest {
+    background-position:-235px 0px;
+  }
+  &.disabled {
+    opacity:0.4;
+  }
+}
 
+.social_networks {
+  list-style-type:none;
+  margin:0px;
+  .sn {
+    float:left;
+    margin:0px 0px 10px 0px;
+  }
+}
 
 

@@ -10,6 +10,7 @@
 
   header {
     overflow:hidden;
+    width:100%;
     height:rem-calc(300px);
     margin-bottom:rem-calc(50px);
   }
@@ -53,7 +54,7 @@
 
   .artwork_details_container {
     position:absolute;
-    top:rem-calc(300);
+    top:rem-calc(325);
     left:40%;
     width:rem-calc(264);
     height:rem-calc(144);
@@ -64,18 +65,26 @@
 
     .arrow {
       line-height:rem-calc(144);
+      width:35px;
       height:rem-calc(144);
+      text-indent:-2000px;
       font-size:rem-calc(20px);
       color:$primary-color;
-      -webkit-font-stretch:condensed;
-      -khtml-font-stretch:condensed;
-      -moz-font-stretch:condensed;
-      -ms-font-stretch:condensed;
-      -o-font-stretch:condensed;
-      font-stretch:condensed;
-      font-weight:bold;
+      // -webkit-font-stretch:condensed;
+      // -khtml-font-stretch:condensed;
+      // -moz-font-stretch:condensed;
+      // -ms-font-stretch:condensed;
+      // -o-font-stretch:condensed;
+      // font-stretch:condensed;
+      // font-weight:bold;
+
       cursor:pointer;
+      background: image-url('arrows.png') 0% 50% no-repeat;
+      &.right {
+        background-position:100% 50%;
+      }
     }
+
 
     .artwork_details {
       width:85%;
@@ -92,14 +101,16 @@
       }
     }
 
-    h3.artwork_byline a {
+    h3.artwork_byline {
       color:#4d4d4d;
-      font-size:rem-calc(16px);
+      font-size:rem-calc(14px);
+      font-weight:normal;
     }
 
     .artwork_price {
       margin:rem-calc(10px) 0 rem-calc(5px);
-      font-weight:bold;
+      font-weight:normal;
+      font-size:rem-calc(15px);
     }
 
     button {
@@ -109,13 +120,14 @@
   }
 }
 
-.strapline {
+h1.strapline {
   color:$primary-color;
   font-size:rem-calc(34px);
   float:left;
 
   span {
     display:block;
+    font-family:'Wellfleet', serif;
 
     &.sell {
       text-indent:rem-calc(70px);
@@ -127,8 +139,15 @@
   }
 
   strong {
-    text-shadow:1px 1px #000, -1px -1px #000;
+    color:#410200;
+    text-shadow:1px 2px $primary-color;
     font-weight:normal!important;
+  }
+}
+
+.marketplace {
+  h2 {
+    font-family: 'Wellfleet', serif;
   }
 }
 

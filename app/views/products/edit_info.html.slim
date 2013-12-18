@@ -34,22 +34,10 @@ div id='editor' class='information small-12 small-uncentered medium-12 medium-ce
         dl class='production_cost'
           dt data-hint="Your first shirt will cost this much to produce" class="hint--right" 
             label Production Cost
-          dd 
-            h3 data-float=@product.product_sub_style_object.highest_production_price class='highest_production_cost currency' 
-              = @product.product_sub_style_object.highest_production_price
-          dt class="hint--right" 
-            label Lowest Production Cost
-          dd
-            h3 data-float=@product.product_sub_style_object.lowest_production_price class='base_price currency' 
-              = @product.product_sub_style_object.lowest_production_price
-          dt class='hint--right' data-hint="Based on your current sales, this is the current production cost"
-            label Current Production Cost
-          dd
-            / h3 class='base_price currency' = @product.production_cost
-            / =======
-            /             h3 data-float=@product.product_sub_style_object.production_price class='production_cost currency' 
-            /               = @product.product_sub_style_object.production_price
-            / >>>>>>> fa21fad2e4c5e8acc956fb9abbfe19216bb491a4
+          dd            
+            h3 data-float=@product.product_sub_style_object.production_price class='production_cost currency' 
+              = @product.product_sub_style_object.production_price
+
 
         = f.input :buy_now_price, label: "Retail Price (#{@current_shop.currency_symbol})", input_html: { class: 'currency' }
 
