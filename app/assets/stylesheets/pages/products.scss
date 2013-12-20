@@ -468,9 +468,9 @@ body.loading .loading_indicator {
   .product_image_container .product_image {
     // override these dimensions in specific views,
     // but don't remove them from this base definition
-    width: 297px;
-    height: 420px;
-    left: 137px;
+    width: rem-calc(297px);
+    height: rem-calc(420px);
+    left: rem-calc(137px);
     background: transparent image-url('mens_crew_000000.png') no-repeat 50%;
     background-size: cover;
 

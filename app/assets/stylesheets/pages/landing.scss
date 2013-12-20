@@ -145,11 +145,11 @@ h1.strapline {
   }
 }
 
-.marketplace {
-  h2 {
-    font-family: 'Wellfleet', serif;
-  }
-}
+//.marketplace {
+//  h2 {
+//    font-family: 'Wellfleet', serif;
+//  }
+//}
 
 .features,
 .more_information {
@@ -181,11 +181,15 @@ h1.strapline {
 
     p {
       vertical-align:middle;
-      display:inline-block;
 
       .button {
-        font-size:rem-calc(17px);
+        width:100%;
         font-weight:bold!important;
+
+        .button_inner_most {
+          font-size:rem-calc(18px)!important;
+          border-radius:rem-calc(40px);
+        }
       }
     }
   }
@@ -194,6 +198,8 @@ h1.strapline {
     color:$primary-color;
     font-weight:bold;
     margin-right:rem-calc(10px);
+    text-align:center;
+    display:block;
   }
 }
 

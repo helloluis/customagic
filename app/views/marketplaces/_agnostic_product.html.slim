@@ -1,16 +1,13 @@
 li class='product agnostic_product #{product.is_pending? ? 'pending_product' : ''}'
   
-  h2 class='product_name' 
-    = link_to product.name, shop_product_path(product.shop, product)
-
   - if product.final_art
     div data-turbolinks-track class='product_image' style='background-color: #{product.color}; background-image:url(#{product.final_art.attachment.medium.url})' = link_to "", shop_product_path(product.shop, product)
   - else
     div class='product_image dummy_product_image' = link_to "", shop_product_path(product.shop, product)
 
-  div class='product_prices product_info'
+  div class='product_prices product_info_wrapper'
     ul class="nolist clearfix"
-      li class='buy_now_price left'
+      li class='buy_now_price'
         p 
           | #{link_to(number_to_currency(product.buy_now_price, unit: product.shop.currency_symbol), shop_product_path(product.shop, product))}
       li class='donation right'
@@ -20,19 +17,27 @@ li class='product agnostic_product #{product.is_pending? ? 'pending_product' : '
             |  of each #{product.product_type} sold will be donated to 
             = link_to product.charity.name, product.charity.url
 
-  div class='product_hearts product_info'
-    span class='icon heart toggle_heart' data-id=product.id <3
-/ =======
-/   div class='product_prices'
-/     p 
-/       | #{link_to(number_to_currency(product.buy_now_price, unit: product.shop.currency_symbol), shop_product_path(product.shop, product))}
+    h2 class='product_name' 
+      = link_to product.name, shop_product_path(product.shop, product)
 
-/   div class='product_hearts'
-/     span class='icon heart toggle_heart' data-id=product.id 
-/       | &lt;3
-/ >>>>>>> fa21fad2e4c5e8acc956fb9abbfe19216bb491a4
-    - if product.num_favorites>0
-      span class='heart_counter' 0
+    p class="item_creator"
+      = link_to "Dan Matutina", "#"
+
+  div class='product_hearts product_info button active'
+    span
+      span class='icon button_inner_most heart toggle_heart' data-id=product.id
+        - if product.num_favorites>0
+          | 0
+
+      / =======
+      /   div class='product_prices'
+      /     p 
+      /       | #{link_to(number_to_currency(product.buy_now_price, unit: product.shop.currency_symbol), shop_product_path(product.shop, product))}
+
+      /   div class='product_hearts'
+      /     span class='icon heart toggle_heart' data-id=product.id 
+      /       | &lt;3
+      / >>>>>>> fa21fad2e4c5e8acc956fb9abbfe19216bb491a4
 
   - if product.has_charity?
     div class='product_charity'

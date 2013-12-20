@@ -1,27 +1,45 @@
 @import "compass";
 @import "foundation/functions";
+@import "shared/foundation_and_overrides";
 
-.marketplace_products {
+ul.marketplace_products {
   margin:rem-calc(20px) 0px;
 
   .product {
     height:auto;
     clear:none;
     position:relative;
-
-    .product_name,
-    .donation {
-      display:none;
-    }
     
-    .product_prices {
+    .product_info_wrapper {
+      text-align:center;
+
+      a {
+        color:#000;
+        @extend .texgyreregular_fontstack;
+      }
+
+      h2,
+      h2 a,
+      .item_creator a {
+        color:#777;
+        @extend .texgyreregular_fontstack;
+        font-weight:normal!important
+        ;
+        font-size:rem-calc(14px);
+      }
+    }
+
+    .product_hearts {
       position:absolute;
-      bottom:5%;
-      right:3%;
-      padding:rem-calc(5px) rem-calc(10px);
-      //      background:#000;
-      color:#fff;
-      margin:0px;
+      top:0;
+      right:0;
+      width:rem-calc(76px);
+      height:rem-calc(76px);
+
+     .button_inner_most {
+      @include border-radius(rem-calc(40px));
+      line-height:3.4;
+     }
     }
   }
 }
@@ -38,12 +56,81 @@
       background:#FFF;
     }
 
-    .product_info {
-      padding:0.5rem 0.5rem 0;
-    }
+    //    .product_hearts {
+    //      position:relative;
+
+    //      .heart:before {
+    //        position: absolute; 
+    //        content: ""; 
+    //        left: 50px; 
+    //        top: 0; 
+    //        width: 52px; 
+    //        height: 80px; 
+    //        border-radius: 50px 50px 0 0; /* make the top edge round */ 
+    //        -webkit-transform: rotate(-45deg); /* 45 degrees rotation counter clockwise */
+    //           -moz-transform: rotate(-45deg); 
+    //            -ms-transform: rotate(-45deg); 
+    //             -o-transform: rotate(-45deg); 
+    //                transform: rotate(-45deg); 
+    //        -webkit-transform-origin: 0 100%; /* Rotate it around the bottom-left corner */
+    //           -moz-transform-origin: 0 100%; 
+    //            -ms-transform-origin: 0 100%; 
+    //             -o-transform-origin: 0 100%; 
+    //                transform-origin: 0 100%;
+    //        background:red;
+    //      }
+    //      .heart:after {
+    //        background:red;
+    //        left: 0; /* placing the right part properly */
+    //        -webkit-transform: rotate(45deg); /* rotating 45 degrees clockwise */
+    //           -moz-transform: rotate(45deg); 
+    //            -ms-transform: rotate(45deg); 
+    //             -o-transform: rotate(45deg); 
+    //                transform: rotate(45deg); 
+    //        -webkit-transform-origin: 100% 100%; /* rotation is around bottom-right corner this time */
+    //           -moz-transform-origin: 100% 100%; 
+    //            -ms-transform-origin: 100% 100%; 
+    //             -o-transform-origin: 100% 100%; 
+    //                transform-origin :100% 100%; 
+    //      }
+    //    }
 
     .product_image {
-      border-bottom:rem-calc(1px) solid #CCC;
+      // override these dimensions in specific views,
+      // but don't remove them from this base definition
+      width: rem-calc(297px);
+      height: rem-calc(370px);
+      background: transparent image-url('mens_crew_000000.png') no-repeat 50% 50%;
+      background-size: cover;
+      padding:rem-calc(1px);
+      display:table-cell;
+      vertical-align:middle;
+      text-align:center;
+
+      a {
+        background-color:#FFF;
+        width:30%;
+        height:rem-calc(120px);
+        margin-bottom:rem-calc(30px);
+        display:inline-block;
+        vertical-align:middle;
+
+        img {
+          max-width:100%;
+          max-height:100%;
+          height:auto;
+          width:auto;
+        }
+      }
     }
+  }
+}
+
+@media #{$medium-up} {
+  .marketplace_products .product {
+    width:rem-calc(330px);
+    display:inline;
+    float:left;
+    clear:none!important;
   }
 }

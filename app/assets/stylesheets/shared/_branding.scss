@@ -19,7 +19,8 @@ $link : #dc0000;
 body {
   background:image-url("background_canvas2.png") !important;
   background-color:#fff !important;
-  background-position:top 50% !important;  
+  background-position:top 50% !important;
+  @extend .texgyreregular_fontstack;
 }
 
 /// Logos 

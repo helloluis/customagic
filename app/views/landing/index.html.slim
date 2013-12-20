@@ -109,19 +109,19 @@ div class='features row'
 div class='marketplace row medium-12 small-6'
   
   - if @available_products.any?  
-    ul class='products marketplace_products nolist small-block-grid-1 medium-block-grid-3 large-block-grid-5 clearfix'
+    ul class='products marketplace_products nolist small-block-grid-1 clearfix'
       - @available_products.each do |p|
         = render :partial => "/marketplaces/agnostic_product", :locals => { product: p }
 
   - if @pending_products.any?
-    h2 Fresh Brews
+    h1 Fresh Brews
     p These designs need your votes before they can be added to the marketplace!
 
-    ul class='products pending_products marketplace_products nolist small-block-grid-1 medium-block-grid-3 large-block-grid-5 clearfix'
+    ul class='products pending_products marketplace_products nolist small-block-grid-1 clearfix'
       - @pending_products.each do |p|
         = render :partial => "/marketplaces/agnostic_product", :locals => { product: p }
   - else
-    h2 No New Brews
+    h1 No New Brews
     p Fill up our marketplace with your awesome work now!
 
 div class='footer' id="colophon"
