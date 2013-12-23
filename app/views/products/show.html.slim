@@ -31,15 +31,17 @@ div class='product standalone_product small-12 small-uncentered medium-centered 
   div class='product_purchase columns small-12 medium-5'
 
     div class='inner'
-      h1 
-        = @product.name
-        | &nbsp;
-      p class='byline' 
-        | by 
-        span class='author_name' = @current_shop.user.name
-        - if is_owner?(@current_shop)
-          span class='owner_tools'
-            = link_to "Edit &raquo;".html_safe, edit_info_shop_product_path(@current_shop, @product)
+      header class="product_header"
+        h1 
+          = @product.name
+          | &nbsp;
+        p class='byline' 
+          | by 
+          span class='author_name' 
+            = link_to @current_shop.user.name, ""
+          - if is_owner?(@current_shop)
+            span class='owner_tools'
+              = link_to "Edit &raquo;".html_safe, edit_info_shop_product_path(@current_shop, @product)
 
       div class='product_prices'
 
@@ -55,11 +57,13 @@ div class='product standalone_product small-12 small-uncentered medium-centered 
             = @product.num_favorites
           
       - if @product.is_pending?
+        hr class="divider"
         div class='product_pending'
           p This #{@product.product_type} is not yet available for ordering. It needs #{pluralize @product.favorites_remaining,'heart'} in order for us to start production. If you want to be able to buy this #{@product.product_type}, click the Heart above and tell your friends to do the same.
 
       - elsif @product.is_orderable?
 
+        hr class="divider"
         div class='product_variants'
           h4 Available Sizes
           select id='product_variant' name='product_variant'
@@ -70,12 +74,15 @@ div class='product standalone_product small-12 small-uncentered medium-centered 
             option value='XXL' XX-Large
 
       - if @product.has_charity?
+
+        hr class="divider"
         div class='product_donation'
           p
             = number_to_currency(@product.charity_donation, unit: @current_shop.currency_symbol)
             |  of each #{@product.product_type} sold will be donated to 
             = link_to @product.charity.name, @product.charity.url
 
+      hr class="divider"
       div class='item_specifications'
         h4 Specifications
         dl

@@ -653,3 +653,47 @@ body.loading .loading_indicator {
 .product_share_tools .small-12 {
   overflow:hidden;
 }
+
+.standalone_product {
+
+  .product_description {
+    padding:rem-calc(30px) rem-calc(10px);
+    border-bottom:rem-calc(1px) solid #CCC;
+    margin-bottom:rem-calc(30px);
+    line-height:1.5;
+  }
+
+  .product_purchase .inner {
+    padding-top:0;
+
+    h4 {
+      margin-bottom:rem-calc(30px);
+    }
+
+    dt {
+      float:left;
+      width:rem-calc(100px);
+      clear:both;
+    }
+  }
+
+  .product_header {
+    margin:0 0 rem-calc(20px) 0;
+
+    h1 {
+      margin:0;
+      font-family:'Open sans';
+      font-weight:normal;
+    }
+    .owner_tools {
+      display:inline-block;
+      margin-left:rem-calc(10px);
+      white-space:nowrap;
+    }
+  }
+
+  .product_prices h3 {
+    font-family:'Open sans';
+  }
+
+}
