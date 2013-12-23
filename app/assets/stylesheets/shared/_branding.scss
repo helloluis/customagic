@@ -11,9 +11,10 @@
 ///////////////// 
 @import "compass";
 @import "foundation/functions";
+@import "shared/foundation_and_overrides";
 @import "shared/fonts";
 
-$primary-color : #009345;
+$primary-color : #009345!default;
 $link : #dc0000;
 
 body {
@@ -21,6 +22,10 @@ body {
   background-color:#fff !important;
   background-position:top 50% !important;
   @extend .texgyreregular_fontstack;
+}
+
+a {
+  color:$link!important;
 }
 
 /// Logos 
@@ -144,7 +149,7 @@ button,
 
 /// Header
 ///  start of header#main
-#main.top-bar {
+.top-bar {
   line-height: rem-calc(90px);
   height:rem-calc(90px);
   background:none;
@@ -170,6 +175,7 @@ button,
         line-height: rem-calc(39px);
         text-transform: lowercase;
         @extend .texgyrebold_fontstack;
+        color:#FFF!important;
         
         [class^="icon-"], [class*=" icon-"] {
           color:#fff;
@@ -183,6 +189,10 @@ button,
         }
       }
     }
+  }
+
+  &.expanded .title-area {
+    background:none;
   }
 
   .navigation {
@@ -284,6 +294,20 @@ button,
   }
   .shopping_cart {
   }
+
+  @media #{$small-only} {
+    & {
+      height:rem-calc(110px);
+    }
+
+    .toggle-topbar.menu-icon {
+      top:16%;
+    }
+
+    .secondary-nav {
+      top: rem-calc(-80px);
+    }
+  }
 }
 //end of header#main
 
@@ -325,3 +349,6 @@ button,
 }
 
 
+.alert-box {
+  background-color:$primary-color;
+}

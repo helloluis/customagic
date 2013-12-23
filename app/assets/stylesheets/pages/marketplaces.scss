@@ -98,10 +98,10 @@ ul.marketplace_products {
     .product_image {
       // override these dimensions in specific views,
       // but don't remove them from this base definition
-      width: rem-calc(297px);
+      width: rem-calc(430px);
       height: rem-calc(370px);
       background: transparent image-url('mens_crew_000000.png') no-repeat 50% 50%;
-      background-size: cover;
+      @include background-size(contain);
       padding:rem-calc(1px);
       display:table-cell;
       vertical-align:middle;

@@ -4,7 +4,7 @@
   div class='logo' style='background-image:url(#{@shop.attachment.url})'
 
 header class='shop_information row small-12 medium-12'
-  div class='columns small-7 medium-6'
+  div class='columns small-12 medium-6'
     h1 role="headline" = @shop.name
     p class='description'
       - if @shop.description.blank?
@@ -12,7 +12,7 @@ header class='shop_information row small-12 medium-12'
       - else
         = @shop.description
       = link_to "Edit &raquo;".html_safe, edit_shop_path(@shop)
-  div class='columns small-5 medium-6'
+  div class='columns small-12 medium-6'
     ul class='social_networks'
       - %w(twitter facebook pinterest instagram googleplus).each do |sn|
         - if @shop.attributes[sn].blank? && is_owner?(@shop)
@@ -27,5 +27,5 @@ header class='shop_information row small-12 medium-12'
 
 div class="columns small-12 medium-12"
 
-  ul class='products small-block-grid-1 medium-block-grid-3 large-block-grid-5 nolist'
+  ul class='products small-block-grid-1 medium-block-grid-3 nolist'
     = render :partial => @products

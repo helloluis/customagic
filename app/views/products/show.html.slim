@@ -1,11 +1,34 @@
 - @page_title = "#{@product.name} | #{@current_shop.name}"
-div class='product standalone_product small-12 small-uncentered medium-12 medium-centered row'
+div class='product standalone_product small-12 small-uncentered medium-centered row'
 
-  div class='medium-7 columns product_image_container product_image_container_#{@product.product_type} #{@product.product_type}_#{@product.color.gsub('#','')}'
+  div class='medium-7 small-12 columns'
 
-    div data-turbolinks-track='true' class='product_image' style='background-image:url(#{@product.art_attachment.medium.url})'
+    div class=" product_image_container product_image_container_#{@product.product_type} #{@product.product_type}_#{@product.color.gsub('#','')}"
+      div data-turbolinks-track='true' class='product_image' style='background-image:url(#{@product.art_attachment.medium.url})'
+      
+    div class='product_description'
 
-  div class='product_purchase columns medium-5'
+      == @product.description
+
+    div class='product_share_tools small-12'
+      div class='share_facebook small-12 medium-3 columns'
+        iframe src="//www.facebook.com/plugins/like.php?href=#{shop_product_url(@shop.slug, @product.slug)}&height=65&colorscheme=light&layout=box_count&action=like&show_faces=true&send=false&appId=#{app_facebook_id}" scrolling="no" frameborder="0" style="border:none; overflow:hidden; height:65px;" allowTransparency="true"
+      div class='share_gplus small-12 medium-3 columns'              
+        div class="g-plusone" data-size="tall" data-width="50"
+        javascript:
+          (function() {
+            var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+            po.src = 'https://apis.google.com/js/plusone.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+          })();
+      div class='share_twitter small-12 medium-3 columns'
+        iframe allowtransparency="true" frameborder="0" scrolling="no" src="https://platform.twitter.com/widgets/tweet_button.html?related=socialinfinity&url=#{shop_product_url(@shop.slug, @product.slug)}&text=#{@product.name}+#{@product.price}&count=vertical" class="twitter-share-button" style="width:60px;"
+      div class='share_pinterest small-12 medium-3 columns'
+        div style="margin-top:10px;"
+          a target="_blank" href="//pinterest.com/pin/create/button/?url=#{CGI.escape(shop_product_url(@shop.slug, @product.slug))}&media=#{@product.primary_image}&description=#{CGI.escape(@product.name)}+#{@product.price}" data-pin-do="buttonPin" data-pin-config="above" always-show-count="true"
+            img src="//assets.pinterest.com/images/pidgets/pin_it_button.png" 
+
+  div class='product_purchase columns small-12 medium-5'
 
     div class='inner'
       h1 
@@ -26,9 +49,10 @@ div class='product standalone_product small-12 small-uncentered medium-12 medium
 
           = link_to "Add to Cart", add_product_carts_path(product_id: @product.id), class: 'buy_now', "data-loading".to_sym => "Adding ..." 
 
-      div class='product_hearts'
-        span class='icon heart toggle_heart' data-id=@product.id <3
-        span class='heart_counter' = @product.num_favorites
+      div class='product_hearts product_info button active'
+        span
+          span class='icon button_inner_most heart toggle_heart' data-id=@product.id
+            = @product.num_favorites
           
       - if @product.is_pending?
         div class='product_pending'
@@ -52,40 +76,17 @@ div class='product standalone_product small-12 small-uncentered medium-12 medium
             |  of each #{@product.product_type} sold will be donated to 
             = link_to @product.charity.name, @product.charity.url
 
-      div class='product_description'
-
-        == @product.description
-
-        div class='item_specifications'
-          h4 Specifications
-          dl
-            dt 
-              strong #{@product.product_type_object.name} Style
-            dd = "#{@product.product_style_object.name} (#{@product.product_sub_style_object.name})"
-            dt 
-              strong Color
-            dd 
-              = "#{@product.color}"
-              span class='color_swatch' style='background-color:#{@product.color}'
-
-      div class='product_share_tools'
-        div class='share_facebook'
-          iframe src="//www.facebook.com/plugins/like.php?href=#{shop_product_url(@shop.slug, @product.slug)}&height=65&colorscheme=light&layout=box_count&action=like&show_faces=true&send=false&appId=#{app_facebook_id}" scrolling="no" frameborder="0" style="border:none; overflow:hidden; height:65px;" allowTransparency="true"
-        div class='share_gplus'              
-          div class="g-plusone" data-size="tall" data-width="50"
-          javascript:
-            (function() {
-              var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-              po.src = 'https://apis.google.com/js/plusone.js';
-              var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
-            })();
-        div class='share_twitter'
-          iframe allowtransparency="true" frameborder="0" scrolling="no" src="https://platform.twitter.com/widgets/tweet_button.html?related=socialinfinity&url=#{shop_product_url(@shop.slug, @product.slug)}&text=#{@product.name}+#{@product.price}&count=vertical" class="twitter-share-button" style="width:60px;"
-        div class='share_pinterest'
-          div style="margin-top:10px;"
-            a target="_blank" href="//pinterest.com/pin/create/button/?url=#{CGI.escape(shop_product_url(@shop.slug, @product.slug))}&media=#{@product.primary_image}&description=#{CGI.escape(@product.name)}+#{@product.price}" data-pin-do="buttonPin" data-pin-config="above" always-show-count="true"
-              img src="//assets.pinterest.com/images/pidgets/pin_it_button.png" 
-
+      div class='item_specifications'
+        h4 Specifications
+        dl
+          dt 
+            strong #{@product.product_type_object.name} Style
+          dd = "#{@product.product_style_object.name} (#{@product.product_sub_style_object.name})"
+          dt 
+            strong Color
+          dd 
+            = "#{@product.color}"
+            span class='color_swatch' style='background-color:#{@product.color}'
 
   - content_for :page_scripts do
     

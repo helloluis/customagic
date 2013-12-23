@@ -1,5 +1,6 @@
 @import "compass";
 @import "foundation/functions";
+@import "shared/foundation_and_overrides";
 
 .shop_information {
   margin:0 0 2rem;
@@ -13,22 +14,32 @@
   }
 }
 
+.product_hearts {
+  position:absolute;
+  top:0;
+  left:rem-calc(-50px);
+
+  .button_inner_most {
+    @include border-radius(rem-calc(100px)!important);
+  }
+}
+
 .steps {
   margin:1.6rem 0;
 
   h1, h2 {
     text-transform: lowercase;
-    letter-spacing:-1px;
+    letter-spacing:rem-calc(-1px);
   }
 
   h2 {
-    font-size:28px;
+    font-size:rem-calc(28px);
   }
 
   .step {
     float:left;
-    line-height:40px;
-    padding:0 10px 0 30px;
+    line-height:rem-calc(40px);
+    padding:0 rem-calc(10px) 0 rem-calc(30px);
     margin:0;
     font-size:0.8rem;
     list-style:none;
@@ -36,14 +47,14 @@
     text-transform: lowercase;
 
     a {
-      font-size:18px;
+      font-size:rem-calc(18px);
       color:#333;
-      letter-spacing:-1px;
+      letter-spacing:rem-calc(-1px);
       font-weight:bold;
     }
 
     &:first-child {
-      padding-left:10px;
+      padding-left:rem-calc(10px);
     }
 
     &:before {
@@ -74,15 +85,15 @@
 #designer {
   overflow:hidden;
   position:relative;
-  font-size:13px;
+  font-size:rem-calc(13px);
 }
 
 .viewer {
   float:left;
   position:relative;
   overflow:hidden;
-  height:850px;
-  border:1px solid #ccc;
+  height:rem-calc(850px);
+  border:rem-calc(1px) solid #ccc;
 
   //padding-top:1.5rem;
 
@@ -97,7 +108,7 @@
 .styles {
   float:left;
   border:solid #ccc;
-  border-width:1px 1px 1px 0;
+  border-width:rem-calc(1px) rem-calc(1px) rem-calc(1px) 0;
   background:#fff;
 
   .content_buttons button {
@@ -111,7 +122,7 @@
   }
 
   .title {
-    border-top: 1px solid #EFEFEF;
+    border-top: rem-calc(1px) solid #EFEFEF;
     background:none;
     color: #222;
     padding: 1rem;
@@ -130,7 +141,7 @@
   .content,
   .price_container,
   .submit_button {
-    padding:20px;
+    padding:rem-calc(20px);
   }
 
   .content {
@@ -156,7 +167,7 @@
 }
 
 .submit_button > .button {
-  margin:0 0 15px;
+  margin:0 0 rem-calc(15px);
 
   &,
   & .button_inner_most {
@@ -171,19 +182,21 @@
 
 .product_styles_container ul {
   list-style-type:none;
+
   li {
-    margin:0px;
-    padding:10px;
+    margin:0;
+    padding:rem-calc(10px);
     overflow:hidden;
+
     .thumbnail {
-      width:50px;
-      height:50px;
+      width:rem-calc(50px);
+      height:rem-calc(50px);
       background-position:50% 50%;
       background-repeat:no-repeat;
       border:1px solid #ccc;
-      margin-right:10px;
+      margin-right:rem-calc(10px);
       float:left;
-      text-indent:-2000px;
+      text-indent:rem-calc(-2000px);
     }
     &.current, &:hover {
       background:#ffc;    
@@ -193,8 +206,8 @@
 
 .product_sub_styles {
   list-style-type:none;
-  margin:0px;
-  padding:0px;
+  margin:0;
+  padding:0;
 }
 
 .viewer {
@@ -202,14 +215,14 @@
     position:absolute;
     width:100%;
     height:100%;
-    //    margin-top:40px;
+    //    margin-top:rem-calc(40px);
   } 
   .editable_area .asset {
     position:absolute;
-    padding:1px;
+    padding:rem-calc(1px);
     &:hover {
-      border:1px solid #0ff;
-      padding:0px;
+      border:rem-calc(1px) solid #0ff;
+      padding:rem-calc(0px);
     }
     &.asset_photo {
       overflow:hidden;
@@ -218,8 +231,8 @@
       }
     }
     &.selected {
-      border:1px solid rgba(0,255,255,0.7);
-      padding:0px;
+      border:rem-calc(1px) solid rgba(0,255,255,0.7);
+      padding:0;
     }
   }
 }
@@ -227,23 +240,23 @@
 .swatches {
   overflow:hidden;
   list-style-type:none;
-  margin:0px;
-  padding:0px;
+  margin:0;
+  padding:0;
 
   .swatch {
     float:left;
-    margin:0px 1px 0px 0px;
+    margin:0px rem-calc(1px) 0pxrem-calc( 0px);
     width:3rem;
     height:3rem;
-    border:1px solid #ddd;
-    text-indent:-2000px;
+    border:rem-calc(1px) solid #ddd;
+    text-indent:rem-calc(-2000px);
 
     &.current, .swatches .swatch:hover {
       border-color:#fc0;
     }
 
     &.current {
-      border: 1px solid #fc0;
+      border: rem-calc(1px) solid #fc0;
     }
   }
 }
@@ -262,10 +275,10 @@
 .editable_area {
   z-index:3;
   position:absolute;
-  border:1px dashed #999;
-  top:200px;
-  left:180px;
-  height:450px;
+  border:rem-calc(1px) dashed #999;
+  top:rem-calc(200px);
+  left:rem-calc(180px);
+  height:rem-calc(450px);
 }
 
 .asset_tools_container {
@@ -274,8 +287,8 @@
   left:auto;
   clear:both;
   position:relative;
-  left:0px;
-  right:0px;
+  left:0;
+  right:0;
   min-height:4rem;
   height:auto;
   border:0 none;
@@ -296,7 +309,7 @@ ul.asset_tools {
 
   li {
     float:left;
-    margin:0px 10px 0px 0px;
+    margin:0px rem-calc(10px) 0pxrem-calc( 0px);
 
     &.font_family {
       float:none;
@@ -304,7 +317,7 @@ ul.asset_tools {
 
     label {
       display:block;
-      font-size:10px;
+      font-size:rem-calc(10px);
       text-transform:uppercase;
     }
   }
@@ -316,7 +329,7 @@ ul.asset_tools {
       cursor:pointer;
       text-align:center;
       color:#fff;
-      line-height:36px;
+      line-height:rem-calc(36px);
       &.current {
         background-color:#333;
       }
@@ -350,7 +363,7 @@ ul.asset_tools {
     width:2.1rem;
     height:2.1rem;
     background:#666;
-    margin:0px 1px 0px 0px;
+    margin:0px 1px 0pxrem-calc( 0px);
     padding:0;
   }
 
@@ -373,11 +386,11 @@ ul.asset_tools {
 .editable_area_label {
   display:none;
   position:absolute;
-  right:0px;
-  bottom:-20px;
+  right:0;
+  bottom:rem-calc(-20px);
   background:#333;
-  font-size:10px;
-  padding:3px 6px;
+  font-size:rem-calc(10px);
+  padding:rem-calc(3px) rem-calc(6px);
   color:#fff; 
 }
 .editable_area:hover .editable_area_label {
@@ -393,8 +406,8 @@ ul.asset_tools {
   .viewer {
     overflow:visible;
     .item {
-      height:480px;
-      margin-bottom:10px;
+      height:rem-calc(480px);
+      margin-bottom:rem-calc(10px);
       border:1px solid #ccc;
       background-repeat:no-repeat;
       background-position: 50% 0%;
@@ -405,18 +418,18 @@ ul.asset_tools {
   .info_form_container {
     float:left;
     form {
-      margin:20px;
+      margin:rem-calc(20px);
     }
     label, input {
-      font-size:20px;
+      font-size:rem-calc(20px);
       display:block;
     }
     textarea {
       width:100%;
-      height:150px;
+      height:1rem-calc(50px);
     }
     input.text, textarea, select {
-      margin-bottom:20px;
+      margin-bottom:rem-calc(20px);
     }
   }
   .totals_and_instructions {
@@ -424,16 +437,16 @@ ul.asset_tools {
   }
   .totals {
     background:#fff;
-    padding:20px;
-    margin:0px 20px;
-    dt { font-size:16px; }
-    dd { font-size:24px; margin-bottom:10px; }
+    padding:rem-calc(20px);
+    margin:0px rem-calc(20px);
+    dt { font-size:rem-calc(16px); }
+    dd { font-size:rem-calc(24px); margin-bottom:rem-calc(10px); }
   }
   .help {
-    margin:20px;
-    padding:10px;
+    margin:rem-calc(20px);
+    padding:rem-calc(10px);
     h3,p {
-      margin-bottom:10px;
+      margin-bottom:rem-calc(10px);
     }
   }
 }
@@ -445,9 +458,9 @@ ul.asset_tools {
   font-weight:bold;
   display:none;
   position:absolute;
-  top:0px;
-  left:900px;
-  padding:5px 10px;
+  top:0;
+  left:9rem-calc(00px);
+  padding:5px rem-calc(10px);
 }
 
 body.loading .loading_indicator {
@@ -479,17 +492,27 @@ body.loading .loading_indicator {
       width: 100%;
       height: 100%;
     }
+
+    @media #{$small-only} {
+      & {
+        left:0;
+      }
+    }
   }
   .product_prices ul {
     list-style-type:none;
   }
   .product_prices {
-    .label_unit_total, .label_unit_price, .total_price {
+    .label_unit_total,
+    .label_unit_price,
+    .total_price {
       display:none;
 
     }
     &.volume_pricing {
-      .label_unit_total, .label_unit_price, .total_price {
+      .label_unit_total,
+      .label_unit_price,
+      .total_price {
         display:block;
       }
     }
@@ -497,8 +520,8 @@ body.loading .loading_indicator {
 }
 
 .artwork_viewer {
-  //  width: 275px;
-  height: 420px;
+  //  width: 2rem-calc(75px);
+  height: 4rem-calc(20px);
   overflow-y: auto;
   .artwork {
     clear:both;
@@ -506,9 +529,9 @@ body.loading .loading_indicator {
       position:relative;
       list-style-type:none;
         //      float:left;
-        //      margin:0px 2px 2px 0px;
+        //      margin:0px 2px 2pxrem-calc( 0px);
         //      border:1px solid #ddd;
-        //      width:128px;
+        //      width:1rem-calc(28px);
       &.loading {
         opacity:0.5;
 
@@ -528,16 +551,16 @@ body.loading .loading_indicator {
       .instructions,
       .loading_indicator {
         position:absolute;
-        top:0px;
-        left:0px;
-        right:0px;
-        bottom:0px;
+        top:0;
+        left:0;
+        right:0;
+        bottom:0;
         background-color:rgba(0,0,0,0.5);
         color:#fff;
         text-align:center;
         display:none;
         padding:30% 10%;
-        font-size:16px;
+        font-size:rem-calc(16px);
         cursor:pointer;
       }
       &:hover {
@@ -549,36 +572,36 @@ body.loading .loading_indicator {
 
     .image_object_thumbnail {
       width:100%;
-      height:128px;
+      height:1rem-calc(28px);
       background-size:cover;
       background-repeat:no-repeat;
       background-position:top center;
     }
     .image_object_title {
-      font-size:11px;
+      font-size:rem-calc(11px);
       text-align:center;
       background:rgba(0,0,0,0.5);
       color:#fff;
-      padding:3px;
+      padding:rem-calc(3px);
       text-overflow:ellipsis;
-      //width:126px;
-      height:20px;
+      //width:1rem-calc(26px);
+      height:rem-calc(20px);
       display:block;
     }
   }  
 }
 
 .toggle_artwork_viewer {
-  padding:3px 6px;
+  padding:3pxrem-calc( 6px);
   text-align:center;
   background:#ccc;
-  margin-bottom:20px;
+  margin-bottom:rem-calc(20px);
   cursor:pointer;
 }
 
 .styles.expanded_artwork {
   .artwork_viewer {
-    height: 700px;
+    height: 7rem-calc(00px);
   }
   .simple_form.product {
     display: none;
@@ -586,10 +609,10 @@ body.loading .loading_indicator {
 }
 
 .ui-resizable-handle.ui-icon-gripsmall-diagonal-se {
-  background-position:-35px -172px;
-  background-size:500px 500px;
-  width:26px;
-  height:26px;
+  background-position:-35px -1rem-calc(72px);
+  background-size:500px 5rem-calc(00px);
+  width:rem-calc(26px);
+  height:rem-calc(26px);
 
   .asset:hover &,
   .asset:focus & {
@@ -597,21 +620,17 @@ body.loading .loading_indicator {
   }
 }
 
-.standalone_product {
-  .product_image_container, .product_purchase {
-    float:left;
-  }
-}
-
 .product_image_container_shirt {
   background:transparent image-url('mens_crew_ffffff.jpg') top center no-repeat;
   position:relative;
-  height:750px;
+  height:rem-calc(750px);
+  width:100%;
+  
   .product_image {
     position:absolute;
-    top:170px;
-    left:97px;
-    border:0px;
+    top:rem-calc(170px);
+    left:rem-calc(97px);
+    border:0;
   }
   &.shirt_000000 {
     background-image:image-url('mens_crew_000000.jpg');
@@ -628,5 +647,9 @@ body.loading .loading_indicator {
 }
 
 .inner {
-  padding:20px;
+  padding:rem-calc(20px);
+}
+
+.product_share_tools .small-12 {
+  overflow:hidden;
 }
