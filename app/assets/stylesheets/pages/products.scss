@@ -94,52 +94,53 @@ body.loading .loading_indicator {
   }
   // steps
 
+  //viewer
+  .viewer {
+    float:left;
+    position:relative;
+    overflow:hidden;
+    height:rem-calc(850px);
+    border:rem-calc(1px) solid #ccc;  z-index:2;
+    background:transparent image-url("mens_crew_ffffff.jpg") top center no-repeat;
+
+    .item_specifications a {
+      display: block;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+    .product {
+      position:absolute;
+      width:100%;
+      height:100%;
+      background-position:50% 0;
+      //    margin-top:rem-calc(40px);
+    } 
+    .editable_area .asset {
+      position:absolute;
+      padding:rem-calc(1px);
+      &:hover {
+        border:rem-calc(1px) solid #0ff;
+        padding:rem-calc(0px);
+      }
+      &.asset_photo {
+        overflow:hidden;
+        img {
+          width:100%;
+        }
+      }
+      &.selected {
+        border:rem-calc(1px) solid rgba(0,255,255,0.7);
+        padding:0;
+      }
+    }
+  }
+  // viewer
+
 }
 //Editor
 
-//viewer
-.viewer {
-  float:left;
-  position:relative;
-  overflow:hidden;
-  height:rem-calc(850px);
-  border:rem-calc(1px) solid #ccc;  z-index:2;
-  background:transparent image-url("mens_crew_ffffff.jpg") top center no-repeat;
-
-  .item_specifications a {
-    display: block;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-  }
-  .product {
-    position:absolute;
-    width:100%;
-    height:100%;
-    background-position:50% 0;
-    //    margin-top:rem-calc(40px);
-  } 
-  .editable_area .asset {
-    position:absolute;
-    padding:rem-calc(1px);
-    &:hover {
-      border:rem-calc(1px) solid #0ff;
-      padding:rem-calc(0px);
-    }
-    &.asset_photo {
-      overflow:hidden;
-      img {
-        width:100%;
-      }
-    }
-    &.selected {
-      border:rem-calc(1px) solid rgba(0,255,255,0.7);
-      padding:0;
-    }
-  }
-}
-// viewer
-
+//styles
 .styles {
   float:left;
   border:solid #ccc;
@@ -237,37 +238,126 @@ body.loading .loading_indicator {
       background:#ffc;    
     }
   }
-}
 
-.product_sub_styles {
-  list-style-type:none;
-  margin:0;
-  padding:0;
-}
+  .product_sub_styles {
+    list-style-type:none;
+    margin:0;
+    padding:0;
+  }
 
-.swatches {
-  overflow:hidden;
-  list-style-type:none;
-  margin:0;
-  padding:0;
+  //swatches
+  .swatches {
+    overflow:hidden;
+    list-style-type:none;
+    margin:0;
+    padding:0;
 
-  .swatch {
-    float:left;
-    margin:0px rem-calc(1px) 0px rem-calc(0px)!important;
-    width:2.5rem;
-    height:2.5rem;
-    border:rem-calc(1px) solid #ddd;
-    text-indent:rem-calc(-2000px);
+    .swatch {
+      float:left;
+      margin:0px rem-calc(1px) 0px rem-calc(0px)!important;
+      width:2.5rem;
+      height:2.5rem;
+      border:rem-calc(1px) solid #ddd;
+      text-indent:rem-calc(-2000px);
 
-    &.current, .swatches .swatch:hover {
-      border-color:#fc0;
-    }
+      &.current, .swatches .swatch:hover {
+        border-color:#fc0;
+      }
 
-    &.current {
-      border: rem-calc(1px) solid #fc0;
+      &.current {
+        border: rem-calc(1px) solid #fc0;
+      }
     }
   }
+  //swatches
+
+  //asset_tools
+  ul.asset_tools {
+    list-style-type:none;
+
+    &.disabled {
+      opacity:0.5;
+    }
+
+    li {
+      float:left;
+      margin:0px rem-calc(10px) 0pxrem-calc( 0px);
+
+      &.font_family {
+        float:none;
+      }
+
+      label {
+        display:block;
+        font-size:rem-calc(10px);
+        text-transform:uppercase;
+      }
+    }
+    .alignment {
+      ul {
+        list-style-type:none;
+      }
+      .alignment_button {
+        cursor:pointer;
+        text-align:center;
+        color:#fff;
+        line-height:rem-calc(36px);
+        &.current {
+          background-color:#333;
+        }
+        &.alignment_left {
+
+        }
+        &.alignment_center {
+          
+        }
+        &.alignment_right {
+          
+        }
+      }
+    }
+
+    & > li {
+      display:none;
+      margin-right:.2rem;
+    }
+
+    &.show_asset_text_fields > li.asset_text_field {
+      display:block;
+    }
+    
+    &.show_asset_photo_fields > li.asset_photo_field {
+      display:block;
+    }
+
+    .asset_photo_field button,
+    .alignment ul li {
+      width:2.1rem;
+      height:2.1rem;
+      background:#666;
+      margin:0px 1px 0pxrem-calc( 0px);
+      padding:0;
+    }
+
+    .asset_photo_field {
+      float:left;
+      width:auto;
+    }
+
+    .zindexes,
+    .clone_and_delete {
+      padding-top:1rem;
+      margin-right:0;
+    }
+
+    .sp-replacer {
+      padding:0.34rem;
+    }
+  }
+  //asset_tools
 }
+//styles
+
 .product_color {
   z-index:1;
   background-color:#fff;
@@ -299,89 +389,6 @@ body.loading .loading_indicator {
   fieldset {
     margin:0;
     border:0 none;
-  }
-}
-
-ul.asset_tools {
-  list-style-type:none;
-
-  &.disabled {
-    opacity:0.5;
-  }
-
-  li {
-    float:left;
-    margin:0px rem-calc(10px) 0pxrem-calc( 0px);
-
-    &.font_family {
-      float:none;
-    }
-
-    label {
-      display:block;
-      font-size:rem-calc(10px);
-      text-transform:uppercase;
-    }
-  }
-  .alignment {
-    ul {
-      list-style-type:none;
-    }
-    .alignment_button {
-      cursor:pointer;
-      text-align:center;
-      color:#fff;
-      line-height:rem-calc(36px);
-      &.current {
-        background-color:#333;
-      }
-      &.alignment_left {
-
-      }
-      &.alignment_center {
-        
-      }
-      &.alignment_right {
-        
-      }
-    }
-  }
-
-  & > li {
-    display:none;
-    margin-right:.2rem;
-  }
-
-  &.show_asset_text_fields > li.asset_text_field {
-    display:block;
-  }
-  
-  &.show_asset_photo_fields > li.asset_photo_field {
-    display:block;
-  }
-
-  .asset_photo_field button,
-  .alignment ul li {
-    width:2.1rem;
-    height:2.1rem;
-    background:#666;
-    margin:0px 1px 0pxrem-calc( 0px);
-    padding:0;
-  }
-
-  .asset_photo_field {
-    float:left;
-    width:auto;
-  }
-
-  .zindexes,
-  .clone_and_delete {
-    padding-top:1rem;
-    margin-right:0;
-  }
-
-  .sp-replacer {
-    padding:0.34rem;
   }
 }
 
