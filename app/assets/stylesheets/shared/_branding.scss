@@ -92,8 +92,8 @@ button,
       line-height: 2.8;
       padding:0 rem-calc(20px);
       border:0;
-      color:#999;
       background-color:#CCC;
+      color:#FFF!important;
       @include transition(1s);
       @include border-radius(rem-calc(20px));
     }
